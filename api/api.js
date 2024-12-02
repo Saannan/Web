@@ -1,5 +1,5 @@
-import express from 'express'
-import aiRouter from './ai.js'
+const express = require('express')
+const { aiRouter } = require('./ai')
 
 const app = express();
 app.use(express.json());

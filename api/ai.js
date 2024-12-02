@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import axios from 'axios';
+const axios = require('axios')
+const { Router } = require('express')
 
 const aiRouter = Router();
 
