@@ -184,38 +184,6 @@ const features = [
     query: "s=liteapks&text=Stickman"
   },
   {
-    name: "Eggy Search",
-    method: "GET",
-    description: "Search/eggysrc",
-    category: "SEARCH",
-    endpoint: "../api",
-    query: "s=eggysrc&text=Horror"
-  },
-  {
-    name: "Eggy Detail",
-    method: "GET",
-    description: "Search/eggydetail",
-    category: "SEARCH",
-    endpoint: "../api",
-    query: "s=eggydetail&url=https://egydead.center/%d9%85%d8%b4%d8%a7%d9%87%d8%af%d8%a9-%d9%81%d9%8a%d9%84%d9%85-a-classic-horror-story-2021-%d9%85%d8%aa%d8%b1%d8%ac%d9%85/"
-  },
-  {
-    name: "Hoax Search",
-    method: "GET",
-    description: "Search/hoaxsrc",
-    category: "SEARCH",
-    endpoint: "../api",
-    query: "s=hoaxsrc&text=Politik"
-  },
-  {
-    name: "Hoax Detail",
-    method: "GET",
-    description: "Search/hoaxdetail",
-    category: "SEARCH",
-    endpoint: "../api",
-    query: "s=hoaxdetail&url=URL"
-  },
-  {
     name: "Brat Sticker",
     method: "GET",
     description: "Maker/brat",
