@@ -34,4 +34,4 @@ aiRouter.all('/:service', async (req, res) => {
     }
 });
 
-export default aiRouter;
+exports.aiRouter = aiRouter
