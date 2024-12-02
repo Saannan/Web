@@ -1,6 +1,6 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
-const { komiku, mcpedl, CarbonifyV1, CarbonifyV2, imagetohd, remini, recolor, dehaze, removeBg, Andro1, animeSrc, Cerpen, Apkpure, liteApks, eggySrc, eggyDetail, hoaxSrc, hoaxDetail } = require('./lib/scraper')
+const { komiku, mcpedl, CarbonifyV1, CarbonifyV2, imagetohd, remini, recolor, dehaze, removeBg, Andro1, animeSrc, Cerpen, Apkpure, liteApks } = require('./lib/scraper')
 
 class Ddownr {
 constructor(url) {
@@ -235,30 +235,7 @@ return res.status(200).json({
 status: true,
 data: response,
 });
-} else if (s === 'eggysrc') { // EGGYSRC
-const response = await eggySrc(`${encodeURIComponent(text)}`);
-return res.status(200).json({
-status: true,
-data: response,
-});
-} else if (s === 'eggydetail') { // EGGYDETAIL
-const response = await eggyDetail(`${encodeURIComponent(url)}`);
-return res.status(200).json({
-status: true,
-data: response,
-});
-} else if (s === 'hoaxsrc') { // HOAXSRC
-const response = await hoaxSrc(`${encodeURIComponent(text)}`);
-return res.status(200).json({
-status: true,
-data: response,
-});
-} else if (s === 'hoaxdetail') { // HOAXDETAIL
-const response = await hoaxDetail(`${encodeURIComponent(url)}`);
-return res.status(200).json({
-status: true,
-data: response,
-});
+}
 
 // MAKER MENU
 } else if (s === 'brat') { // BRAT
