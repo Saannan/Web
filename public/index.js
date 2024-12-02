@@ -12,15 +12,15 @@ const features = [
     method: "GET",
     description: "AI/openai",
     category: "AI",
-    endpoint: "../api",
+    endpoint: "/api/ai/openai",
     query: "text=Hai%20kamu"
   },
   {
     name: "Blackbox",
-    method: "POST",
+    method: "GET",
     description: "AI/blackbox",
     category: "AI",
-    endpoint: "../api",
+    endpoint: "/api/ai/blackbox",
     query: "text=Hai%20kamu"
   }
 ];
@@ -46,6 +46,9 @@ function redirectToEndpoint(endpoint, query, method) {
   } else if (method === "POST") {
     const data = Object.fromEntries(new URLSearchParams(query));
     axios.post(`${window.location.origin}${endpoint}`, data)
+      .then((response) => {
+        alert(response.data);
+      })
   }
 }
 
