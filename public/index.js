@@ -184,6 +184,38 @@ const features = [
     query: "s=liteapks&text=Stickman"
   },
   {
+    name: "Eggy Search",
+    method: "GET",
+    description: "Search/eggysrc",
+    category: "SEARCH",
+    endpoint: "../api",
+    query: "s=eggysrc&text=Horror"
+  },
+  {
+    name: "Eggy Detail",
+    method: "GET",
+    description: "Search/eggydetail",
+    category: "SEARCH",
+    endpoint: "../api",
+    query: "s=eggydetail&url=URL"
+  },
+  {
+    name: "Hoax Search",
+    method: "GET",
+    description: "Search/hoaxsrc",
+    category: "SEARCH",
+    endpoint: "../api",
+    query: "s=hoaxsrc&text=Politik"
+  },
+  {
+    name: "Hoax Detail",
+    method: "GET",
+    description: "Search/hoaxdetail",
+    category: "SEARCH",
+    endpoint: "../api",
+    query: "s=hoaxdetail&url=URL"
+  },
+  {
     name: "Brat Sticker",
     method: "GET",
     description: "Maker/brat",
