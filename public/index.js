@@ -12,7 +12,7 @@ const features = [
     method: "GET",
     description: "AI/openai",
     category: "AI",
-    endpoint: "/api/ai/openai",
+    endpoint: "../api",
     query: "text=Hai%20kamu"
   },
   {
@@ -20,7 +20,7 @@ const features = [
     method: "POST",
     description: "AI/blackbox",
     category: "AI",
-    endpoint: "/api/ai/blackbox",
+    endpoint: "../api",
     query: "text=Hai%20kamu"
   }
 ];
