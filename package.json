@@ -7,8 +7,8 @@
     "start": "node vercel.json"
   },
   "dependencies": {
+    "@vercel/node": "^3.2.27",
     "axios": "^1.7.8",
-    "body-parser": "^1.20.3",
     "cheerio": "^1.0.0",
     "form-data": "^4.0.1"
   }
