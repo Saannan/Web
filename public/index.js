@@ -336,6 +336,14 @@ const features = [
     query: "s=twitter&url=https://twitter.com/Eminem/status/943590594491772928"
   },
   {
+    name: "Terabox",
+    method: "GET",
+    description: "Downloader/terabox",
+    category: "DOWNLOADER",
+    endpoint: "../api",
+    query: "s=terabox&url=https://terabox.com/s/1A6XAXNBdHuLneJ51dNNy0g"
+  },
+  {
     name: "Xvideo-DL",
     method: "GET",
     description: "Downloader/xvideodl",
