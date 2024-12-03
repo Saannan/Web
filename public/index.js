@@ -1,5 +1,6 @@
+const axios = require('axios')
+
 document.addEventListener("DOMContentLoaded", () => {
-  const axios = require('axios')
   const endpoints = [
     {
       method: "GET",
