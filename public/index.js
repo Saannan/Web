@@ -304,6 +304,14 @@ const features = [
     query: "s=ytdl&url=https://youtube.com/shorts/kpsR7ogZZ5c?si=vlI0bE-11nyj3nI9"
   },
   {
+    name: "YouTubeV2",
+    method: "GET",
+    description: "Downloader/ytdlv2",
+    category: "DOWNLOADER",
+    endpoint: "../api",
+    query: "s=ytdlv2&url=https://youtube.com/shorts/kpsR7ogZZ5c?si=vlI0bE-11nyj3nI9"
+  },
+  {
     name: "Ytmp4",
     method: "GET",
     description: "Downloader/ytmp4",
