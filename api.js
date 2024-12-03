@@ -39,6 +39,15 @@ msg: "Error",
 err: e 
 }}}}
 
+async function Ytdl(Url, type = "mp4") {
+let { data: html } = await axios.post("https://ytdownloadid.herokuapp.com/download", {
+"choices-single-default": format == "mp4" ? "Mp4 / Video" : "Mp3 / Audio",
+"url": Url })
+let $ = cheerio.load(html)
+let url = ($("div.s003 > div.first-wrap > button").attr("onclick")).split(" = ")[1].replace(/[\"]/g, "")
+return url
+}
+
 async function handler(req, res) {
 const { s, text, text1, avatar, username, url } = req.query;
 
@@ -376,6 +385,12 @@ title: dlR.title,
 thumb: dlR.image,
 url: dlR.download,
 }});
+} else if (s === 'ytdlv2') { // YOUTUBEV2
+const data = await Ytdl(`${url}`);
+return res.status(200).json({
+status: true,
+data: data,
+});
 } else if (s === 'ytmp4') { // YTMP4
 const response = await axios.get(`https://api.siputzx.my.id/api/d/ytmp4?url=${url}`
 );
