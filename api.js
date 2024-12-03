@@ -235,7 +235,6 @@ return res.status(200).json({
 status: true,
 data: response,
 });
-}
 
 // MAKER MENU
 } else if (s === 'brat') { // BRAT
