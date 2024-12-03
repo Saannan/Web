@@ -386,7 +386,7 @@ thumb: dlR.image,
 url: dlR.download,
 }});
 } else if (s === 'ytdlv2') { // YOUTUBEV2
-const data = await Ytdl(`${url}`);
+const data = await Ytdl(`${url}`, 'mp4');
 return res.status(200).json({
 status: true,
 data: data,
