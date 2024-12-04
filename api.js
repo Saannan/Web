@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { komiku, mcpedl, CarbonifyV1, CarbonifyV2, imagetohd, remini, recolor, dehaze, removeBg, Andro1, animeSrc, Cerpen, Apkpure, liteApks, Ytdl, Ddownr, terabox } = require('./lib/scraper')
+const { komiku, mcpedl, CarbonifyV1, CarbonifyV2, imagetohd, remini, recolor, dehaze, removeBg, Andro1, animeSrc, Cerpen, Apkpure, liteApks, Ytdl, Ddownr, terabox, Playstore, antaraNews } = require('./lib/scraper')
 
 async function handler(req, res) {
 const { s, text, text1, avatar, username, url } = req.query;
@@ -193,6 +193,18 @@ data: response,
 });
 } else if (s === 'liteapks') { // LITEAPKS
 const response = await liteApks(`${encodeURIComponent(text)}`);
+return res.status(200).json({
+status: true,
+data: response,
+});
+} else if (s === 'playstore') { // PLAYSTORE
+const response = await Playstore(`${encodeURIComponent(text)}`);
+return res.status(200).json({
+status: true,
+data: response,
+});
+} else if (s === 'antaran') { // ANTARAN
+const response = await antaraNews(`${encodeURIComponent(text)}`);
 return res.status(200).json({
 status: true,
 data: response,
