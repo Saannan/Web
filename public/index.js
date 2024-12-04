@@ -184,6 +184,22 @@ const features = [
     query: "s=liteapks&text=Stickman"
   },
   {
+    name: "PlayStore",
+    method: "GET",
+    description: "Search/playstore",
+    category: "SEARCH",
+    endpoint: "../api",
+    query: "s=playstore&text=Stickman"
+  },
+  {
+    name: "Antara News",
+    method: "GET",
+    description: "Search/antaran",
+    category: "SEARCH",
+    endpoint: "../api",
+    query: "s=antaran&text=Narkoba"
+  },
+  {
     name: "Brat Sticker",
     method: "GET",
     description: "Maker/brat",
