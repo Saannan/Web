@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { komiku, mcpedl, CarbonifyV1, CarbonifyV2, imagetohd, remini, recolor, dehaze, removeBg, Andro1, animeSrc, Cerpen, Apkpure, liteApks, Ytdl, Ddownr, terabox, Playstore, antaraNews } = require('./lib/scraper')
+const { komiku, mcpedl, CarbonifyV1, CarbonifyV2, imagetohd, remini, recolor, dehaze, removeBg, Andro1, animeSrc, Cerpen, Apkpure, liteApks, Ytdl, Ddownr, terabox, Playstore, antaraNews, fbStalk } = require('./lib/scraper')
 
 async function handler(req, res) {
 const { s, text, text1, avatar, username, url } = req.query;
@@ -209,6 +209,19 @@ return res.status(200).json({
 status: true,
 data: response,
 });
+} else if (s === 'cerpen') { // CERPEN
+const cerpen = await Cerpen(`${encodeURIComponent(text)}`)
+return res.json({
+status: true,
+data: cerpen,
+});
+} else if (s === 'gimage') { // GIMAGE
+const response = await axios.get(
+`https://btch.us.kg/gimage?query=${encodeURIComponent(text)}`,
+{ responseType: 'arraybuffer' }
+);
+res.setHeader('Content-Type', 'image/png');
+res.send(response.data);
 
 // MAKER MENU
 } else if (s === 'brat') { // BRAT
@@ -726,6 +739,18 @@ return res.json({
 status: true,
 result: response.data.data,
 });
+} else if (s === 'stalk-yt') { // STALKYT
+const response = await axios.get(`https://btch.us.kg/download/youtubestalk?text=${text}`);
+return res.json({
+status: true,
+result: response.data.result,
+});
+} else if (s === 'stalk-fb') { // STALKFB
+const response = await fbStalk(text)
+return res.json({
+status: true,
+result: response,
+});
 
 // QUOTES MENU
 } else if (s === 'qsindiran') { // QSINDIRAN
@@ -755,104 +780,6 @@ const quotes = fakta[Math.floor(Math.random() * fakta.length)]
 return res.json({
 status: true,
 result: quotes,
-});
-
-// CERPEN MENU
-} else if (s === 'cerpen-anak') { // CERPEN-ANAK
-const cerpen = await Cerpen('anak')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-cinta') { // CERPEN-CINTA
-const cerpen = await Cerpen('cinta')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-galau') { // CERPEN-GALAU
-const cerpen = await Cerpen('galau')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-gokil') { // CERPEN-GOKIL
-const cerpen = await Cerpen('gokil')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-remaja') { // CERPEN-REMAJA
-const cerpen = await Cerpen('remaja')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-rindu') { // CERPEN-RINDU
-const cerpen = await Cerpen('rindu')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-sedih') { // CERPEN-SEDIH
-const cerpen = await Cerpen('sedih')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-sejarah') { // CERPEN-SEJARAH
-const cerpen = await Cerpen('sejarah')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-motivasi') { // CERPEN-MOTIVASI
-const cerpen = await Cerpen('motivasi')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-nasihat') { // CERPEN-NASIHAT
-const cerpen = await Cerpen('nasihat')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-budaya') { // CERPEN-BUDAYA
-const cerpen = await Cerpen('budaya')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-fantasi') { // CERPEN-FANTASI
-const cerpen = await Cerpen('fantasi')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-misteri') { // CERPEN-MISTERI
-const cerpen = await Cerpen('misteri')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-keluarga') { // CERPEN-KELUARGA
-const cerpen = await Cerpen('keluarga')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-kehidupan') { // CERPEN-KEHIDUPAN
-const cerpen = await Cerpen('kehidupan')
-return res.json({
-status: true,
-data: cerpen,
-});
-} else if (s === 'cerpen-sastra') { // CERPEN-SASTRA
-const cerpen = await Cerpen('sastra')
-return res.json({
-status: true,
-data: cerpen,
 });
 
 // NSFW AND SFW
