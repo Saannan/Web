@@ -200,6 +200,22 @@ const features = [
     query: "s=antaran&text=Narkoba"
   },
   {
+    name: "Cerpen Search",
+    method: "GET",
+    description: "Search/cerpen",
+    category: "SEARCH",
+    endpoint: "../api",
+    query: "s=cerpen&text=motivasi"
+  },
+  {
+    name: "Google Image",
+    method: "GET",
+    description: "Search/gimage",
+    category: "SEARCH",
+    endpoint: "../api",
+    query: "s=gimage&text=Kylian%20Mbappe"
+  },
+  {
     name: "Brat Sticker",
     method: "GET",
     description: "Maker/brat",
@@ -768,12 +784,12 @@ const features = [
     query: "s=stalk-yt&text=SanjayaAds"
   },
   {
-    name: "Stalk Facebook",
+    name: "Stalk Instagram",
     method: "GET",
-    description: "Stalk/stalk-fb",
+    description: "Stalk/stalk-ig",
     category: "STALK",
     endpoint: "../api",
-    query: "s=stalk-fb&text=zuck"
+    query: "s=stalk-ig&text=Cristiano"
   },
   {
     name: "Quotes Sindiran",
