@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { komiku, mcpedl, CarbonifyV1, CarbonifyV2, imagetohd, remini, recolor, dehaze, removeBg, Andro1, animeSrc, Cerpen, Apkpure, liteApks, Ytdl, Ddownr, terabox, Playstore, antaraNews, fbStalk } = require('./lib/scraper')
+const { komiku, mcpedl, CarbonifyV1, CarbonifyV2, imagetohd, remini, recolor, dehaze, removeBg, Andro1, animeSrc, Cerpen, Apkpure, liteApks, Ytdl, Ddownr, terabox, Playstore, antaraNews } = require('./lib/scraper')
 
 async function handler(req, res) {
 const { s, text, text1, avatar, username, url } = req.query;
@@ -745,11 +745,11 @@ return res.json({
 status: true,
 result: response.data.result,
 });
-} else if (s === 'stalk-fb') { // STALKFB
-const response = await fbStalk(text)
+} else if (s === 'stalk-ig') { // STALKIG
+const response = await axios.get(`https://btch.us.kg/download/igstalk?username=${text}`)
 return res.json({
 status: true,
-result: response,
+result: response.data.result,
 });
 
 // QUOTES MENU
