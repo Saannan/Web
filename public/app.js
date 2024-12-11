@@ -2,7 +2,7 @@ const features = [
   {
     name: "Vioo-AI",
     method: "GET",
-    description: "AI/v-ai",
+    description: "AI/vai",
     category: "AI",
     endpoint: "/api/ai/vai",
     query: "q=Hello",
@@ -13,7 +13,7 @@ const features = [
     description: "Downloader/aio",
     category: "Downloader",
     endpoint: "/api/dl/aio",
-    query: "url=URL",
+    query: "url=https://youtube.com/watch?v=qgeYlLMtTO0",
   },
 ]
 
