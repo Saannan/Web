@@ -63,6 +63,8 @@ app.get('/api/dl/aio', async (req, res) => {
   const { url } = req.query;
   if (!url) {
     return res.status(400).json({ status: false, message: 'URL is required!' });
+  } else if (url === 'list') {
+    return res.status(400).json({ status: false, message: 'Visit: https://retatube.com' });
   }
 
   try {
