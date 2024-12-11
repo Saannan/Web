@@ -3,13 +3,12 @@ const cheerio = require('cheerio');
 const express = require('express');
 const app = express();
 
-const hdown = {
+const dwrun = {
     dl: async (link) => {
         try {
-            const { data: api } = await axios.get('https://hddownloaders.com');
+            const { data: api } = await axios.get('https://downloader.run');
             const token = cheerio.load(api)('#token').val();
-            console.log(token)
-            const { data } = await axios.post('https://hddownloaders.com/wp-json/aio-dl/video-data/', new URLSearchParams({ url: link, token }), {
+            const { data } = await axios.post('https://downloader.run/wp-json/aio-dl/video-data/', new URLSearchParams({ url: link, token }), {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'User-Agent': 'Postify/1.0.0'
@@ -31,7 +30,7 @@ app.get('/api/dl/aio', async (req, res) => {
   }
 
   try {
-    const results = await hdown.dl(url);
+    const results = await dwrun.dl(url);
     res.json({ status: true, creator: 'Sanjaya', results });
   } catch (error) {
     console.error(error);
