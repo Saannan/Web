@@ -1,7 +1,5 @@
 const axios = require('axios');
 const express = require('express');
-
-// Membuat instance Express
 const app = express();
 
 app.get('/api/ai/vai', async (req, res) => {
@@ -18,7 +16,7 @@ app.get('/api/ai/vai', async (req, res) => {
       return res.json({
         status: true,
         creator: 'Sanjaya',
-        result: response.data.choices[0].message.content,
+        result: response.data.data.choices[0].message.content,
       });
     } else {
       return res.status(500).json({ status: false, message: 'No valid response from AI' });
