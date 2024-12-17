@@ -3,29 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WCanvas API</title>
+  <title>W-Canvas API</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-    body { background-color: #f4f4f9; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
-    form { display: flex; flex-direction: column; gap: 15px; width: 300px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-    input, select, button { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
-    button { background-color: #007bff; color: white; cursor: pointer; transition: background 0.3s; }
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f4f4f4; }
+    h1, p { margin-bottom: 10px; text-align: center; }
+    form { display: flex; flex-direction: column; gap: 15px; width: 300px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+    input, button { padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+    button { background-color: #007bff; color: white; cursor: pointer; }
     button:hover { background-color: #0056b3; }
-    img { margin-top: 20px; max-width: 90%; border: 1px solid #ddd; border-radius: 8px; }
+    img { margin-top: 20px; max-width: 90%; border-radius: 8px; border: 1px solid #ddd; }
   </style>
 </head>
 <body>
-  <h1>WCanvas API</h1>
+  <h1>W-Canvas API</h1>
+  <p>Masukkan nama dan teks untuk melihat hasilnya!</p>
+
   <form id="form">
-    <input type="text" id="name" placeholder="Masukkan nama Anda" required>
-    <input type="text" id="text" placeholder="Masukkan teks" required>
-    <select id="mode">
-      <option value="nuliskanan">Nuliskanan</option>
-      <option value="nuliskiri">Nuliskiri</option>
+    <input type="text" id="name" placeholder="Nama" required>
+    <input type="text" id="text" placeholder="Teks" required>
+    <select id="align">
+      <option value="nuliskanan">Nulis Kanan</option>
+      <option value="nuliskiri">Nulis Kiri</option>
     </select>
     <button type="submit">Generate Gambar</button>
   </form>
-  <img id="resultImage" src="" alt="Hasil Gambar Akan Muncul di Sini" hidden>
+
+  <img id="resultImage" src="" alt="result" hidden>
 
   <script>
     const form = document.getElementById('form');
@@ -33,13 +37,19 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const name = document.getElementById('name').value;
       const text = document.getElementById('text').value;
-      const mode = document.getElementById('mode').value;
+      const align = document.getElementById('align').value;
 
-      const apiUrl = `/${mode}?name=${encodeURIComponent(name)}&text=${encodeURIComponent(text)}`;
-      resultImage.src = apiUrl;
-      resultImage.hidden = false;
+      const url = `/${align}?name=${encodeURIComponent(name)}&text=${encodeURIComponent(text)}`;
+
+      try {
+        resultImage.src = url;
+        resultImage.hidden = false;
+      } catch (err) {
+        alert('Gagal memuat gambar!');
+      }
     });
   </script>
 </body>
