@@ -4,24 +4,33 @@ const path = require('path');
 
 const app = express();
 const PORT = 3000;
-app.use(express.json());
 
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Fungsi menggambar teks pada template
 async function drawTextOnTemplate(templatePath, name, text, align) {
   const image = await loadImage(templatePath);
   const canvas = createCanvas(image.width, image.height);
   const ctx = canvas.getContext('2d');
+
   ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
   ctx.font = '20px Arial';
   ctx.fillStyle = 'black';
   ctx.textAlign = align;
+
   const nameX = align === 'right' ? 600 : 100;
   ctx.fillText(name, nameX, 50);
+
   const startX = align === 'right' ? 650 : 120;
   const startY = 150;
   const lineHeight = 35;
+
   const words = text.split(' ');
   let line = '';
   let y = startY;
+
   words.forEach((word) => {
     const testLine = line + word + ' ';
     const testWidth = ctx.measureText(testLine).width;
@@ -33,10 +42,13 @@ async function drawTextOnTemplate(templatePath, name, text, align) {
       line = testLine;
     }
   });
+
   ctx.fillText(line, startX, y);
+
   return canvas.toBuffer('image/png');
 }
 
+// Endpoint nuliskanan
 app.get('/nuliskanan', async (req, res) => {
   const { name, text } = req.query;
   if (!name || !text) {
@@ -54,7 +66,8 @@ app.get('/nuliskanan', async (req, res) => {
   }
 });
 
-app.get('/api/nuliskiri', async (req, res) => {
+// Endpoint nuliskiri
+app.get('/nuliskiri', async (req, res) => {
   const { name, text } = req.query;
   if (!name || !text) {
     return res.status(400).json({ message: 'Parameter "name" dan "text" harus disertakan!' });
