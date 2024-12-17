@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/**/*.js",
+      "src": "connect.js",
       "use": "@vercel/node"
     },
     {
@@ -12,12 +12,12 @@
   ],
   "routes": [
     {
-      "src": "/api/ai/vai",
-      "dest": "/api/vai.js"
+      "src": "/nuliskanan",
+      "dest": "/connect.js"
     },
     {
-      "src": "/api/dl/aio",
-      "dest": "/api/aio.js"
+      "src": "/nuliskiri",
+      "dest": "/connect.js"
     },
     {
       "src": "/(.*)",

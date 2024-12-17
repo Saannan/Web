@@ -4,11 +4,8 @@ const path = require('path');
 
 const app = express();
 const PORT = 3000;
-
-app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Fungsi menggambar teks pada template
 async function drawTextOnTemplate(templatePath, name, text, align) {
   const image = await loadImage(templatePath);
   const canvas = createCanvas(image.width, image.height);
@@ -48,7 +45,6 @@ async function drawTextOnTemplate(templatePath, name, text, align) {
   return canvas.toBuffer('image/png');
 }
 
-// Endpoint nuliskanan
 app.get('/nuliskanan', async (req, res) => {
   const { name, text } = req.query;
   if (!name || !text) {
@@ -66,7 +62,6 @@ app.get('/nuliskanan', async (req, res) => {
   }
 });
 
-// Endpoint nuliskiri
 app.get('/nuliskiri', async (req, res) => {
   const { name, text } = req.query;
   if (!name || !text) {
