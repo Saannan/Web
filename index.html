@@ -36,12 +36,14 @@
     const categories = [
       {
         name: "AI",
+        key: "ai",
         apis: [
           { title: "openai", service: "openai" },
         ],
       },
       {
         name: "Search",
+        key: "src",
         apis: [
           { title: "google", service: "google" },
         ],
@@ -116,7 +118,7 @@
             "font-medium"
           );
           tryButton.innerText = "Try";
-          tryButton.href = `https://api-vioo.my.id/api/${api.service}`;
+          tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}`;
           tryButton.target = "_blank";
 
           // Append Sections to Card
