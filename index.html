@@ -5,59 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>V-APIs</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --yellow: #fbbf24; /* Kuning sedikit terang */
-      --blue-gray-dark: #1e293b; /* Abu kebiruan gelap */
+      --yellow-light: #fbbf24; /* Kuning terang */
+      --white: #ffffff; /* Putih */
     }
-    .bg-yellow { background-color: var(--yellow); }
-    .text-blue-gray-dark { color: var(--blue-gray-dark); }
+    .bg-yellow-light { background-color: var(--yellow-light); }
+    .text-yellow-light { color: var(--yellow-light); }
   </style>
 </head>
-<body class="bg-blue-gray-dark text-white min-h-screen flex flex-col">
+<body class="bg-white text-gray-800 min-h-screen flex flex-col">
 
   <!-- Header -->
-  <header class="p-6 bg-yellow text-blue-gray-dark text-center">
-    <h1 class="text-4xl font-extrabold">V-APIs</h1>
-    <p class="text-lg font-medium">Explore and Test APIs with Ease</p>
+  <header class="p-6 bg-yellow-light text-center shadow-md">
+    <h1 class="text-3xl font-bold text-white">V-APIs</h1>
+    <p class="text-sm text-white font-light mt-2">Fast, Easy, and Scalable APIs</p>
   </header>
 
   <!-- Main Content -->
-  <main class="flex-1 p-6" id="api-container"></main>
+  <main class="flex-1 p-6">
+    <div id="api-container" class="space-y-6"></div>
+  </main>
 
   <!-- Footer -->
-  <footer class="p-4 bg-yellow text-center text-blue-gray-dark flex justify-center items-center space-x-6">
-    <a href="https://wa.me/your-number" class="hover:text-black transition">
-      <i class="fab fa-whatsapp fa-2x"></i>
-    </a>
-    <a href="https://youtube.com/your-channel" class="hover:text-black transition">
-      <i class="fab fa-youtube fa-2x"></i>
-    </a>
+  <footer class="p-4 bg-yellow-light text-center text-white">
+    <p>© 2024 V-APIs - All Rights Reserved</p>
   </footer>
 
   <script>
     const categories = [
       {
-        name: "AI Services",
+        name: "AI",
         apis: [
-          {
-            title: "ChatGPT-4 API",
-            description: "Send a message and get AI responses.",
-            service: "gpt4o",
-            params: { message: "Hello AI" },
-          },
+          { title: "openai", service: "openai" },
         ],
       },
       {
-        name: "Utility APIs",
+        name: "Search",
         apis: [
-          {
-            title: "IP Lookup API",
-            description: "Get information about an IP address.",
-            service: "iplookup",
-            params: { ip: "8.8.8.8" },
-          },
+          { title: "google", service: "google" },
         ],
       },
     ];
@@ -67,68 +53,79 @@
       container.innerHTML = "";
 
       categories.forEach((category) => {
-        const section = document.createElement("section");
-        section.classList.add("mb-10");
+        const section = document.createElement("div");
 
-        const title = document.createElement("h2");
-        title.classList.add(
-          "text-2xl", 
-          "font-semibold", 
-          "mb-4", 
-          "bg-yellow", 
-          "text-blue-gray-dark", 
-          "p-3", 
-          "rounded"
+        // Category Title
+        const categoryTitle = document.createElement("div");
+        categoryTitle.classList.add(
+          "text-lg",
+          "font-semibold",
+          "bg-yellow-light",
+          "text-white",
+          "p-2",
+          "rounded-md"
         );
-        title.innerText = category.name;
-        section.appendChild(title);
+        categoryTitle.innerText = `${category.name}`;
+        section.appendChild(categoryTitle);
 
+        // API List
         category.apis.forEach((api) => {
           const card = document.createElement("div");
           card.classList.add(
-            "flex", 
-            "items-center", 
-            "justify-between", 
-            "p-4", 
-            "bg-gray-800", 
-            "rounded-lg", 
-            "shadow-lg", 
-            "mb-4"
+            "flex",
+            "items-center",
+            "justify-between",
+            "p-3",
+            "border-b",
+            "border-gray-300"
           );
 
-          const info = document.createElement("div");
-          const title = document.createElement("h3");
-          title.classList.add("text-lg", "font-medium");
-          title.innerText = api.title;
+          // Left Section (GET Text + API Title)
+          const leftSection = document.createElement("div");
+          leftSection.classList.add("flex", "items-center", "space-x-3");
 
-          const desc = document.createElement("p");
-          desc.classList.add("text-sm", "text-gray-400");
-          desc.innerText = api.description;
-
-          info.appendChild(title);
-          info.appendChild(desc);
-
-          const button = document.createElement("a");
-          button.classList.add(
-            "px-6", 
-            "py-2", 
-            "bg-yellow", 
-            "text-blue-gray-dark", 
-            "rounded", 
-            "hover:bg-yellow-500", 
-            "hover:text-black", 
-            "font-bold", 
-            "transition"
+          const getBadge = document.createElement("span");
+          getBadge.classList.add(
+            "bg-yellow-light",
+            "text-white",
+            "px-2",
+            "py-1",
+            "rounded",
+            "text-sm",
+            "font-bold"
           );
-          button.innerText = "GET";
-          button.href = `/api/${api.service}?${new URLSearchParams(api.params).toString()}`;
-          button.target = "_blank";
+          getBadge.innerText = "GET";
 
-          card.appendChild(info);
-          card.appendChild(button);
+          const apiTitle = document.createElement("span");
+          apiTitle.classList.add("text-gray-700", "font-medium");
+          apiTitle.innerText = api.title;
+
+          leftSection.appendChild(getBadge);
+          leftSection.appendChild(apiTitle);
+
+          // Right Section (Try Button)
+          const tryButton = document.createElement("a");
+          tryButton.classList.add(
+            "px-4",
+            "py-2",
+            "bg-yellow-light",
+            "text-white",
+            "rounded",
+            "hover:bg-yellow-500",
+            "transition",
+            "font-medium"
+          );
+          tryButton.innerText = "Try";
+          tryButton.href = `https://api-vioo.my.id/api/${api.service}`;
+          tryButton.target = "_blank";
+
+          // Append Sections to Card
+          card.appendChild(leftSection);
+          card.appendChild(tryButton);
           section.appendChild(card);
         });
 
+        // Append Section to Container
         container.appendChild(section);
       });
     }
