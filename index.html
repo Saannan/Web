@@ -12,8 +12,20 @@
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
-    .menu-hidden { display: none; }
-    .menu-visible { display: block; }
+    .menu-hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .menu-visible {
+      transform: translateY(0);
+      opacity: 1;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .menu-container {
+      border: 2px solid var(--yellow-light);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
   </style>
 </head>
 <body class="bg-white text-gray-800 min-h-screen flex flex-col relative">
@@ -25,8 +37,9 @@
       </svg>
     </button>
   </header>
-  <div id="menu" class="menu-hidden absolute top-0 left-0 w-full bg-white z-20 shadow-lg">
+  <div id="menu" class="menu-hidden absolute top-0 left-0 w-full bg-white z-20 shadow-lg menu-container">
     <div class="p-6">
+      <h2 class="text-xl font-bold text-gray-800 border-b-2 border-gray-300 pb-2 mb-4">V-APIs</h2>
       <ul class="text-center space-y-4">
         <li>
           <button onclick="navigateTo('Docs')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light">Docs</button>
@@ -50,19 +63,17 @@
     const menu = document.getElementById("menu");
     const menuButton = document.getElementById("menu-button");
     menuButton.addEventListener("click", (e) => {
-      e.stopPropagation();
+      e.stopPropagation(); // Prevent unintended closing
       const isHidden = menu.classList.contains("menu-hidden");
       menu.classList.toggle("menu-hidden", !isHidden);
       menu.classList.toggle("menu-visible", isHidden);
     });
-
     window.addEventListener("click", (e) => {
       if (!menu.contains(e.target) && !menuButton.contains(e.target)) {
         menu.classList.add("menu-hidden");
         menu.classList.remove("menu-visible");
       }
     });
-
     function navigateTo(page) {
       const pages = {
         "Docs": "/docs",
@@ -75,7 +86,6 @@
         console.error("Invalid page:", page);
       }
     }
-
     const categories = [
       {
         name: "AI",
