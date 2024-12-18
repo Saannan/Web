@@ -5,19 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>V-APIs</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
       --yellow-light: #fbbf24;
       --gray-light: #f3f4f6;
+      --dark-body: #1e293b;
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
+    .dark-mode { background-color: var(--dark-body); color: #cbd5e1; }
   </style>
 </head>
-<body class="bg-white text-gray-800 min-h-screen flex flex-col">
-  <header class="p-6 bg-yellow-light text-center shadow-lg">
+<body class="bg-white text-gray-800 min-h-screen flex flex-col" id="body">
+  <header class="p-6 bg-yellow-light text-center shadow-lg relative">
     <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
     <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
+    <button id="theme-toggle" class="absolute top-4 right-4 text-white bg-transparent border-none text-2xl">
+      <i id="theme-icon" class="fa-solid fa-sun"></i>
+    </button>
   </header>
   <main class="flex-1 p-6 bg-gray-50">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
@@ -48,6 +54,7 @@
         ],
       },
     ];
+
     function renderCards() {
       const container = document.getElementById("api-container");
       container.innerHTML = "";
@@ -137,6 +144,20 @@
         container.appendChild(section);
       });
     }
+
+    const themeToggle = document.getElementById("theme-toggle");
+    const body = document.getElementById("body");
+    const themeIcon = document.getElementById("theme-icon");
+
+    themeToggle.addEventListener("click", () => {
+      body.classList.toggle("dark-mode");
+      if (body.classList.contains("dark-mode")) {
+        themeIcon.classList.replace("fa-sun", "fa-moon");
+      } else {
+        themeIcon.classList.replace("fa-moon", "fa-sun");
+      }
+    });
+
     renderCards();
   </script>
 </body>
