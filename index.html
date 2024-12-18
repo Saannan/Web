@@ -12,6 +12,15 @@
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
+    .menu-slide-down {
+      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    .menu-active {
+      transform: translateY(0);
+      opacity: 1;
+    }
   </style>
 </head>
 <body class="bg-white text-gray-800 min-h-screen flex flex-col">
@@ -27,7 +36,7 @@
         </svg>
       </button>
     </div>
-    <nav id="menu" class="hidden absolute top-16 right-6 bg-white border border-gray-300 shadow-lg rounded-md w-40 text-gray-800 z-50">
+    <nav id="menu" class="hidden absolute top-20 right-6 bg-white border border-gray-300 shadow-lg rounded-lg w-40 text-gray-800 z-50 menu-slide-down">
       <ul class="flex flex-col space-y-2 p-4">
         <li><a href="#" class="block text-sm font-medium hover:text-yellow-light">Docs</a></li>
         <li><a href="https://wa.me/" class="block text-sm font-medium hover:text-yellow-light">Contact</a></li>
@@ -43,10 +52,18 @@
     <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
   </footer>
   <script>
-    // Hamburger menu toggle
-    document.getElementById('menu-button').addEventListener('click', () => {
-      const menu = document.getElementById('menu');
-      menu.classList.toggle('hidden');
+    // Hamburger menu toggle with animation
+    const menuButton = document.getElementById('menu-button');
+    const menu = document.getElementById('menu');
+
+    menuButton.addEventListener('click', () => {
+      if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+        setTimeout(() => menu.classList.add('menu-active'), 0);
+      } else {
+        menu.classList.remove('menu-active');
+        setTimeout(() => menu.classList.add('hidden'), 300); // Delay for animation
+      }
     });
 
     const categories = [
