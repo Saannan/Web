@@ -12,12 +12,12 @@
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
-    .menu-hidden { transform: translateX(100%); }
-    .menu-visible { transform: translateX(0); }
+    .menu-hidden { max-height: 0; opacity: 0; overflow: hidden; }
+    .menu-visible { max-height: 300px; opacity: 1; }
+    .menu-transition { transition: all 0.3s ease-in-out; }
   </style>
 </head>
 <body class="bg-white text-gray-800 min-h-screen flex flex-col">
-  <!-- Header -->
   <header class="p-6 bg-yellow-light shadow-lg flex justify-between items-center">
     <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
     <button id="menu-button" class="text-white focus:outline-none">
@@ -26,36 +26,27 @@
       </svg>
     </button>
   </header>
-
-  <!-- Hamburger Menu -->
-  <div id="menu" class="fixed top-0 right-0 h-full w-64 bg-gray-800 text-white menu-hidden transition-transform duration-300 z-50 shadow-lg">
-    <div class="p-6">
-      <h2 class="text-2xl font-bold mb-4">Menu</h2>
+  <div id="menu" class="bg-gray-light menu-hidden menu-transition shadow-md w-full absolute top-16 left-0">
+    <div class="p-4">
       <ul class="space-y-4">
         <li>
-          <button onclick="navigateTo('Docs')" class="block w-full text-left font-semibold hover:underline">Docs</button>
+          <button onclick="navigateTo('Docs')" class="block w-full text-left font-semibold text-gray-800 hover:text-yellow-light">Docs</button>
         </li>
         <li>
-          <button onclick="navigateTo('Contact')" class="block w-full text-left font-semibold hover:underline">Contact</button>
+          <button onclick="navigateTo('Contact')" class="block w-full text-left font-semibold text-gray-800 hover:text-yellow-light">Contact</button>
         </li>
         <li>
-          <button onclick="navigateTo('ChatAI')" class="block w-full text-left font-semibold hover:underline">ChatAI</button>
+          <button onclick="navigateTo('ChatAI')" class="block w-full text-left font-semibold text-gray-800 hover:text-yellow-light">ChatAI</button>
         </li>
       </ul>
     </div>
   </div>
-
-  <!-- Main Content -->
   <main class="flex-1 p-6 bg-gray-50">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
-
-  <!-- Footer -->
   <footer class="p-4 bg-yellow-light text-center text-white">
     <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
   </footer>
-
-  <!-- JavaScript -->
   <script>
     const menu = document.getElementById("menu");
     const menuButton = document.getElementById("menu-button");
