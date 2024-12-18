@@ -7,7 +7,7 @@
     "start": "node vercel.json"
   },
   "dependencies": {
-    "canvas": "^2.6.0",
+    "canvas": "^2.11.2",
     "cors": "^2.8.5",
     "express": "^4.19.1"
   }
