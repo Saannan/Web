@@ -12,11 +12,11 @@
   ],
   "routes": [
     {
-      "src": "/nuliskanan",
+      "src": "/left",
       "dest": "/connect.js"
     },
     {
-      "src": "/nuliskiri",
+      "src": "/right",
       "dest": "/connect.js"
     },
     {
