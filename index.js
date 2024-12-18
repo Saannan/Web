@@ -73,6 +73,32 @@ app.get("/api/ai/llama", async (req, res) => {
   }
 })
 
+app.get("/api/ai/blackbox", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    async function vAI(content) {
+      try {
+         const response = await axios.post('https://luminai.my.id/', { content, cName: "Vioo", cID: "Vioo0Uf9A72" });
+
+         return response.data
+      } catch (error) {
+         console.error(error)
+         throw error
+      }
+    }
+    const response = await vAI(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    result: response.result
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
 app.get("/api/src/google", async (req, res) => {
   const { q } = req.query;
   if (!q) {

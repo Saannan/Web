@@ -34,6 +34,7 @@
           { title: "openai", service: "openai", q: "q=hai" },
           { title: "luminai", service: "luminai", q: "q=hai" },
           { title: "llama", service: "llama", q: "q=hai" },
+          { title: "blackbox", service: "blackbox", q: "q=hai" },
         ],
       },
       {
@@ -81,7 +82,7 @@
         categoryName.innerText = category.name;
         const totalEndpoints = document.createElement("span");
         totalEndpoints.classList.add("text-sm", "font-medium");
-        totalEndpoints.innerText = `Total endpoint: ${category.apis.length}`;
+        totalEndpoints.innerText = `Total: ${category.apis.length}`;
         categoryTitle.appendChild(categoryName);
         categoryTitle.appendChild(totalEndpoints);
         section.appendChild(categoryTitle);
