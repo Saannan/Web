@@ -1,56 +1,24 @@
 const express = require('express');
-const { createCanvas } = require('canvas');
+const nodeHtmlToImage = require('node-html-to-image');
 
 const app = express();
 const PORT = 3000;
 
-// Fungsi untuk menggambar teks mirip buku
-async function drawTextOnCanvas(text, align) {
-  const width = 800; // Lebar canvas
-  const height = 600; // Tinggi canvas
-  const canvas = createCanvas(width, height);
-  const ctx = canvas.getContext('2d');
+async function generateTextImage(text, align) {
+  const htmlTemplate = `
+    <div style="width: 800px; height: 600px; background: #fdf5e6; display: flex; align-items: center; justify-content: center; font-family: 'Times New Roman', serif;">
+      <div style="width: 500px; text-align: ${align}; font-size: 20px; color: black; line-height: 1.8;">
+        ${text.replace(/\n/g, '<br>')}
+      </div>
+    </div>
+  `;
 
-  // Background mirip halaman buku
-  ctx.fillStyle = '#fdf5e6'; // Warna kertas
-  ctx.fillRect(0, 0, width, height);
-
-  // Properti teks
-  ctx.font = '20px "Times New Roman"';
-  ctx.fillStyle = 'black';
-  ctx.textAlign = align;
-
-  // Area teks
-  const startX = align === 'right' ? 600 : 50; // Margin kanan/kiri
-  const startY = 100; // Posisi awal teks
-  const maxWidth = 500; // Lebar area teks
-  const lineHeight = 30; // Jarak antar baris
-
-  // Membagi teks menjadi baris-baris
-  const words = text.split(' ');
-  let line = '';
-  let y = startY;
-
-  words.forEach((word) => {
-    const testLine = line + word + ' ';
-    const testWidth = ctx.measureText(testLine).width;
-    if (testWidth > maxWidth) {
-      ctx.fillText(line, startX, y);
-      line = word + ' ';
-      y += lineHeight;
-    } else {
-      line = testLine;
-    }
+  return await nodeHtmlToImage({
+    html: htmlTemplate,
+    type: 'png',
   });
-
-  // Gambar baris terakhir
-  ctx.fillText(line, startX, y);
-
-  // Kembalikan buffer gambar
-  return canvas.toBuffer('image/png');
 }
 
-// Endpoint untuk menulis teks dengan rata kanan
 app.get('/nuliskanan', async (req, res) => {
   const { text } = req.query;
   if (!text) {
@@ -58,7 +26,7 @@ app.get('/nuliskanan', async (req, res) => {
   }
 
   try {
-    const buffer = await drawTextOnCanvas(text, 'right');
+    const buffer = await generateTextImage(text, 'right');
     res.set('Content-Type', 'image/png');
     res.send(buffer);
   } catch (err) {
@@ -67,7 +35,6 @@ app.get('/nuliskanan', async (req, res) => {
   }
 });
 
-// Endpoint untuk menulis teks dengan rata kiri
 app.get('/nuliskiri', async (req, res) => {
   const { text } = req.query;
   if (!text) {
@@ -75,7 +42,7 @@ app.get('/nuliskiri', async (req, res) => {
   }
 
   try {
-    const buffer = await drawTextOnCanvas(text, 'left');
+    const buffer = await generateTextImage(text, 'left');
     res.set('Content-Type', 'image/png');
     res.send(buffer);
   } catch (err) {
@@ -84,7 +51,6 @@ app.get('/nuliskiri', async (req, res) => {
   }
 });
 
-// Jalankan server
 app.listen(PORT, () => {
   console.log(`Server berjalan di http://localhost:${PORT}`);
 });

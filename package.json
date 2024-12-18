@@ -7,7 +7,8 @@
     "start": "node vercel.json"
   },
   "dependencies": {
-    "canvas": "^2.8.0",
-    "express": "^4.19.1"
+    "express": "^4.19.1",
+    "fs": "0.0.1-security",
+    "node-html-to-image": "^5.0.0"
   }
 }
