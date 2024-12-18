@@ -41,6 +41,9 @@
         key: "src",
         apis: [
           { title: "google", service: "google", q: "q=ronaldo" },
+          { title: "gimage", service: "gimage", q: "q=ronaldo" },
+          { title: "playstore", service: "playstore", q: "q=minecraft" },
+          { title: "appstore", service: "appstore", q: "q=minecraft" },
         ],
       },
     ];
@@ -50,8 +53,8 @@
       categories.forEach((category) => {
         const section = document.createElement("div");
         section.classList.add(
-          "divide-y", // Menambahkan garis antar card
-          "divide-gray-300", // Warna garis pembatas
+          "divide-y",
+          "divide-gray-300",
           "p-4",
           "bg-white",
           "rounded-lg",
@@ -69,7 +72,7 @@
           "rounded-lg",
           "shadow-md",
           "tracking-wider",
-          "mb-4" // Jarak antara judul kategori dan card
+          "mb-4"
         );
         categoryTitle.innerText = `${category.name}`;
         section.appendChild(categoryTitle);
@@ -79,9 +82,9 @@
             "flex",
             "items-center",
             "justify-between",
-            "p-4", // Memberikan padding dalam card
+            "p-4",
             "bg-white"
-          ); // Hilangkan hover dan shadow tambahan
+          );
           const leftSection = document.createElement("div");
           leftSection.classList.add("flex", "items-center", "space-x-3");
           const getBadge = document.createElement("span");
@@ -103,12 +106,14 @@
           leftSection.appendChild(apiTitle);
           const tryButton = document.createElement("a");
           tryButton.classList.add(
-            "px-5",
-            "py-2",
             "bg-yellow-light",
             "text-white",
-            "rounded-lg",
-            "font-semibold",
+            "px-3",
+            "py-1",
+            "rounded-full",
+            "text-xs",
+            "font-bold",
+            "shadow",
             "tracking-wide",
             "text-sm"
           );
