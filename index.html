@@ -5,47 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>V-APIs</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" defer></script>
   <style>
     :root {
       --yellow-light: #fbbf24;
       --gray-light: #f3f4f6;
+      --dark-bg: #1f2937;
+      --dark-text: #f9fafb;
+      --dark-card: #374151;
+      --dark-border: #4b5563;
     }
 
-    .bg-yellow-light { background-color: var(--yellow-light); }
-    .text-yellow-light { color: var(--yellow-light); }
+    [data-theme="dark"] {
+      --bg-color: var(--dark-bg);
+      --text-color: var(--dark-text);
+      --card-bg: var(--dark-card);
+      --border-color: var(--dark-border);
+    }
+
+    [data-theme="light"] {
+      --bg-color: #ffffff;
+      --text-color: #1f2937;
+      --card-bg: var(--gray-light);
+      --border-color: #d1d5db;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+      transition: background-color 0.3s, border-color 0.3s;
+    }
   </style>
 </head>
-<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex flex-col">
-  <!-- Header -->
-  <header class="p-6 bg-yellow-light dark:bg-gray-800 text-center shadow-lg flex justify-between items-center">
-    <div>
-      <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
-      <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
-    </div>
-    <!-- Toggle Mode Button -->
-    <button
-      class="text-white dark:text-gray-200 rounded-lg transition hover:scale-105 flex items-center justify-center w-10 h-10 bg-white dark:bg-gray-700 shadow-md"
-      onclick="toggleDarkMode()"
-      aria-label="Toggle Dark Mode"
-    >
-      <i id="mode-icon" class="fas fa-sun"></i>
+<body data-theme="light" class="min-h-screen flex flex-col">
+  <header class="p-6 bg-yellow-light text-center shadow-lg relative">
+    <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
+    <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
+    <!-- Dark Mode Toggle Button -->
+    <button id="theme-toggle" class="absolute top-4 right-6 bg-gray-800 text-white rounded-full p-3 shadow-md focus:outline-none transition">
+      <i id="theme-icon" class="fas fa-moon"></i>
     </button>
   </header>
-
-  <!-- Main Content -->
-  <main class="flex-1 p-6 bg-gray-50 dark:bg-gray-900">
+  <main class="flex-1 p-6">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
-
-  <!-- Footer -->
-  <footer class="p-4 bg-yellow-light dark:bg-gray-800 text-center text-white">
-    <p class="text-sm font-medium tracking-wide">
-      <i class="fas fa-code"></i> © 2024 V-APIs - All Rights Reserved
-    </p>
+  <footer class="p-4 bg-yellow-light text-center text-white">
+    <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
   </footer>
-
-  <!-- JavaScript -->
   <script>
     const categories = [
       {
@@ -75,133 +87,53 @@
       container.innerHTML = "";
       categories.forEach((category) => {
         const section = document.createElement("div");
-        section.classList.add(
-          "divide-y",
-          "divide-gray-300",
-          "dark:divide-gray-700",
-          "p-4",
-          "bg-white",
-          "dark:bg-gray-800",
-          "rounded-lg",
-          "border",
-          "border-gray-300",
-          "dark:border-gray-700",
-          "shadow-lg",
-          "transition"
-        );
-
+        section.classList.add("card", "p-4", "rounded-lg", "border", "shadow-sm", "divide-y", "divide-gray-300");
         const categoryTitle = document.createElement("div");
-        categoryTitle.classList.add(
-          "flex",
-          "justify-between",
-          "items-center",
-          "text-xl",
-          "font-bold",
-          "bg-yellow-light",
-          "dark:bg-gray-700",
-          "text-white",
-          "p-3",
-          "rounded-lg",
-          "shadow-md",
-          "tracking-wider",
-          "mb-4"
-        );
-
+        categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "p-3", "rounded-lg", "mb-4");
         const categoryName = document.createElement("span");
         categoryName.innerText = category.name;
-
         const totalEndpoints = document.createElement("span");
         totalEndpoints.classList.add("text-sm", "font-medium");
         totalEndpoints.innerText = `Total: ${category.apis.length}`;
-
         categoryTitle.appendChild(categoryName);
         categoryTitle.appendChild(totalEndpoints);
         section.appendChild(categoryTitle);
-
         category.apis.forEach((api) => {
           const card = document.createElement("div");
-          card.classList.add(
-            "flex",
-            "items-center",
-            "justify-between",
-            "p-4",
-            "bg-white"
-          );
-
+          card.classList.add("flex", "items-center", "justify-between", "p-4");
           const leftSection = document.createElement("div");
           leftSection.classList.add("flex", "items-center", "space-x-3");
-
           const getBadge = document.createElement("span");
-          getBadge.classList.add(
-            "bg-yellow-light",
-            "dark:bg-gray-500",
-            "text-white",
-            "px-3",
-            "py-1",
-            "rounded-full",
-            "text-xs",
-            "font-bold",
-            "shadow"
-          );
+          getBadge.classList.add("bg-yellow-light", "text-white", "px-3", "py-1", "rounded-full", "text-xs", "font-bold", "shadow");
           getBadge.innerText = "GET";
-
           const apiTitle = document.createElement("span");
-          apiTitle.classList.add("text-gray-800", "dark:text-gray-200", "font-semibold", "text-lg");
+          apiTitle.classList.add("font-semibold", "text-lg");
           apiTitle.innerText = api.title;
-
           leftSection.appendChild(getBadge);
           leftSection.appendChild(apiTitle);
-
           const tryButton = document.createElement("a");
-          tryButton.classList.add(
-            "bg-yellow-light",
-            "dark:bg-gray-500",
-            "text-white",
-            "px-3",
-            "py-1",
-            "rounded-full",
-            "text-xs",
-            "font-bold",
-            "shadow",
-            "tracking-wide",
-            "text-sm",
-            "hover:scale-105",
-            "transition"
-          );
+          tryButton.classList.add("bg-yellow-light", "text-white", "px-3", "py-1", "rounded-full", "text-xs", "font-bold", "shadow", "tracking-wide", "text-sm");
           tryButton.innerText = "TRY";
           tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}?${api.q}`;
           tryButton.target = "_blank";
-
           card.appendChild(leftSection);
           card.appendChild(tryButton);
           section.appendChild(card);
         });
-
         container.appendChild(section);
       });
     }
 
-    function toggleDarkMode() {
-      document.documentElement.classList.toggle("dark");
-      localStorage.theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
-      updateModeIcon();
+    function toggleTheme() {
+      const body = document.body;
+      const currentTheme = body.getAttribute("data-theme");
+      const newTheme = currentTheme === "light" ? "dark" : "light";
+      body.setAttribute("data-theme", newTheme);
+      const icon = document.getElementById("theme-icon");
+      icon.className = newTheme === "dark" ? "fas fa-sun" : "fas fa-moon";
     }
 
-    function updateModeIcon() {
-      const modeIcon = document.getElementById("mode-icon");
-      if (document.documentElement.classList.contains("dark")) {
-        modeIcon.classList.replace("fa-sun", "fa-moon");
-      } else {
-        modeIcon.classList.replace("fa-moon", "fa-sun");
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      if (localStorage.theme === "dark") {
-        document.documentElement.classList.add("dark");
-      }
-      updateModeIcon();
-    });
+    document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
 
     renderCards();
   </script>
