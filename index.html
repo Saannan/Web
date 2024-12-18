@@ -9,12 +9,14 @@
   <style>
     :root {
       --yellow-light: #fbbf24;
-      --gray-light: #f3f4f6;
-      --dark-body: #1e293b;
-      --light-body: #ffffff;
+      --dark-body: #1e293b; /* Warna abu-abu kebiruan gelap */
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
+    body.dark-mode {
+      background-color: var(--dark-body);
+      color: #cbd5e1; /* Warna teks terang untuk mode gelap */
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-white text-gray-800" id="body">
@@ -150,15 +152,11 @@
     const themeIcon = document.getElementById("theme-icon");
 
     themeToggle.addEventListener("click", () => {
-      const isDarkMode = body.style.backgroundColor === "rgb(30, 41, 59)";
-      if (isDarkMode) {
-        body.style.backgroundColor = "var(--light-body)";
-        body.style.color = "var(--gray-light)";
-        themeIcon.classList.replace("fa-moon", "fa-sun");
-      } else {
-        body.style.backgroundColor = "var(--dark-body)";
-        body.style.color = "var(--light-body)";
+      body.classList.toggle("dark-mode");
+      if (body.classList.contains("dark-mode")) {
         themeIcon.classList.replace("fa-sun", "fa-moon");
+      } else {
+        themeIcon.classList.replace("fa-moon", "fa-sun");
       }
     });
 
