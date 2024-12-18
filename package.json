@@ -2,12 +2,12 @@
   "name": "Vioo",
   "version": "1.0.0",
   "description": "Simple API",
-  "main": "vercel.json",
+  "main": "connect.js",
   "scripts": {
-    "start": "node vercel.json"
+    "start": "node connect.js"
   },
   "dependencies": {
-    "canvas": "^2.11.2",
+    "@napi-rs/canvas": "^0.1.65",
     "cors": "^2.8.5",
     "express": "^4.19.1"
   }

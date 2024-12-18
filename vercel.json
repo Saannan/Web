@@ -4,10 +4,6 @@
     {
       "src": "connect.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "public/**/*",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -18,10 +14,6 @@
     {
       "src": "/right",
       "dest": "/connect.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
     }
   ]
 }

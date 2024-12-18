@@ -1,10 +1,11 @@
 const express = require('express');
-const { createCanvas } = require('canvas');
 const cors = require('cors');
+const { createCanvas } = require('@napi-rs/canvas'); // Ganti dengan 'canvas' jika tetap ingin menggunakannya
 
 const app = express();
 app.use(cors());
 
+// Fungsi untuk menggambar halaman
 function drawPage(text, isLeftPage) {
   const width = 800;
   const height = 600;
@@ -34,23 +35,21 @@ function drawPage(text, isLeftPage) {
   return canvas.toBuffer('image/png');
 }
 
+// Endpoint untuk halaman kiri
 app.get('/left', (req, res) => {
   const text = req.query.text || 'Teks default';
-  console.log(`[LEFT PAGE] Text: ${text}`);
   const image = drawPage(text, true);
   res.setHeader('Content-Type', 'image/png');
   res.send(image);
 });
 
+// Endpoint untuk halaman kanan
 app.get('/right', (req, res) => {
   const text = req.query.text || 'Teks default';
-  console.log(`[RIGHT PAGE] Text: ${text}`);
   const image = drawPage(text, false);
   res.setHeader('Content-Type', 'image/png');
   res.send(image);
 });
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server berjalan di http://localhost:${PORT}`);
-});
+// Mulai server
+module.exports = app;
