@@ -9,6 +9,6 @@
   "dependencies": {
     "canvas": "^2.11.2",
     "express": "^4.19.1",
-    "path": "^0.12.7"
+    "fs": "0.0.1-security"
   }
 }
