@@ -2,14 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "connect.js",
+      "src": "index.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/a",
-      "dest": "/connect.js"
+      "src": "/api/(.*)",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }
