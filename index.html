@@ -49,7 +49,15 @@
       container.innerHTML = "";
       categories.forEach((category) => {
         const section = document.createElement("div");
-        section.classList.add("space-y-4");
+        section.classList.add(
+          "space-y-2", // Menyatukan card dalam kategori lebih rapat
+          "p-4",
+          "bg-white",
+          "rounded-lg",
+          "border",
+          "border-gray-300",
+          "shadow-sm"
+        );
         const categoryTitle = document.createElement("div");
         categoryTitle.classList.add(
           "text-xl",
@@ -74,11 +82,8 @@
             "rounded-lg",
             "shadow-md",
             "border",
-            "border-gray-200",
-            "transition",
-            "hover:bg-gray-light",
-            "hover:shadow-lg"
-          );
+            "border-gray-200"
+          ); // Hover class dihapus
           const leftSection = document.createElement("div");
           leftSection.classList.add("flex", "items-center", "space-x-3");
           const getBadge = document.createElement("span");
