@@ -1,18 +1,20 @@
 const express = require('express');
 const { createCanvas } = require('canvas');
-const app = express();
+const cors = require('cors');
 
-// Fungsi untuk menggambar halaman
+const app = express();
+app.use(cors());
+
 function drawPage(text, isLeftPage) {
-  const width = 800;  // Lebar kanvas
-  const height = 600; // Tinggi kanvas
+  const width = 800;
+  const height = 600;
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext('2d');
 
   ctx.fillStyle = '#FFF';
   ctx.fillRect(0, 0, width, height);
-  const margin = 50;
 
+  const margin = 50;
   ctx.fillStyle = '#000';
   ctx.font = 'bold 24px Arial';
   ctx.textAlign = 'center';
@@ -22,7 +24,6 @@ function drawPage(text, isLeftPage) {
   ctx.textAlign = isLeftPage ? 'left' : 'right';
   const xPos = isLeftPage ? margin : width - margin;
   const lines = text.split('\n');
-
   lines.forEach((line, index) => {
     ctx.fillText(line, xPos, margin + 50 + index * 20);
   });
@@ -34,14 +35,16 @@ function drawPage(text, isLeftPage) {
 }
 
 app.get('/left', (req, res) => {
-  const { text } = req.query
+  const text = req.query.text || 'Teks default';
+  console.log(`[LEFT PAGE] Text: ${text}`);
   const image = drawPage(text, true);
   res.setHeader('Content-Type', 'image/png');
   res.send(image);
 });
 
 app.get('/right', (req, res) => {
-  const { text } = req.query
+  const text = req.query.text || 'Teks default';
+  console.log(`[RIGHT PAGE] Text: ${text}`);
   const image = drawPage(text, false);
   res.setHeader('Content-Type', 'image/png');
   res.send(image);
