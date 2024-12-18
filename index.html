@@ -84,13 +84,9 @@
             "p-4",
             "bg-white",
             "rounded-lg",
-            "shadow-md",
+            "shadow-lg",
             "border",
-            "border-gray-200",
-            "hover:shadow-lg",
-            "transition",
-            "transform",
-            "hover:-translate-y-1"
+            "border-gray-200"
           );
 
           // Left Section (GET Badge + API Title)
@@ -125,12 +121,11 @@
             "bg-yellow-light",
             "text-white",
             "rounded-lg",
-            "hover:bg-yellow-500",
             "transition",
-            "shadow",
             "font-semibold",
             "tracking-wide",
-            "text-sm"
+            "text-sm",
+            "hover:bg-yellow-500"
           );
           tryButton.innerText = "Try";
           tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}?${api.q}`;
