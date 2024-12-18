@@ -1,89 +1,53 @@
 const express = require('express');
 const { createCanvas } = require('canvas');
-
 const app = express();
-const PORT = 3000;
 
-// Fungsi menggambar teks seperti halaman buku
-function drawTextOnCanvas(text, align = 'left') {
-  const width = 800; // Lebar canvas
-  const height = 600; // Tinggi canvas
+// Fungsi untuk menggambar halaman
+function drawPage(text, isLeftPage) {
+  const width = 800;  // Lebar kanvas
+  const height = 600; // Tinggi kanvas
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext('2d');
 
-  // Background mirip halaman buku
-  ctx.fillStyle = '#fdf5e6'; // Warna kertas
+  ctx.fillStyle = '#FFF';
   ctx.fillRect(0, 0, width, height);
+  const margin = 50;
 
-  // Properti teks
-  ctx.font = '20px Times New Roman';
-  ctx.fillStyle = 'black';
-  ctx.textAlign = align;
+  ctx.fillStyle = '#000';
+  ctx.font = 'bold 24px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(isLeftPage ? 'Halaman Kiri' : 'Halaman Kanan', width / 2, margin);
 
-  // Posisi teks
-  const marginX = align === 'right' ? 600 : 50; // Margin teks kanan/kiri
-  const startY = 100; // Posisi awal teks
-  const maxWidth = 700; // Lebar area teks (agar tidak melewati batas)
-  const lineHeight = 30; // Jarak antar baris
+  ctx.font = '16px Arial';
+  ctx.textAlign = isLeftPage ? 'left' : 'right';
+  const xPos = isLeftPage ? margin : width - margin;
+  const lines = text.split('\n');
 
-  // Membagi teks menjadi baris
-  const words = text.split(' ');
-  let line = '';
-  let y = startY;
-
-  words.forEach((word) => {
-    const testLine = line + word + ' ';
-    const testWidth = ctx.measureText(testLine).width;
-    if (testWidth > maxWidth) {
-      ctx.fillText(line, marginX, y);
-      line = word + ' ';
-      y += lineHeight;
-    } else {
-      line = testLine;
-    }
+  lines.forEach((line, index) => {
+    ctx.fillText(line, xPos, margin + 50 + index * 20);
   });
 
-  // Menulis baris terakhir
-  ctx.fillText(line, marginX, y);
+  ctx.textAlign = 'center';
+  ctx.fillText(isLeftPage ? '2' : '1', width / 2, height - margin);
 
   return canvas.toBuffer('image/png');
 }
 
-// Endpoint rata kanan
-app.get('/nuliskanan', (req, res) => {
-  const { text } = req.query;
-  if (!text) {
-    return res.status(400).json({ message: 'Parameter "text" harus disertakan!' });
-  }
-
-  try {
-    const buffer = drawTextOnCanvas(text, 'right');
-    res.set('Content-Type', 'image/png');
-    res.send(buffer);
-  } catch (err) {
-    console.error('Error memproses gambar:', err);
-    res.status(500).send('Error memproses gambar');
-  }
+app.get('/left', (req, res) => {
+  const { text } = req.query
+  const image = drawPage(text, true);
+  res.setHeader('Content-Type', 'image/png');
+  res.send(image);
 });
 
-// Endpoint rata kiri
-app.get('/nuliskiri', (req, res) => {
-  const { text } = req.query;
-  if (!text) {
-    return res.status(400).json({ message: 'Parameter "text" harus disertakan!' });
-  }
-
-  try {
-    const buffer = drawTextOnCanvas(text, 'left');
-    res.set('Content-Type', 'image/png');
-    res.send(buffer);
-  } catch (err) {
-    console.error('Error memproses gambar:', err);
-    res.status(500).send('Error memproses gambar');
-  }
+app.get('/right', (req, res) => {
+  const { text } = req.query
+  const image = drawPage(text, false);
+  res.setHeader('Content-Type', 'image/png');
+  res.send(image);
 });
 
-// Menjalankan server
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server berjalan di http://localhost:${PORT}`);
 });
