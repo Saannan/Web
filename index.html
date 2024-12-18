@@ -7,60 +7,49 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --yellow-light: #fbbf24; /* Kuning terang */
-      --yellow-dark: #eab308; /* Kuning gelap */
-      --white: #ffffff; /* Putih */
-      --gray-light: #f3f4f6; /* Abu-abu terang */
+      --yellow-light: #fbbf24;
+      --gray-light: #f3f4f6;
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
   </style>
 </head>
 <body class="bg-white text-gray-800 min-h-screen flex flex-col">
-
-  <!-- Header -->
   <header class="p-6 bg-yellow-light text-center shadow-lg">
     <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
     <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
   </header>
-
-  <!-- Main Content -->
   <main class="flex-1 p-6 bg-gray-50">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
-
-  <!-- Footer -->
   <footer class="p-4 bg-yellow-light text-center text-white">
     <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
   </footer>
-
   <script>
     const categories = [
       {
         name: "AI",
         key: "ai",
         apis: [
-          { title: "OpenAI", service: "openai", q: "q=Hai" },
+          { title: "openai", service: "openai", q: "q=hai" },
+          { title: "luminai", service: "luminai", q: "q=hai" },
+          { title: "llama", service: "llama", q: "q=hai" },
         ],
       },
       {
         name: "Search",
         key: "src",
         apis: [
-          { title: "Google", service: "google", q: "q=Ronaldo" },
+          { title: "google", service: "google", q: "q=ronaldo" },
         ],
       },
     ];
-
     function renderCards() {
       const container = document.getElementById("api-container");
       container.innerHTML = "";
-
       categories.forEach((category) => {
         const section = document.createElement("div");
         section.classList.add("space-y-4");
-
-        // Category Title
         const categoryTitle = document.createElement("div");
         categoryTitle.classList.add(
           "text-xl",
@@ -70,13 +59,10 @@
           "p-3",
           "rounded-lg",
           "shadow-md",
-          "uppercase",
           "tracking-wider"
         );
         categoryTitle.innerText = `${category.name}`;
         section.appendChild(categoryTitle);
-
-        // API List
         category.apis.forEach((api) => {
           const card = document.createElement("div");
           card.classList.add(
@@ -90,14 +76,11 @@
             "border",
             "border-gray-200",
             "transition",
-            "hover:bg-gray-light", // Hover effect: background to light gray
-            "hover:shadow-lg" // Slightly bigger shadow on hover
+            "hover:bg-gray-light",
+            "hover:shadow-lg"
           );
-
-          // Left Section (GET Badge + API Title)
           const leftSection = document.createElement("div");
           leftSection.classList.add("flex", "items-center", "space-x-3");
-
           const getBadge = document.createElement("span");
           getBadge.classList.add(
             "bg-yellow-light",
@@ -110,15 +93,11 @@
             "shadow"
           );
           getBadge.innerText = "GET";
-
           const apiTitle = document.createElement("span");
           apiTitle.classList.add("text-gray-800", "font-semibold", "text-lg");
           apiTitle.innerText = api.title;
-
           leftSection.appendChild(getBadge);
           leftSection.appendChild(apiTitle);
-
-          // Right Section (Try Button)
           const tryButton = document.createElement("a");
           tryButton.classList.add(
             "px-5",
@@ -133,18 +112,13 @@
           tryButton.innerText = "Try";
           tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}?${api.q}`;
           tryButton.target = "_blank";
-
-          // Append Sections to Card
           card.appendChild(leftSection);
           card.appendChild(tryButton);
           section.appendChild(card);
         });
-
-        // Append Section to Container
         container.appendChild(section);
       });
     }
-
     renderCards();
   </script>
 </body>
