@@ -64,17 +64,26 @@
         );
         const categoryTitle = document.createElement("div");
         categoryTitle.classList.add(
-          "text-xl",
-          "font-bold",
-          "bg-yellow-light",
-          "text-white",
-          "p-3",
-          "rounded-lg",
-          "shadow-md",
-          "tracking-wider",
+          "flex", 
+          "justify-between", 
+          "items-center", 
+          "text-xl", 
+          "font-bold", 
+          "bg-yellow-light", 
+          "text-white", 
+          "p-3", 
+          "rounded-lg", 
+          "shadow-md", 
+          "tracking-wider", 
           "mb-4"
         );
-        categoryTitle.innerText = `${category.name}`;
+        const categoryName = document.createElement("span");
+        categoryName.innerText = category.name;
+        const totalEndpoints = document.createElement("span");
+        totalEndpoints.classList.add("text-sm", "font-medium");
+        totalEndpoints.innerText = `Total endpoint: ${category.apis.length}`;
+        categoryTitle.appendChild(categoryName);
+        categoryTitle.appendChild(totalEndpoints);
         section.appendChild(categoryTitle);
         category.apis.forEach((api) => {
           const card = document.createElement("div");
@@ -117,7 +126,7 @@
             "tracking-wide",
             "text-sm"
           );
-          tryButton.innerText = "Try";
+          tryButton.innerText = "TRY";
           tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}?${api.q}`;
           tryButton.target = "_blank";
           card.appendChild(leftSection);
