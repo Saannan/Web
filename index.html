@@ -27,11 +27,11 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
     .hamburger-icon {
-      width: 30px;
-      height: 30px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      width: 30px;
+      height: 30px;
       background: transparent;
       border: none;
       padding: 0;
@@ -42,17 +42,8 @@
       height: 4px;
       width: 100%;
       background-color: white;
-      border-radius: 4px;
+      border-radius: 2px;
       transition: all 0.3s ease;
-    }
-    .hamburger-icon.open div:nth-child(1) {
-      transform: translateY(10px) rotate(45deg);
-    }
-    .hamburger-icon.open div:nth-child(2) {
-      opacity: 0;
-    }
-    .hamburger-icon.open div:nth-child(3) {
-      transform: translateY(-10px) rotate(-45deg);
     }
   </style>
 </head>
@@ -70,13 +61,22 @@
       <h2 class="text-xl font-bold text-gray-800 border-b-2 border-gray-300 pb-2 mb-4">V-APIs</h2>
       <ul class="text-center space-y-4">
         <li>
-          <button onclick="navigateTo('Docs')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light">Docs</button>
+          <button onclick="navigateTo('Docs')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light relative">
+            Docs
+            <div class="absolute inset-0 bg-gray-300 opacity-50 rounded-md"></div>
+          </button>
         </li>
         <li>
-          <button onclick="navigateTo('Contact')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light">Contact</button>
+          <button onclick="navigateTo('Contact')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light relative">
+            Contact
+            <div class="absolute inset-0 bg-gray-300 opacity-50 rounded-md"></div>
+          </button>
         </li>
         <li>
-          <button onclick="navigateTo('ChatAI')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light">ChatAI</button>
+          <button onclick="navigateTo('ChatAI')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light relative">
+            ChatAI
+            <div class="absolute inset-0 bg-gray-300 opacity-50 rounded-md"></div>
+          </button>
         </li>
       </ul>
     </div>
