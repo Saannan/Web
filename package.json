@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.65",
-    "cors": "^2.8.5",
     "express": "^4.19.1"
   }
 }

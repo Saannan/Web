@@ -8,11 +8,7 @@
   ],
   "routes": [
     {
-      "src": "/left",
-      "dest": "/connect.js"
-    },
-    {
-      "src": "/right",
+      "src": "/a",
       "dest": "/connect.js"
     }
   ]

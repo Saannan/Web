@@ -1,87 +1,51 @@
 const express = require('express');
-const cors = require('cors');
 const { createCanvas } = require('@napi-rs/canvas');
+
 const app = express();
-app.use(cors());
+const PORT = 3000;
 
-async function drawPage(text, isLeftPage) {
-  const width = 800;
-  const height = 600;
+// Route utama
+app.get("/a", async (req, res) => {
+  const { text } = req.query; // Teks input dari query
+
+  // Ukuran canvas
+  const width = 300; // Lebar sesuai contoh
+  const height = 300; // Tinggi sesuai contoh
+
+  // Buat canvas
   const canvas = createCanvas(width, height);
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
 
-  // Gambar latar belakang halaman buku (warna putih)
-  ctx.fillStyle = '#FFF';
+  // Background putih
+  ctx.fillStyle = "white";
   ctx.fillRect(0, 0, width, height);
 
-  // Gambar garis vertikal untuk pembatas kolom buku tulis
-  const marginX = 80; // Margin kiri
-  const lineSpacing = 30; // Jarak antar garis
+  // Tambahkan blur halus
+  ctx.filter = "blur(0.3px)";
 
-  // Gambar garis vertikal kiri dan kanan
-  ctx.strokeStyle = '#000';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(marginX, 50); // Garis kiri
-  ctx.lineTo(marginX, height - 50); // Garis kiri hingga bawah
-  ctx.stroke();
+  // Font dan style teks
+  ctx.fillStyle = "black";
+  ctx.font = "bold 70px Arial"; // Font tebal dan besar
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
 
-  ctx.beginPath();
-  ctx.moveTo(width - 80, 50); // Garis kanan
-  ctx.lineTo(width - 80, height - 50); // Garis kanan hingga bawah
-  ctx.stroke();
+  // Pisahkan teks menjadi baris jika ada spasi
+  const lines = text.split(" ");
+  let y = 20; // Posisi awal teks secara vertikal
 
-  // Gambar garis horizontal (garis buku tulis)
-  ctx.strokeStyle = '#000';
-  ctx.lineWidth = 1;
-  for (let i = 0; i < 20; i++) {
-    ctx.beginPath();
-    ctx.moveTo(marginX, 100 + i * lineSpacing); // Mulai dari margin kiri dan tinggi 100px
-    ctx.lineTo(width - 80, 100 + i * lineSpacing); // Hingga margin kanan
-    ctx.stroke();
-  }
-
-  // Tulis judul halaman
-  ctx.fillStyle = '#000';
-  ctx.font = 'bold 24px Arial';  // Menggunakan font Arial bawaan
-  ctx.textAlign = 'center';
-  ctx.fillText(isLeftPage ? 'Halaman Kiri' : 'Halaman Kanan', width / 2, 50);
-
-  // Tulis teks isi per baris menggunakan font Arial
-  ctx.font = '16px Arial';  // Menggunakan font Arial bawaan
-  ctx.textAlign = 'left';
-  const lines = text.split('\n');
-  let currentY = 100 + lineSpacing; // Posisi awal teks (setelah judul)
-
-  lines.forEach((line, index) => {
-    if (currentY < height - 50) {
-      ctx.fillText(line, marginX + 5, currentY);  // Sedikit geser ke kanan agar teks tidak menyentuh margin
-      currentY += lineSpacing;
-    }
+  // Gambar tiap baris teks
+  lines.forEach((line) => {
+    ctx.fillText(line, 20, y);
+    y += 90; // Jarak antar baris
   });
 
-  // Tulis nomor halaman
-  ctx.textAlign = 'center';
-  ctx.fillText(isLeftPage ? '2' : '1', width / 2, height - 50);
-
-  return canvas.toBuffer('image/png');
-}
-
-app.get('/left', async (req, res) => {
-  const text = req.query.text || 'Teks default';
-  const image = await drawPage(text, true);
-  res.setHeader('Content-Type', 'image/png');
-  res.send(image);
+  // Kirim gambar sebagai response
+  res.setHeader("Content-Type", "image/png");
+  const buffer = await canvas.encode("png");
+  res.send(buffer);
 });
 
-app.get('/right', async (req, res) => {
-  const text = req.query.text || 'Teks default';
-  const image = await drawPage(text, false);
-  res.setHeader('Content-Type', 'image/png');
-  res.send(image);
-});
-
-const PORT = 3000;
+// Jalankan server
 app.listen(PORT, () => {
   console.log(`Server berjalan di http://localhost:${PORT}`);
 });
