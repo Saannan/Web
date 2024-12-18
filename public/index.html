@@ -9,7 +9,7 @@
     body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f4f4f4; }
     h1, p { margin-bottom: 10px; text-align: center; }
     form { display: flex; flex-direction: column; gap: 15px; width: 300px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-    input, button { padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+    input, select, button { padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
     button { background-color: #007bff; color: white; cursor: pointer; }
     button:hover { background-color: #0056b3; }
     img { margin-top: 20px; max-width: 90%; border-radius: 8px; border: 1px solid #ddd; }
@@ -29,7 +29,7 @@
     <button type="submit">Generate Gambar</button>
   </form>
 
-  <img id="resultImage" src="" alt="result" hidden>
+  <img id="resultImage" src="" alt="Hasil Gambar" hidden>
 
   <script>
     const form = document.getElementById('form');
@@ -38,17 +38,27 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const name = document.getElementById('name').value;
-      const text = document.getElementById('text').value;
+      const name = document.getElementById('name').value.trim();
+      const text = document.getElementById('text').value.trim();
       const align = document.getElementById('align').value;
 
-      const url = `/${align}?name=${encodeURIComponent(name)}&text=${encodeURIComponent(text)}`;
+      if (!name || !text) {
+        alert('Nama dan teks tidak boleh kosong!');
+        return;
+      }
+
+      const apiUrl = `/${align}?name=${encodeURIComponent(name)}&text=${encodeURIComponent(text)}`;
 
       try {
-        resultImage.src = url;
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error('Gagal memuat gambar!');
+        }
+        resultImage.src = apiUrl;
         resultImage.hidden = false;
       } catch (err) {
-        alert('Gagal memuat gambar!');
+        alert('Gagal memuat gambar: ' + err.message);
+        resultImage.hidden = true;
       }
     });
   </script>
