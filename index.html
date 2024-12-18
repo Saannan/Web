@@ -26,15 +26,43 @@
       border: 2px solid var(--yellow-light);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+    .hamburger-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      position: relative;
+    }
+    .hamburger-icon div {
+      height: 4px;
+      width: 100%;
+      background-color: white;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    .hamburger-icon.open div:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+    .hamburger-icon.open div:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger-icon.open div:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
   </style>
 </head>
 <body class="bg-white text-gray-800 min-h-screen flex flex-col relative">
   <header class="p-6 bg-yellow-light shadow-lg flex justify-between items-center relative">
     <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
-    <button id="menu-button" class="rounded-md p-2 focus:outline-none">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
-      </svg>
+    <button id="menu-button" class="hamburger-icon">
+      <div></div>
+      <div></div>
+      <div></div>
     </button>
   </header>
   <div id="menu" class="menu-hidden absolute top-0 left-0 w-full bg-white z-20 shadow-lg menu-container">
@@ -67,11 +95,13 @@
       const isHidden = menu.classList.contains("menu-hidden");
       menu.classList.toggle("menu-hidden", !isHidden);
       menu.classList.toggle("menu-visible", isHidden);
+      menuButton.classList.toggle("open", isHidden);
     });
     window.addEventListener("click", (e) => {
       if (!menu.contains(e.target) && !menuButton.contains(e.target)) {
         menu.classList.add("menu-hidden");
         menu.classList.remove("menu-visible");
+        menuButton.classList.remove("open");
       }
     });
     function navigateTo(page) {
