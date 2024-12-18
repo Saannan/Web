@@ -5,69 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>V-APIs</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
   <style>
     :root {
       --yellow-light: #fbbf24;
       --gray-light: #f3f4f6;
-      --dark-bg: #1f2937;
-      --dark-text: #f9fafb;
-      --card-bg-light: #ffffff;
-      --card-bg-dark: #374151;
-      --card-border-light: #d1d5db;
-      --card-border-dark: #4b5563;
+      --gray-dark: #1f2937;
+      --text-light: #ffffff;
+      --text-dark: #1f2937;
     }
 
-    [data-theme="dark"] {
-      --bg-color: var(--dark-bg);
-      --text-color: var(--dark-text);
-      --card-bg: var(--card-bg-dark);
-      --card-border: var(--card-border-dark);
+    body.light {
+      --bg-color: #ffffff;
+      --text-color: var(--text-dark);
+      --card-bg: #ffffff;
+      --border-color: var(--gray-light);
     }
 
-    [data-theme="light"] {
-      --bg-color: var(--gray-light);
-      --text-color: #1f2937;
-      --card-bg: var(--card-bg-light);
-      --card-border: var(--card-border-light);
+    body.dark {
+      --bg-color: var(--gray-dark);
+      --text-color: var(--text-light);
+      --card-bg: #374151;
+      --border-color: #4b5563;
     }
 
     body {
       background-color: var(--bg-color);
       color: var(--text-color);
-      transition: background-color 0.3s, color 0.3s;
     }
 
     .card {
       background-color: var(--card-bg);
-      border-color: var(--card-border);
-      transition: background-color 0.3s, border-color 0.3s;
-    }
-
-    header, footer {
-      background-color: var(--yellow-light);
-      color: white;
-    }
-
-    #theme-toggle {
-      background-color: var(--yellow-light);
-      color: white;
+      border-color: var(--border-color);
     }
   </style>
 </head>
-<body data-theme="light" class="min-h-screen flex flex-col">
-  <header class="p-6 text-center shadow-lg relative">
-    <h1 class="text-4xl font-extrabold tracking-wide">V-APIs</h1>
-    <p class="text-sm font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
-    <!-- Dark Mode Toggle Button -->
-    <button id="theme-toggle" class="absolute top-4 right-6 rounded-full p-3 shadow-md focus:outline-none transition">
-      <i id="theme-icon" class="fas fa-moon"></i>
+<body class="light text-gray-800 min-h-screen flex flex-col transition-colors duration-300">
+  <header class="p-6 bg-yellow-light text-center shadow-lg relative">
+    <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
+    <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
+    <button id="theme-toggle" class="absolute top-6 right-6 text-white bg-gray-800 p-2 rounded-full shadow-md">
+      <i id="theme-icon" class="fas fa-sun"></i>
     </button>
   </header>
   <main class="flex-1 p-6">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
-  <footer class="p-4 text-center">
+  <footer class="p-4 bg-yellow-light text-center text-white">
     <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
   </footer>
   <script>
@@ -99,9 +83,30 @@
       container.innerHTML = "";
       categories.forEach((category) => {
         const section = document.createElement("div");
-        section.classList.add("card", "p-4", "rounded-lg", "border", "shadow-sm", "divide-y", "divide-gray-300");
+        section.classList.add(
+          "card",
+          "divide-y",
+          "divide-gray-300",
+          "p-4",
+          "rounded-lg",
+          "border",
+          "shadow-sm"
+        );
         const categoryTitle = document.createElement("div");
-        categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "p-3", "rounded-lg", "mb-4");
+        categoryTitle.classList.add(
+          "flex", 
+          "justify-between", 
+          "items-center", 
+          "text-xl", 
+          "font-bold", 
+          "bg-yellow-light", 
+          "text-white", 
+          "p-3", 
+          "rounded-lg", 
+          "shadow-md", 
+          "tracking-wider", 
+          "mb-4"
+        );
         const categoryName = document.createElement("span");
         categoryName.innerText = category.name;
         const totalEndpoints = document.createElement("span");
@@ -112,11 +117,25 @@
         section.appendChild(categoryTitle);
         category.apis.forEach((api) => {
           const card = document.createElement("div");
-          card.classList.add("flex", "items-center", "justify-between", "p-4");
+          card.classList.add(
+            "flex",
+            "items-center",
+            "justify-between",
+            "p-4"
+          );
           const leftSection = document.createElement("div");
           leftSection.classList.add("flex", "items-center", "space-x-3");
           const getBadge = document.createElement("span");
-          getBadge.classList.add("bg-yellow-light", "text-white", "px-3", "py-1", "rounded-full", "text-xs", "font-bold", "shadow");
+          getBadge.classList.add(
+            "bg-yellow-light",
+            "text-white",
+            "px-3",
+            "py-1",
+            "rounded-full",
+            "text-xs",
+            "font-bold",
+            "shadow"
+          );
           getBadge.innerText = "GET";
           const apiTitle = document.createElement("span");
           apiTitle.classList.add("font-semibold", "text-lg");
@@ -124,7 +143,18 @@
           leftSection.appendChild(getBadge);
           leftSection.appendChild(apiTitle);
           const tryButton = document.createElement("a");
-          tryButton.classList.add("bg-yellow-light", "text-white", "px-3", "py-1", "rounded-full", "text-xs", "font-bold", "shadow", "tracking-wide", "text-sm");
+          tryButton.classList.add(
+            "bg-yellow-light",
+            "text-white",
+            "px-3",
+            "py-1",
+            "rounded-full",
+            "text-xs",
+            "font-bold",
+            "shadow",
+            "tracking-wide",
+            "text-sm"
+          );
           tryButton.innerText = "TRY";
           tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}?${api.q}`;
           tryButton.target = "_blank";
@@ -135,19 +165,15 @@
         container.appendChild(section);
       });
     }
-
-    function toggleTheme() {
-      const body = document.body;
-      const currentTheme = body.getAttribute("data-theme");
-      const newTheme = currentTheme === "light" ? "dark" : "light";
-      body.setAttribute("data-theme", newTheme);
-      const icon = document.getElementById("theme-icon");
-      icon.className = newTheme === "dark" ? "fas fa-sun" : "fas fa-moon";
-    }
-
-    document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
-
     renderCards();
+
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeIcon = document.getElementById("theme-icon");
+    themeToggle.addEventListener("click", () => {
+      const isDark = document.body.classList.toggle("dark");
+      document.body.classList.toggle("light", !isDark);
+      themeIcon.className = isDark ? "fas fa-moon" : "fas fa-sun";
+    });
   </script>
 </body>
 </html>
