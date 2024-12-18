@@ -1,40 +1,66 @@
 const express = require('express');
 const cors = require('cors');
-const { createCanvas, loadImage } = require('@napi-rs/canvas');
+const { createCanvas, registerFont } = require('@napi-rs/canvas');
 const app = express();
 app.use(cors());
 
-const templatePath = './template.png'; // Path template gambar buku tulis
+// Daftarkan font tulisan tangan (gantilah 'Handwriting.ttf' dengan file font kamu)
+registerFont('./dpdork.ttf', { family: 'Handwriting' });
 
-async function drawPage(text, isLeftPage, templateUrl) {
+async function drawPage(text, isLeftPage) {
   const width = 800;
   const height = 600;
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext('2d');
 
-  // Muat gambar template
-  const templateImage = await loadImage(templateUrl);
+  // Gambar latar belakang halaman buku (warna putih)
+  ctx.fillStyle = '#FFF';
+  ctx.fillRect(0, 0, width, height);
 
-  // Gambar template sebagai latar belakang
-  ctx.drawImage(templateImage, 0, 0, width, height);
+  // Gambar garis vertikal untuk pembatas kolom buku tulis
+  const marginX = 80; // Margin kiri
+  const lineSpacing = 30; // Jarak antar garis
 
-  // Penyesuaian margin agar teks mengikuti garis
-  const marginX = isLeftPage ? 80 : 700; // Margin untuk kiri atau kanan
-  const marginY = 100; // Awal garis vertikal
-  const lineHeight = 30; // Jarak antar garis horizontal
+  // Gambar garis vertikal kiri dan kanan
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(marginX, 50); // Garis kiri
+  ctx.lineTo(marginX, height - 50); // Garis kiri hingga bawah
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(width - 80, 50); // Garis kanan
+  ctx.lineTo(width - 80, height - 50); // Garis kanan hingga bawah
+  ctx.stroke();
+
+  // Gambar garis horizontal (garis buku tulis)
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 20; i++) {
+    ctx.beginPath();
+    ctx.moveTo(marginX, 100 + i * lineSpacing); // Mulai dari margin kiri dan tinggi 100px
+    ctx.lineTo(width - 80, 100 + i * lineSpacing); // Hingga margin kanan
+    ctx.stroke();
+  }
 
   // Tulis judul halaman
   ctx.fillStyle = '#000';
-  ctx.font = 'bold 24px Arial';  // Menggunakan font default Arial
+  ctx.font = 'bold 24px Handwriting';  // Gunakan font handwriting
   ctx.textAlign = 'center';
   ctx.fillText(isLeftPage ? 'Halaman Kiri' : 'Halaman Kanan', width / 2, 50);
 
-  // Tulis teks isi per baris menggunakan font default
-  ctx.font = '16px Arial';  // Menggunakan font default Arial
+  // Tulis teks isi per baris menggunakan font handwriting
+  ctx.font = '16px Handwriting';  // Gunakan font handwriting
   ctx.textAlign = 'left';
   const lines = text.split('\n');
+  let currentY = 100 + lineSpacing; // Posisi awal teks (setelah judul)
+
   lines.forEach((line, index) => {
-    ctx.fillText(line, marginX, marginY + index * lineHeight);
+    if (currentY < height - 50) {
+      ctx.fillText(line, marginX + 5, currentY);  // Sedikit geser ke kanan agar teks tidak menyentuh margin
+      currentY += lineSpacing;
+    }
   });
 
   // Tulis nomor halaman
@@ -46,14 +72,14 @@ async function drawPage(text, isLeftPage, templateUrl) {
 
 app.get('/left', async (req, res) => {
   const text = req.query.text || 'Teks default';
-  const image = await drawPage(text, true, 'https://pomf2.lain.la/f/h8qkr780.jpg');
+  const image = await drawPage(text, true);
   res.setHeader('Content-Type', 'image/png');
   res.send(image);
 });
 
 app.get('/right', async (req, res) => {
   const text = req.query.text || 'Teks default';
-  const image = await drawPage(text, false, 'https://pomf2.lain.la/f/klj33vp2.jpg');
+  const image = await drawPage(text, false);
   res.setHeader('Content-Type', 'image/png');
   res.send(image);
 });
