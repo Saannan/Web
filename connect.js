@@ -1,11 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const { createCanvas, registerFont } = require('@napi-rs/canvas');
+const { createCanvas } = require('@napi-rs/canvas');
 const app = express();
 app.use(cors());
-
-// Daftarkan font tulisan tangan (gantilah 'Handwriting.ttf' dengan file font kamu)
-registerFont('./dpdork.ttf', { family: 'Handwriting' });
 
 async function drawPage(text, isLeftPage) {
   const width = 800;
@@ -46,12 +43,12 @@ async function drawPage(text, isLeftPage) {
 
   // Tulis judul halaman
   ctx.fillStyle = '#000';
-  ctx.font = 'bold 24px Handwriting';  // Gunakan font handwriting
+  ctx.font = 'bold 24px Arial';  // Menggunakan font Arial bawaan
   ctx.textAlign = 'center';
   ctx.fillText(isLeftPage ? 'Halaman Kiri' : 'Halaman Kanan', width / 2, 50);
 
-  // Tulis teks isi per baris menggunakan font handwriting
-  ctx.font = '16px Handwriting';  // Gunakan font handwriting
+  // Tulis teks isi per baris menggunakan font Arial
+  ctx.font = '16px Arial';  // Menggunakan font Arial bawaan
   ctx.textAlign = 'left';
   const lines = text.split('\n');
   let currentY = 100 + lineSpacing; // Posisi awal teks (setelah judul)
