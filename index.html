@@ -11,13 +11,13 @@
       --yellow-light: #fbbf24;
       --gray-light: #f3f4f6;
       --dark-body: #1e293b;
+      --light-body: #ffffff;
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
-    .dark-mode { background-color: var(--dark-body); color: #cbd5e1; }
   </style>
 </head>
-<body class="bg-white text-gray-800 min-h-screen flex flex-col" id="body">
+<body class="min-h-screen flex flex-col bg-white text-gray-800" id="body">
   <header class="p-6 bg-yellow-light text-center shadow-lg relative">
     <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
     <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
@@ -150,11 +150,15 @@
     const themeIcon = document.getElementById("theme-icon");
 
     themeToggle.addEventListener("click", () => {
-      body.classList.toggle("dark-mode");
-      if (body.classList.contains("dark-mode")) {
-        themeIcon.classList.replace("fa-sun", "fa-moon");
-      } else {
+      const isDarkMode = body.style.backgroundColor === "rgb(30, 41, 59)";
+      if (isDarkMode) {
+        body.style.backgroundColor = "var(--light-body)";
+        body.style.color = "var(--gray-light)";
         themeIcon.classList.replace("fa-moon", "fa-sun");
+      } else {
+        body.style.backgroundColor = "var(--dark-body)";
+        body.style.color = "var(--light-body)";
+        themeIcon.classList.replace("fa-sun", "fa-moon");
       }
     });
 
