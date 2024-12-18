@@ -6,29 +6,6 @@
   <title>V-APIs</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" defer></script>
-  <script>
-    function toggleDarkMode() {
-      document.documentElement.classList.toggle('dark');
-      localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-      updateModeIcon();
-    }
-
-    function updateModeIcon() {
-      const modeIcon = document.getElementById('mode-icon');
-      if (document.documentElement.classList.contains('dark')) {
-        modeIcon.classList.replace('fa-sun', 'fa-moon');
-      } else {
-        modeIcon.classList.replace('fa-moon', 'fa-sun');
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      if (localStorage.theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      }
-      updateModeIcon();
-    });
-  </script>
   <style>
     :root {
       --yellow-light: #fbbf24;
@@ -51,7 +28,6 @@
       aria-label="Toggle Dark Mode"
     >
       <i id="mode-icon" class="fas fa-sun mr-2"></i>
-      <span>Toggle Mode</span>
     </button>
   </header>
   <main class="flex-1 p-6 bg-gray-50 dark:bg-gray-900">
@@ -135,12 +111,7 @@
             "items-center",
             "justify-between",
             "p-4",
-            "bg-gray-50",
-            "dark:bg-gray-700",
-            "rounded-md",
-            "shadow-md",
-            "hover:shadow-lg",
-            "transition"
+            "bg-white"
           );
           const leftSection = document.createElement("div");
           leftSection.classList.add("flex", "items-center", "space-x-3");
@@ -189,6 +160,28 @@
       });
     }
     renderCards();
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+      localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      updateModeIcon();
+    }
+
+    function updateModeIcon() {
+      const modeIcon = document.getElementById('mode-icon');
+      if (document.documentElement.classList.contains('dark')) {
+        modeIcon.classList.replace('fa-sun', 'fa-moon');
+      } else {
+        modeIcon.classList.replace('fa-moon', 'fa-sun');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+      updateModeIcon();
+    });
   </script>
 </body>
 </html>
