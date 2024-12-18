@@ -38,14 +38,14 @@
         name: "AI",
         key: "ai",
         apis: [
-          { title: "openai", service: "openai" },
+          { title: "openai", service: "openai", q: "q=Hai" },
         ],
       },
       {
         name: "Search",
         key: "src",
         apis: [
-          { title: "google", service: "google" },
+          { title: "google", service: "google", q: "q=Ronaldo" },
         ],
       },
     ];
@@ -118,7 +118,7 @@
             "font-medium"
           );
           tryButton.innerText = "Try";
-          tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}`;
+          tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}?${api.q}`;
           tryButton.target = "_blank";
 
           // Append Sections to Card
