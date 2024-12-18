@@ -5,134 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>V-APIs</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
   <style>
     :root {
       --yellow-light: #fbbf24;
+      --yellow-dark: #f59e0b;
       --gray-light: #f3f4f6;
+      --gray-dark: #1f2937;
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
+    .bg-yellow-dark { background-color: var(--yellow-dark); }
     .text-yellow-light { color: var(--yellow-light); }
-    .menu-hidden {
-      transform: translateY(-100%);
-      opacity: 0;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    .menu-visible {
-      transform: translateY(0);
-      opacity: 1;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    .menu-container {
-      border: 2px solid var(--yellow-light);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    .hamburger-icon {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 28px;
-      height: 20px;
-      background: transparent;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      position: absolute;
-      top: 18px;
-      right: 20px;
-    }
-    .hamburger-icon div {
-      height: 4px;
-      width: 100%;
-      background-color: white;
-      border-radius: 2px;
-      transition: all 0.3s ease;
-    }
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.3);
-      z-index: 10;
-      border-radius: 8px;
-    }
-    .menu-content {
-      position: relative;
-      z-index: 20;
-    }
+    .text-yellow-dark { color: var(--yellow-dark); }
+    .bg-gray-light { background-color: var(--gray-light); }
+    .bg-gray-dark { background-color: var(--gray-dark); }
   </style>
 </head>
-<body class="bg-white text-gray-800 min-h-screen flex flex-col relative">
-  <header class="p-6 bg-yellow-light shadow-lg flex justify-between items-center relative">
+<body class="bg-gray-light text-gray-800 min-h-screen flex flex-col transition-colors duration-300" id="body">
+  <header class="p-6 bg-yellow-light text-center shadow-lg flex justify-between items-center">
     <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
-    <button id="menu-button" class="hamburger-icon">
-      <div></div>
-      <div></div>
-      <div></div>
+    <button id="dark-mode-toggle" class="text-white">
+      <i class="fas fa-moon"></i>
+    </button>
+    <button id="menu-toggle" class="text-white lg:hidden">
+      <i class="fas fa-bars"></i>
     </button>
   </header>
-  <div id="menu" class="menu-hidden absolute top-0 left-0 w-full bg-white z-20 shadow-lg menu-container">
-    <div class="overlay"></div>
-    <div class="menu-content p-6">
-      <h2 class="text-xl font-bold text-gray-800 border-b-2 border-gray-300 pb-2 mb-4">V-APIs</h2>
-      <ul class="text-center space-y-4">
-        <li>
-          <button onclick="navigateTo('Docs')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light relative">
-            Docs
-            <div class="absolute inset-0 bg-gray-300 opacity-50 rounded-md"></div>
-          </button>
-        </li>
-        <li>
-          <button onclick="navigateTo('Contact')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light relative">
-            Contact
-            <div class="absolute inset-0 bg-gray-300 opacity-50 rounded-md"></div>
-          </button>
-        </li>
-        <li>
-          <button onclick="navigateTo('ChatAI')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light relative">
-            ChatAI
-            <div class="absolute inset-0 bg-gray-300 opacity-50 rounded-md"></div>
-          </button>
-        </li>
-      </ul>
+
+  <!-- Sidebar Menu -->
+  <div id="menu" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 hidden">
+    <div class="flex justify-end p-6">
+      <button id="close-menu" class="text-white text-2xl">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="flex justify-center items-center h-full">
+      <div class="bg-white rounded-lg p-6 shadow-xl w-3/4">
+        <ul class="space-y-4 text-center">
+          <li><a href="#docs" class="text-gray-800 text-lg">Docs</a></li>
+          <li><a href="#contact" class="text-gray-800 text-lg">Contact</a></li>
+        </ul>
+      </div>
     </div>
   </div>
+
   <main class="flex-1 p-6 bg-gray-50">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
+  
   <footer class="p-4 bg-yellow-light text-center text-white">
     <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
   </footer>
+
   <script>
-    const menu = document.getElementById("menu");
-    const menuButton = document.getElementById("menu-button");
-    menuButton.addEventListener("click", (e) => {
-      e.stopPropagation(); // Prevent unintended closing
-      const isHidden = menu.classList.contains("menu-hidden");
-      menu.classList.toggle("menu-hidden", !isHidden);
-      menu.classList.toggle("menu-visible", isHidden);
-      menuButton.classList.toggle("open", isHidden);
-    });
-    window.addEventListener("click", (e) => {
-      if (!menu.contains(e.target) && !menuButton.contains(e.target)) {
-        menu.classList.add("menu-hidden");
-        menu.classList.remove("menu-visible");
-        menuButton.classList.remove("open");
-      }
-    });
-    function navigateTo(page) {
-      const pages = {
-        "Docs": "/docs",
-        "Contact": "/contact",
-        "ChatAI": "/chat-ai"
-      };
-      if (pages[page]) {
-        location.href = pages[page];
-      } else {
-        console.error("Invalid page:", page);
-      }
-    }
     const categories = [
       {
         name: "AI",
@@ -155,6 +80,7 @@
         ],
       },
     ];
+
     function renderCards() {
       const container = document.getElementById("api-container");
       container.innerHTML = "";
@@ -172,17 +98,17 @@
         );
         const categoryTitle = document.createElement("div");
         categoryTitle.classList.add(
-          "flex",
-          "justify-between",
-          "items-center",
-          "text-xl",
-          "font-bold",
-          "bg-yellow-light",
-          "text-white",
-          "p-3",
-          "rounded-lg",
-          "shadow-md",
-          "tracking-wider",
+          "flex", 
+          "justify-between", 
+          "items-center", 
+          "text-xl", 
+          "font-bold", 
+          "bg-yellow-light", 
+          "text-white", 
+          "p-3", 
+          "rounded-lg", 
+          "shadow-md", 
+          "tracking-wider", 
           "mb-4"
         );
         const categoryName = document.createElement("span");
@@ -245,6 +171,30 @@
       });
     }
     renderCards();
+
+    // Dark Mode Toggle
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+    const body = document.getElementById("body");
+
+    darkModeToggle.addEventListener("click", () => {
+      body.classList.toggle("bg-gray-dark");
+      body.classList.toggle("text-white");
+      const isDarkMode = body.classList.contains("bg-gray-dark");
+      darkModeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    });
+
+    // Menu Toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("menu");
+    const closeMenu = document.getElementById("close-menu");
+
+    menuToggle.addEventListener("click", () => {
+      menu.classList.remove("hidden");
+    });
+
+    closeMenu.addEventListener("click", () => {
+      menu.classList.add("hidden");
+    });
   </script>
 </body>
 </html>
