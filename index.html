@@ -5,65 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>V-APIs</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
   <style>
     :root {
-      --yellow-main: #fbbf24;
+      --yellow-light: #fbbf24;
       --gray-light: #f3f4f6;
-      --gray-dark: #1f2937;
-      --bg-light: #ffffff;
-      --bg-dark: #111827;
-      --text-light: #1f2937;
-      --text-dark: #f9fafb;
     }
-
-    body.light {
-      --bg-color: var(--bg-light);
-      --text-color: var(--text-light);
-      --card-bg: var(--bg-light);
-      --border-color: var(--gray-light);
-    }
-
-    body.dark {
-      --bg-color: var(--bg-dark);
-      --text-color: var(--text-dark);
-      --card-bg: var(--gray-dark);
-      --border-color: #374151;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-    }
-
-    .card {
-      background-color: var(--card-bg);
-      border-color: var(--border-color);
-    }
-
-    .mode-button {
-      background-color: var(--yellow-main);
-      color: var(--text-dark);
-    }
-
-    .mode-button:hover {
-      background-color: #f59e0b;
-    }
+    .bg-yellow-light { background-color: var(--yellow-light); }
+    .text-yellow-light { color: var(--yellow-light); }
   </style>
 </head>
-<body class="light min-h-screen flex flex-col transition-colors duration-300">
-  <header class="p-6 bg-yellow-main text-white text-center shadow-lg relative">
-    <h1 class="text-4xl font-extrabold tracking-wide">V-APIs</h1>
-    <p class="text-sm font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
-    <!-- Tombol Mode Gelap/Terang -->
-    <button id="theme-toggle" class="absolute top-6 right-6 p-2 rounded-full shadow-lg mode-button flex items-center justify-center">
-      <i id="theme-icon" class="fas fa-sun text-xl"></i>
-    </button>
+<body class="bg-white text-gray-800 min-h-screen flex flex-col">
+  <header class="p-6 bg-yellow-light text-center shadow-lg">
+    <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
+    <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
   </header>
-  <main class="flex-1 p-6">
+  <main class="flex-1 p-6 bg-gray-50">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
-  <footer class="p-4 bg-yellow-main text-center text-white">
+  <footer class="p-4 bg-yellow-light text-center text-white">
     <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
   </footer>
   <script>
@@ -89,36 +48,44 @@
         ],
       },
     ];
-
     function renderCards() {
       const container = document.getElementById("api-container");
       container.innerHTML = "";
       categories.forEach((category) => {
         const section = document.createElement("div");
         section.classList.add(
-          "card",
+          "divide-y",
+          "divide-gray-300",
           "p-4",
+          "bg-white",
           "rounded-lg",
           "border",
+          "border-gray-300",
           "shadow-sm"
         );
-
         const categoryTitle = document.createElement("div");
         categoryTitle.classList.add(
-          "flex",
-          "justify-between",
-          "items-center",
-          "text-xl",
-          "font-bold",
-          "mb-4",
-          "text-yellow-main"
+          "flex", 
+          "justify-between", 
+          "items-center", 
+          "text-xl", 
+          "font-bold", 
+          "bg-yellow-light", 
+          "text-white", 
+          "p-3", 
+          "rounded-lg", 
+          "shadow-md", 
+          "tracking-wider", 
+          "mb-4"
         );
-        categoryTitle.innerHTML = `
-          <span>${category.name}</span>
-          <span class="text-sm font-medium">Total: ${category.apis.length}</span>
-        `;
+        const categoryName = document.createElement("span");
+        categoryName.innerText = category.name;
+        const totalEndpoints = document.createElement("span");
+        totalEndpoints.classList.add("text-sm", "font-medium");
+        totalEndpoints.innerText = `Total: ${category.apis.length}`;
+        categoryTitle.appendChild(categoryName);
+        categoryTitle.appendChild(totalEndpoints);
         section.appendChild(categoryTitle);
-
         category.apis.forEach((api) => {
           const card = document.createElement("div");
           card.classList.add(
@@ -126,18 +93,13 @@
             "items-center",
             "justify-between",
             "p-4",
-            "rounded-lg",
-            "shadow",
-            "hover:bg-gray-100",
-            "transition-colors"
+            "bg-white"
           );
-
           const leftSection = document.createElement("div");
           leftSection.classList.add("flex", "items-center", "space-x-3");
-
           const getBadge = document.createElement("span");
           getBadge.classList.add(
-            "bg-yellow-main",
+            "bg-yellow-light",
             "text-white",
             "px-3",
             "py-1",
@@ -147,17 +109,14 @@
             "shadow"
           );
           getBadge.innerText = "GET";
-
           const apiTitle = document.createElement("span");
-          apiTitle.classList.add("font-semibold", "text-lg");
+          apiTitle.classList.add("text-gray-800", "font-semibold", "text-lg");
           apiTitle.innerText = api.title;
-
           leftSection.appendChild(getBadge);
           leftSection.appendChild(apiTitle);
-
           const tryButton = document.createElement("a");
           tryButton.classList.add(
-            "bg-yellow-main",
+            "bg-yellow-light",
             "text-white",
             "px-3",
             "py-1",
@@ -165,32 +124,20 @@
             "text-xs",
             "font-bold",
             "shadow",
-            "hover:bg-yellow-500",
-            "transition-colors"
+            "tracking-wide",
+            "text-sm"
           );
           tryButton.innerText = "TRY";
           tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}?${api.q}`;
           tryButton.target = "_blank";
-
           card.appendChild(leftSection);
           card.appendChild(tryButton);
           section.appendChild(card);
         });
-
         container.appendChild(section);
       });
     }
-
     renderCards();
-
-    // Logika Tombol Mode Gelap/Terang
-    const themeToggle = document.getElementById("theme-toggle");
-    const themeIcon = document.getElementById("theme-icon");
-    themeToggle.addEventListener("click", () => {
-      const isDark = document.body.classList.toggle("dark");
-      document.body.classList.toggle("light", !isDark);
-      themeIcon.className = isDark ? "fas fa-moon text-xl" : "fas fa-sun text-xl";
-    });
   </script>
 </body>
 </html>
