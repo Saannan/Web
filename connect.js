@@ -1,13 +1,15 @@
 const express = require('express');
 const { createCanvas, loadImage } = require('canvas');
-const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = 3000;
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('./public'));
 
 async function drawTextOnTemplate(templatePath, name, text, align) {
-  const image = await loadImage(templatePath);
+  const imageBuffer = fs.readFileSync(templatePath);
+  const image = await loadImage(imageBuffer);
+
   const canvas = createCanvas(image.width, image.height);
   const ctx = canvas.getContext('2d');
 
@@ -51,7 +53,7 @@ app.get('/nuliskanan', async (req, res) => {
     return res.status(400).json({ message: 'Parameter "name" dan "text" harus disertakan!' });
   }
 
-  const templatePath = path.join(__dirname, 'image/template_kanan.jpg');
+  const templatePath = './image/template_kanan.jpg';
   try {
     const buffer = await drawTextOnTemplate(templatePath, name, text, 'right');
     res.set('Content-Type', 'image/png');
@@ -68,7 +70,7 @@ app.get('/nuliskiri', async (req, res) => {
     return res.status(400).json({ message: 'Parameter "name" dan "text" harus disertakan!' });
   }
 
-  const templatePath = path.join(__dirname, 'image/template_kiri.jpg');
+  const templatePath = './image/template_kiri.jpg';
   try {
     const buffer = await drawTextOnTemplate(templatePath, name, text, 'left');
     res.set('Content-Type', 'image/png');
