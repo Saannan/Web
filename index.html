@@ -50,7 +50,8 @@
       categories.forEach((category) => {
         const section = document.createElement("div");
         section.classList.add(
-          "space-y-2", // Menyatukan card dalam kategori lebih rapat
+          "divide-y", // Menambahkan garis antar card
+          "divide-gray-300", // Warna garis pembatas
           "p-4",
           "bg-white",
           "rounded-lg",
@@ -67,7 +68,8 @@
           "p-3",
           "rounded-lg",
           "shadow-md",
-          "tracking-wider"
+          "tracking-wider",
+          "mb-4" // Jarak antara judul kategori dan card
         );
         categoryTitle.innerText = `${category.name}`;
         section.appendChild(categoryTitle);
@@ -77,13 +79,9 @@
             "flex",
             "items-center",
             "justify-between",
-            "p-4",
-            "bg-white",
-            "rounded-lg",
-            "shadow-md",
-            "border",
-            "border-gray-200"
-          ); // Hover class dihapus
+            "p-4", // Memberikan padding dalam card
+            "bg-white"
+          ); // Hilangkan hover dan shadow tambahan
           const leftSection = document.createElement("div");
           leftSection.classList.add("flex", "items-center", "space-x-3");
           const getBadge = document.createElement("span");
