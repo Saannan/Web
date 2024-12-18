@@ -8,6 +8,7 @@
   <style>
     :root {
       --yellow-light: #fbbf24; /* Kuning terang */
+      --yellow-dark: #eab308; /* Kuning gelap */
       --white: #ffffff; /* Putih */
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
@@ -84,9 +85,13 @@
             "p-4",
             "bg-white",
             "rounded-lg",
-            "shadow-lg",
+            "shadow-md",
             "border",
-            "border-gray-200"
+            "border-gray-200",
+            "transition-transform",
+            "hover:bg-yellow-100", // Hover effect: background change
+            "hover:shadow-lg", // Hover effect: bigger shadow
+            "hover:-translate-y-1" // Hover effect: slight lift
           );
 
           // Left Section (GET Badge + API Title)
@@ -121,11 +126,11 @@
             "bg-yellow-light",
             "text-white",
             "rounded-lg",
-            "transition",
             "font-semibold",
             "tracking-wide",
             "text-sm",
-            "hover:bg-yellow-500"
+            "transition",
+            "hover:bg-yellow-dark" // Hover effect: darker button
           );
           tryButton.innerText = "Try";
           tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}?${api.q}`;
