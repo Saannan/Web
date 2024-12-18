@@ -12,21 +12,26 @@
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
-    .menu-hidden { max-height: 0; opacity: 0; overflow: hidden; }
-    .menu-visible { max-height: 300px; opacity: 1; }
-    .menu-transition { transition: all 0.3s ease-in-out; }
+    .menu-hidden { display: none; }
+    .menu-visible { display: block; }
   </style>
 </head>
-<body class="bg-white text-gray-800 min-h-screen flex flex-col">
+<body class="bg-white text-gray-800 min-h-screen flex flex-col relative">
+  <!-- Header -->
   <header class="p-6 bg-yellow-light shadow-lg flex justify-between items-center">
     <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
-    <button id="menu-button" class="text-white focus:outline-none">
+    <button id="menu-button" class="text-yellow-light border border-yellow-light rounded-md p-2 focus:outline-none">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
       </svg>
     </button>
   </header>
-  <div id="menu" class="bg-gray-light menu-hidden menu-transition shadow-md w-full absolute top-16 left-0">
+
+  <!-- Overlay (click to close menu) -->
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-0 menu-hidden"></div>
+
+  <!-- Hamburger Menu -->
+  <div id="menu" class="bg-white menu-hidden shadow-md absolute top-16 left-0 w-full z-10">
     <div class="p-4">
       <ul class="space-y-4">
         <li>
@@ -41,24 +46,39 @@
       </ul>
     </div>
   </div>
+
+  <!-- Main Content -->
   <main class="flex-1 p-6 bg-gray-50">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
+
+  <!-- Footer -->
   <footer class="p-4 bg-yellow-light text-center text-white">
     <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
   </footer>
+
+  <!-- JavaScript -->
   <script>
     const menu = document.getElementById("menu");
     const menuButton = document.getElementById("menu-button");
+    const overlay = document.getElementById("overlay");
 
-    menuButton.addEventListener("click", () => {
-      if (menu.classList.contains("menu-hidden")) {
-        menu.classList.remove("menu-hidden");
-        menu.classList.add("menu-visible");
-      } else {
-        menu.classList.remove("menu-visible");
-        menu.classList.add("menu-hidden");
-      }
+    // Toggle menu visibility
+    menuButton.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent closing the menu when clicking the button
+      const isHidden = menu.classList.contains("menu-hidden");
+      menu.classList.toggle("menu-hidden", !isHidden);
+      menu.classList.toggle("menu-visible", isHidden);
+      overlay.classList.toggle("menu-hidden", !isHidden);
+      overlay.classList.toggle("menu-visible", isHidden);
+    });
+
+    // Close menu when clicking outside of it
+    overlay.addEventListener("click", () => {
+      menu.classList.add("menu-hidden");
+      menu.classList.remove("menu-visible");
+      overlay.classList.add("menu-hidden");
+      overlay.classList.remove("menu-visible");
     });
 
     function navigateTo(page) {
