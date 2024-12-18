@@ -8,36 +8,35 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --yellow-dark: #b8860b;
-      --blue-gray-dark: #2c3e50;
+      --yellow: #fbbf24; /* Kuning sedikit terang */
+      --blue-gray-dark: #1e293b; /* Abu kebiruan gelap */
     }
-    .bg-yellow-dark { background-color: var(--yellow-dark); }
+    .bg-yellow { background-color: var(--yellow); }
     .text-blue-gray-dark { color: var(--blue-gray-dark); }
   </style>
 </head>
 <body class="bg-blue-gray-dark text-white min-h-screen flex flex-col">
 
   <!-- Header -->
-  <header class="p-6 bg-yellow-dark text-center">
-    <h1 class="text-3xl font-bold">V-APIs</h1>
-    <p class="text-sm">Collection of APIs for developers</p>
+  <header class="p-6 bg-yellow text-blue-gray-dark text-center">
+    <h1 class="text-4xl font-extrabold">V-APIs</h1>
+    <p class="text-lg font-medium">Explore and Test APIs with Ease</p>
   </header>
 
   <!-- Main Content -->
   <main class="flex-1 p-6" id="api-container"></main>
 
   <!-- Footer -->
-  <footer class="p-4 bg-yellow-dark text-center flex justify-center items-center space-x-4">
-    <a href="https://wa.me/your-number" class="text-blue-gray-dark hover:text-black transition">
+  <footer class="p-4 bg-yellow text-center text-blue-gray-dark flex justify-center items-center space-x-6">
+    <a href="https://wa.me/your-number" class="hover:text-black transition">
       <i class="fab fa-whatsapp fa-2x"></i>
     </a>
-    <a href="https://youtube.com/your-channel" class="text-blue-gray-dark hover:text-black transition">
+    <a href="https://youtube.com/your-channel" class="hover:text-black transition">
       <i class="fab fa-youtube fa-2x"></i>
     </a>
   </footer>
 
   <script>
-    // Data kategori dan API
     const categories = [
       {
         name: "AI Services",
@@ -63,29 +62,43 @@
       },
     ];
 
-    // Fungsi untuk membuat kartu API
     function renderCards() {
       const container = document.getElementById("api-container");
       container.innerHTML = "";
 
       categories.forEach((category) => {
-        // Buat judul kategori
         const section = document.createElement("section");
-        section.classList.add("mb-8");
+        section.classList.add("mb-10");
 
         const title = document.createElement("h2");
-        title.classList.add("text-lg", "font-semibold", "mb-2", "border-b", "border-white", "pb-2");
-        title.innerText = `Category: ${category.name}`;
+        title.classList.add(
+          "text-2xl", 
+          "font-semibold", 
+          "mb-4", 
+          "bg-yellow", 
+          "text-blue-gray-dark", 
+          "p-3", 
+          "rounded"
+        );
+        title.innerText = category.name;
         section.appendChild(title);
 
-        // Tambahkan kartu untuk setiap API
         category.apis.forEach((api) => {
           const card = document.createElement("div");
-          card.classList.add("flex", "items-center", "justify-between", "p-4", "bg-gray-800", "rounded", "shadow-md", "mb-2");
+          card.classList.add(
+            "flex", 
+            "items-center", 
+            "justify-between", 
+            "p-4", 
+            "bg-gray-800", 
+            "rounded-lg", 
+            "shadow-lg", 
+            "mb-4"
+          );
 
           const info = document.createElement("div");
           const title = document.createElement("h3");
-          title.classList.add("text-md", "font-medium");
+          title.classList.add("text-lg", "font-medium");
           title.innerText = api.title;
 
           const desc = document.createElement("p");
@@ -95,14 +108,24 @@
           info.appendChild(title);
           info.appendChild(desc);
 
-          const button = document.createElement("button");
-          button.classList.add("px-4", "py-2", "bg-yellow-dark", "text-black", "rounded", "hover:bg-yellow-500", "transition");
+          const button = document.createElement("a");
+          button.classList.add(
+            "px-6", 
+            "py-2", 
+            "bg-yellow", 
+            "text-blue-gray-dark", 
+            "rounded", 
+            "hover:bg-yellow-500", 
+            "hover:text-black", 
+            "font-bold", 
+            "transition"
+          );
           button.innerText = "GET";
-          button.onclick = () => callApi(api.service, api.params);
+          button.href = `/api/${api.service}?${new URLSearchParams(api.params).toString()}`;
+          button.target = "_blank";
 
           card.appendChild(info);
           card.appendChild(button);
-
           section.appendChild(card);
         });
 
@@ -110,14 +133,6 @@
       });
     }
 
-    // Fungsi navigasi ke URL API
-    function callApi(service, params) {
-      const queryString = new URLSearchParams(params).toString();
-      const url = `https://api-vioo.my.id/api/${service}?${queryString}`;
-      window.location.href = url; // Redirect ke halaman API
-    }
-
-    // Render kartu API saat halaman dimuat
     renderCards();
   </script>
 </body>
