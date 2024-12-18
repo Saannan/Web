@@ -12,22 +12,24 @@
       --gray-light: #f3f4f6;
       --dark-bg: #1f2937;
       --dark-text: #f9fafb;
-      --dark-card: #374151;
-      --dark-border: #4b5563;
+      --card-bg-light: #ffffff;
+      --card-bg-dark: #374151;
+      --card-border-light: #d1d5db;
+      --card-border-dark: #4b5563;
     }
 
     [data-theme="dark"] {
       --bg-color: var(--dark-bg);
       --text-color: var(--dark-text);
-      --card-bg: var(--dark-card);
-      --border-color: var(--dark-border);
+      --card-bg: var(--card-bg-dark);
+      --card-border: var(--card-border-dark);
     }
 
     [data-theme="light"] {
-      --bg-color: #ffffff;
+      --bg-color: var(--gray-light);
       --text-color: #1f2937;
-      --card-bg: var(--gray-light);
-      --border-color: #d1d5db;
+      --card-bg: var(--card-bg-light);
+      --card-border: var(--card-border-light);
     }
 
     body {
@@ -38,24 +40,34 @@
 
     .card {
       background-color: var(--card-bg);
-      border-color: var(--border-color);
+      border-color: var(--card-border);
       transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    header, footer {
+      background-color: var(--yellow-light);
+      color: white;
+    }
+
+    #theme-toggle {
+      background-color: var(--yellow-light);
+      color: white;
     }
   </style>
 </head>
 <body data-theme="light" class="min-h-screen flex flex-col">
-  <header class="p-6 bg-yellow-light text-center shadow-lg relative">
-    <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
-    <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
+  <header class="p-6 text-center shadow-lg relative">
+    <h1 class="text-4xl font-extrabold tracking-wide">V-APIs</h1>
+    <p class="text-sm font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
     <!-- Dark Mode Toggle Button -->
-    <button id="theme-toggle" class="absolute top-4 right-6 bg-gray-800 text-white rounded-full p-3 shadow-md focus:outline-none transition">
+    <button id="theme-toggle" class="absolute top-4 right-6 rounded-full p-3 shadow-md focus:outline-none transition">
       <i id="theme-icon" class="fas fa-moon"></i>
     </button>
   </header>
   <main class="flex-1 p-6">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
-  <footer class="p-4 bg-yellow-light text-center text-white">
+  <footer class="p-4 text-center">
     <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
   </footer>
   <script>
