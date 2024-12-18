@@ -17,27 +17,35 @@
   </style>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex flex-col">
+  <!-- Header -->
   <header class="p-6 bg-yellow-light dark:bg-gray-800 text-center shadow-lg flex justify-between items-center">
     <div>
       <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
       <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
     </div>
+    <!-- Toggle Mode Button -->
     <button
-      class="px-4 py-2 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg shadow-md font-semibold transition hover:scale-105 flex items-center"
+      class="text-white dark:text-gray-200 rounded-lg transition hover:scale-105 flex items-center justify-center w-10 h-10 bg-white dark:bg-gray-700 shadow-md"
       onclick="toggleDarkMode()"
       aria-label="Toggle Dark Mode"
     >
-      <i id="mode-icon" class="fas fa-sun mr-2"></i>
+      <i id="mode-icon" class="fas fa-sun"></i>
     </button>
   </header>
+
+  <!-- Main Content -->
   <main class="flex-1 p-6 bg-gray-50 dark:bg-gray-900">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
+
+  <!-- Footer -->
   <footer class="p-4 bg-yellow-light dark:bg-gray-800 text-center text-white">
     <p class="text-sm font-medium tracking-wide">
       <i class="fas fa-code"></i> © 2024 V-APIs - All Rights Reserved
     </p>
   </footer>
+
+  <!-- JavaScript -->
   <script>
     const categories = [
       {
@@ -61,6 +69,7 @@
         ],
       },
     ];
+
     function renderCards() {
       const container = document.getElementById("api-container");
       container.innerHTML = "";
@@ -80,6 +89,7 @@
           "shadow-lg",
           "transition"
         );
+
         const categoryTitle = document.createElement("div");
         categoryTitle.classList.add(
           "flex",
@@ -96,14 +106,18 @@
           "tracking-wider",
           "mb-4"
         );
+
         const categoryName = document.createElement("span");
         categoryName.innerText = category.name;
+
         const totalEndpoints = document.createElement("span");
         totalEndpoints.classList.add("text-sm", "font-medium");
         totalEndpoints.innerText = `Total: ${category.apis.length}`;
+
         categoryTitle.appendChild(categoryName);
         categoryTitle.appendChild(totalEndpoints);
         section.appendChild(categoryTitle);
+
         category.apis.forEach((api) => {
           const card = document.createElement("div");
           card.classList.add(
@@ -113,8 +127,10 @@
             "p-4",
             "bg-white"
           );
+
           const leftSection = document.createElement("div");
           leftSection.classList.add("flex", "items-center", "space-x-3");
+
           const getBadge = document.createElement("span");
           getBadge.classList.add(
             "bg-yellow-light",
@@ -128,11 +144,14 @@
             "shadow"
           );
           getBadge.innerText = "GET";
+
           const apiTitle = document.createElement("span");
           apiTitle.classList.add("text-gray-800", "dark:text-gray-200", "font-semibold", "text-lg");
           apiTitle.innerText = api.title;
+
           leftSection.appendChild(getBadge);
           leftSection.appendChild(apiTitle);
+
           const tryButton = document.createElement("a");
           tryButton.classList.add(
             "bg-yellow-light",
@@ -152,36 +171,39 @@
           tryButton.innerText = "TRY";
           tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}?${api.q}`;
           tryButton.target = "_blank";
+
           card.appendChild(leftSection);
           card.appendChild(tryButton);
           section.appendChild(card);
         });
+
         container.appendChild(section);
       });
     }
-    renderCards();
 
     function toggleDarkMode() {
-      document.documentElement.classList.toggle('dark');
-      localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      document.documentElement.classList.toggle("dark");
+      localStorage.theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
       updateModeIcon();
     }
 
     function updateModeIcon() {
-      const modeIcon = document.getElementById('mode-icon');
-      if (document.documentElement.classList.contains('dark')) {
-        modeIcon.classList.replace('fa-sun', 'fa-moon');
+      const modeIcon = document.getElementById("mode-icon");
+      if (document.documentElement.classList.contains("dark")) {
+        modeIcon.classList.replace("fa-sun", "fa-moon");
       } else {
-        modeIcon.classList.replace('fa-moon', 'fa-sun');
+        modeIcon.classList.replace("fa-moon", "fa-sun");
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      if (localStorage.theme === 'dark') {
-        document.documentElement.classList.add('dark');
+    document.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.theme === "dark") {
+        document.documentElement.classList.add("dark");
       }
       updateModeIcon();
     });
+
+    renderCards();
   </script>
 </body>
 </html>
