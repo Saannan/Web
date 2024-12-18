@@ -12,11 +12,13 @@
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
-    .menu-active { transform: translateX(0); }
+    .menu-hidden { transform: translateX(100%); }
+    .menu-visible { transform: translateX(0); }
   </style>
 </head>
 <body class="bg-white text-gray-800 min-h-screen flex flex-col">
-  <header class="p-6 bg-yellow-light text-center shadow-lg flex justify-between items-center">
+  <!-- Header -->
+  <header class="p-6 bg-yellow-light shadow-lg flex justify-between items-center">
     <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
     <button id="menu-button" class="text-white focus:outline-none">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -24,28 +26,48 @@
       </svg>
     </button>
   </header>
-  <div id="menu" class="fixed top-0 right-0 h-full w-64 bg-gray-800 text-white transform translate-x-full transition-transform duration-300 z-50 shadow-lg">
+
+  <!-- Hamburger Menu -->
+  <div id="menu" class="fixed top-0 right-0 h-full w-64 bg-gray-800 text-white menu-hidden transition-transform duration-300 z-50 shadow-lg">
     <div class="p-6">
       <h2 class="text-2xl font-bold mb-4">Menu</h2>
       <ul class="space-y-4">
-        <li><button onclick="navigateTo('Docs')" class="block w-full text-left font-semibold hover:underline">Docs</button></li>
-        <li><button onclick="navigateTo('Contact')" class="block w-full text-left font-semibold hover:underline">Contact</button></li>
-        <li><button onclick="navigateTo('ChatAI')" class="block w-full text-left font-semibold hover:underline">ChatAI</button></li>
+        <li>
+          <button onclick="navigateTo('Docs')" class="block w-full text-left font-semibold hover:underline">Docs</button>
+        </li>
+        <li>
+          <button onclick="navigateTo('Contact')" class="block w-full text-left font-semibold hover:underline">Contact</button>
+        </li>
+        <li>
+          <button onclick="navigateTo('ChatAI')" class="block w-full text-left font-semibold hover:underline">ChatAI</button>
+        </li>
       </ul>
     </div>
   </div>
+
+  <!-- Main Content -->
   <main class="flex-1 p-6 bg-gray-50">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
+
+  <!-- Footer -->
   <footer class="p-4 bg-yellow-light text-center text-white">
     <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
   </footer>
+
+  <!-- JavaScript -->
   <script>
     const menu = document.getElementById("menu");
     const menuButton = document.getElementById("menu-button");
 
     menuButton.addEventListener("click", () => {
-      menu.classList.toggle("menu-active");
+      if (menu.classList.contains("menu-hidden")) {
+        menu.classList.remove("menu-hidden");
+        menu.classList.add("menu-visible");
+      } else {
+        menu.classList.remove("menu-visible");
+        menu.classList.add("menu-hidden");
+      }
     });
 
     function navigateTo(page) {
@@ -100,17 +122,17 @@
         );
         const categoryTitle = document.createElement("div");
         categoryTitle.classList.add(
-          "flex", 
-          "justify-between", 
-          "items-center", 
-          "text-xl", 
-          "font-bold", 
-          "bg-yellow-light", 
-          "text-white", 
-          "p-3", 
-          "rounded-lg", 
-          "shadow-md", 
-          "tracking-wider", 
+          "flex",
+          "justify-between",
+          "items-center",
+          "text-xl",
+          "font-bold",
+          "bg-yellow-light",
+          "text-white",
+          "p-3",
+          "rounded-lg",
+          "shadow-md",
+          "tracking-wider",
           "mb-4"
         );
         const categoryName = document.createElement("span");
