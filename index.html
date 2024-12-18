@@ -17,57 +17,45 @@
   </style>
 </head>
 <body class="bg-white text-gray-800 min-h-screen flex flex-col relative">
-  <!-- Header -->
   <header class="p-6 bg-yellow-light shadow-lg flex justify-between items-center relative">
     <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
-    <button id="menu-button" class="rounded-md p-2 border-2 border-white focus:outline-none">
+    <button id="menu-button" class="rounded-md p-2 focus:outline-none">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
       </svg>
     </button>
   </header>
-
-  <!-- Fullscreen Menu -->
-  <div id="menu" class="menu-hidden fixed inset-0 bg-white z-20 shadow-lg">
-    <div class="h-full w-full flex flex-col items-center justify-center space-y-8">
-      <ul class="text-center space-y-6">
+  <div id="menu" class="menu-hidden absolute top-0 left-0 w-full bg-white z-20 shadow-lg">
+    <div class="p-6">
+      <ul class="text-center space-y-4">
         <li>
-          <button onclick="navigateTo('Docs')" class="block text-2xl font-bold text-gray-800 hover:text-yellow-light border-b-2 border-yellow-light pb-2">Docs</button>
+          <button onclick="navigateTo('Docs')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light">Docs</button>
         </li>
         <li>
-          <button onclick="navigateTo('Contact')" class="block text-2xl font-bold text-gray-800 hover:text-yellow-light border-b-2 border-yellow-light pb-2">Contact</button>
+          <button onclick="navigateTo('Contact')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light">Contact</button>
         </li>
         <li>
-          <button onclick="navigateTo('ChatAI')" class="block text-2xl font-bold text-gray-800 hover:text-yellow-light border-b-2 border-yellow-light pb-2">ChatAI</button>
+          <button onclick="navigateTo('ChatAI')" class="block text-lg font-bold text-gray-800 hover:text-yellow-light">ChatAI</button>
         </li>
       </ul>
     </div>
   </div>
-
-  <!-- Main Content -->
   <main class="flex-1 p-6 bg-gray-50">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
-
-  <!-- Footer -->
   <footer class="p-4 bg-yellow-light text-center text-white">
     <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
   </footer>
-
-  <!-- JavaScript -->
   <script>
     const menu = document.getElementById("menu");
     const menuButton = document.getElementById("menu-button");
-
-    // Toggle menu visibility
     menuButton.addEventListener("click", (e) => {
-      e.stopPropagation(); // Prevent unintended closing
+      e.stopPropagation();
       const isHidden = menu.classList.contains("menu-hidden");
       menu.classList.toggle("menu-hidden", !isHidden);
       menu.classList.toggle("menu-visible", isHidden);
     });
 
-    // Close menu when clicking outside the menu
     window.addEventListener("click", (e) => {
       if (!menu.contains(e.target) && !menuButton.contains(e.target)) {
         menu.classList.add("menu-hidden");
