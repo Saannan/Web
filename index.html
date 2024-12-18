@@ -3,198 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V-APIs</title>
+  <title>V-APIs - Home</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
   <style>
     :root {
       --yellow-light: #fbbf24;
-      --yellow-dark: #f59e0b;
       --gray-light: #f3f4f6;
-      --gray-dark: #1f2937;
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
-    .bg-yellow-dark { background-color: var(--yellow-dark); }
     .text-yellow-light { color: var(--yellow-light); }
-    .text-yellow-dark { color: var(--yellow-dark); }
-    .bg-gray-light { background-color: var(--gray-light); }
-    .bg-gray-dark { background-color: var(--gray-dark); }
   </style>
 </head>
-<body class="bg-gray-light text-gray-800 min-h-screen flex flex-col transition-colors duration-300" id="body">
-  <header class="p-6 bg-yellow-light text-center shadow-lg flex justify-between items-center">
+<body class="bg-white text-gray-800 min-h-screen flex flex-col">
+  <header class="p-6 bg-yellow-light text-center shadow-lg relative">
     <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
-    <button id="dark-mode-toggle" class="text-white">
-      <i class="fas fa-moon"></i>
-    </button>
-    <button id="menu-toggle" class="text-white lg:hidden">
-      <i class="fas fa-bars"></i>
-    </button>
+    <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Scalable APIs</p>
   </header>
 
-  <!-- Sidebar Menu -->
-  <div id="menu" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 hidden">
-    <div class="flex justify-end p-6">
-      <button id="close-menu" class="text-white text-2xl">
-        <i class="fas fa-times"></i>
-      </button>
+  <main class="flex-1 flex flex-col items-center justify-center p-6 bg-gray-50">
+    <div class="w-32 h-32 rounded-full overflow-hidden mb-6">
+      <img src="https://pomf2.lain.la/f/c4njx2we.jpg" alt="Profile Picture" class="w-full h-full object-cover">
     </div>
-    <div class="flex justify-center items-center h-full">
-      <div class="bg-white rounded-lg p-6 shadow-xl w-3/4">
-        <ul class="space-y-4 text-center">
-          <li><a href="#docs" class="text-gray-800 text-lg">Docs</a></li>
-          <li><a href="#contact" class="text-gray-800 text-lg">Contact</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <main class="flex-1 p-6 bg-gray-50">
-    <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
+    <a href="docs.html" class="bg-yellow-light text-white px-6 py-2 rounded-full text-lg font-semibold shadow-md tracking-wide">
+      Documentation
+    </a>
   </main>
-  
+
   <footer class="p-4 bg-yellow-light text-center text-white">
-    <p class="text-sm font-medium tracking-wide">© 2024 V-APIs - All Rights Reserved</p>
+    <div class="flex justify-center space-x-6">
+      <a href="https://wa.me/6289654057716" target="_blank" class="text-white text-3xl">
+        <i class="fab fa-whatsapp"></i>
+      </a>
+      <a href="https://t.me/SanjayaXyzz" target="_blank" class="text-white text-3xl">
+        <i class="fab fa-telegram"></i>
+      </a>
+    </div>
+    <p class="text-sm font-medium tracking-wide mt-4">
+      <i class="fas fa-code"></i> 2024 V-APIs - All Rights Reserved
+    </p>
   </footer>
-
-  <script>
-    const categories = [
-      {
-        name: "AI",
-        key: "ai",
-        apis: [
-          { title: "openai", service: "openai", q: "q=hai" },
-          { title: "luminai", service: "luminai", q: "q=hai" },
-          { title: "llama", service: "llama", q: "q=hai" },
-          { title: "blackbox", service: "blackbox", q: "q=hai" },
-        ],
-      },
-      {
-        name: "Search",
-        key: "src",
-        apis: [
-          { title: "google", service: "google", q: "q=ronaldo" },
-          { title: "gimage", service: "gimage", q: "q=ronaldo" },
-          { title: "playstore", service: "playstore", q: "q=minecraft" },
-          { title: "appstore", service: "appstore", q: "q=minecraft" },
-        ],
-      },
-    ];
-
-    function renderCards() {
-      const container = document.getElementById("api-container");
-      container.innerHTML = "";
-      categories.forEach((category) => {
-        const section = document.createElement("div");
-        section.classList.add(
-          "divide-y",
-          "divide-gray-300",
-          "p-4",
-          "bg-white",
-          "rounded-lg",
-          "border",
-          "border-gray-300",
-          "shadow-sm"
-        );
-        const categoryTitle = document.createElement("div");
-        categoryTitle.classList.add(
-          "flex", 
-          "justify-between", 
-          "items-center", 
-          "text-xl", 
-          "font-bold", 
-          "bg-yellow-light", 
-          "text-white", 
-          "p-3", 
-          "rounded-lg", 
-          "shadow-md", 
-          "tracking-wider", 
-          "mb-4"
-        );
-        const categoryName = document.createElement("span");
-        categoryName.innerText = category.name;
-        const totalEndpoints = document.createElement("span");
-        totalEndpoints.classList.add("text-sm", "font-medium");
-        totalEndpoints.innerText = `Total: ${category.apis.length}`;
-        categoryTitle.appendChild(categoryName);
-        categoryTitle.appendChild(totalEndpoints);
-        section.appendChild(categoryTitle);
-        category.apis.forEach((api) => {
-          const card = document.createElement("div");
-          card.classList.add(
-            "flex",
-            "items-center",
-            "justify-between",
-            "p-4",
-            "bg-white"
-          );
-          const leftSection = document.createElement("div");
-          leftSection.classList.add("flex", "items-center", "space-x-3");
-          const getBadge = document.createElement("span");
-          getBadge.classList.add(
-            "bg-yellow-light",
-            "text-white",
-            "px-3",
-            "py-1",
-            "rounded-full",
-            "text-xs",
-            "font-bold",
-            "shadow"
-          );
-          getBadge.innerText = "GET";
-          const apiTitle = document.createElement("span");
-          apiTitle.classList.add("text-gray-800", "font-semibold", "text-lg");
-          apiTitle.innerText = api.title;
-          leftSection.appendChild(getBadge);
-          leftSection.appendChild(apiTitle);
-          const tryButton = document.createElement("a");
-          tryButton.classList.add(
-            "bg-yellow-light",
-            "text-white",
-            "px-3",
-            "py-1",
-            "rounded-full",
-            "text-xs",
-            "font-bold",
-            "shadow",
-            "tracking-wide",
-            "text-sm"
-          );
-          tryButton.innerText = "TRY";
-          tryButton.href = `https://api-vioo.my.id/api/${category.key}/${api.service}?${api.q}`;
-          tryButton.target = "_blank";
-          card.appendChild(leftSection);
-          card.appendChild(tryButton);
-          section.appendChild(card);
-        });
-        container.appendChild(section);
-      });
-    }
-    renderCards();
-
-    // Dark Mode Toggle
-    const darkModeToggle = document.getElementById("dark-mode-toggle");
-    const body = document.getElementById("body");
-
-    darkModeToggle.addEventListener("click", () => {
-      body.classList.toggle("bg-gray-dark");
-      body.classList.toggle("text-white");
-      const isDarkMode = body.classList.contains("bg-gray-dark");
-      darkModeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-    });
-
-    // Menu Toggle
-    const menuToggle = document.getElementById("menu-toggle");
-    const menu = document.getElementById("menu");
-    const closeMenu = document.getElementById("close-menu");
-
-    menuToggle.addEventListener("click", () => {
-      menu.classList.remove("hidden");
-    });
-
-    closeMenu.addEventListener("click", () => {
-      menu.classList.add("hidden");
-    });
-  </script>
 </body>
 </html>
