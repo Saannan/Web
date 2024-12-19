@@ -6,17 +6,17 @@ const categories = [{
         q: "q=hai"
       },
       {
-        title: "gpt-4 mini",
+        title: "gpt-4o mini",
         service: "gpt4o-mini",
         q: "q=hai"
       },
       {
-        title: "gpt-turbo",
+        title: "gpt turbo",
         service: "gpt-turbo",
         q: "q=hai"
       },
       {
-        title: "gpt-turbo v2",
+        title: "gpt turbov2",
         service: "gpt-turbov2",
         q: "q=hai"
       },
