@@ -5,6 +5,8 @@ const app = express();
 const PORT = 3000;
 app.use(express.static(path.join(__dirname)));
 
+const { remini, reminiv2, recolor, dehaze } = require('./src/functions')
+
 function Enc(type) {
   return encodeURIComponent(type)
 }
@@ -25,7 +27,9 @@ const fetchJson = async (url, options = {}) => {
     }
 }
 
-app.get("/api/ai/openai", async (req, res) => {
+// ===== AI
+
+app.get("/api/openai", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -41,7 +45,7 @@ app.get("/api/ai/openai", async (req, res) => {
   }
 })
 
-app.get("/api/ai/luminai", async (req, res) => {
+app.get("/api/luminai", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -57,7 +61,7 @@ app.get("/api/ai/luminai", async (req, res) => {
   }
 })
 
-app.get("/api/ai/llama", async (req, res) => {
+app.get("/api/llama", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -73,7 +77,7 @@ app.get("/api/ai/llama", async (req, res) => {
   }
 })
 
-app.get("/api/ai/blackbox", async (req, res) => {
+app.get("/api/blackbox", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -89,7 +93,7 @@ app.get("/api/ai/blackbox", async (req, res) => {
   }
 })
 
-app.get("/api/ai/simi", async (req, res) => {
+app.get("/api/simi", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -105,7 +109,9 @@ app.get("/api/ai/simi", async (req, res) => {
   }
 })
 
-app.get("/api/src/google", async (req, res) => {
+// ===== SEARCH
+
+app.get("/api/google", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -126,7 +132,7 @@ app.get("/api/src/google", async (req, res) => {
   }
 })
 
-app.get("/api/src/gimage", async (req, res) => {
+app.get("/api/gimage", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -140,7 +146,7 @@ app.get("/api/src/gimage", async (req, res) => {
   }
 })
 
-app.get("/api/src/playstore", async (req, res) => {
+app.get("/api/playstore", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -156,7 +162,7 @@ app.get("/api/src/playstore", async (req, res) => {
   }
 })
 
-app.get("/api/src/appstore", async (req, res) => {
+app.get("/api/appstore", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -172,7 +178,7 @@ app.get("/api/src/appstore", async (req, res) => {
   }
 })
 
-app.get("/api/src/yts", async (req, res) => {
+app.get("/api/yts", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -188,7 +194,9 @@ app.get("/api/src/yts", async (req, res) => {
   }
 })
 
-app.get("/api/dl/ytdl", async (req, res) => {
+// ===== DOWNLOADER
+
+app.get("/api/ytdl", async (req, res) => {
   const { url } = req.query;
   if (!url) {
     return res.status(400).json({ status: false, error: "URL is required" });
@@ -208,7 +216,7 @@ app.get("/api/dl/ytdl", async (req, res) => {
   }
 })
 
-app.get("/api/dl/fbdl", async (req, res) => {
+app.get("/api/fbdl", async (req, res) => {
   const { url } = req.query;
   if (!url) {
     return res.status(400).json({ status: false, error: "URL is required" });
@@ -224,7 +232,7 @@ app.get("/api/dl/fbdl", async (req, res) => {
   }
 })
 
-app.get("/api/dl/igdl", async (req, res) => {
+app.get("/api/igdl", async (req, res) => {
   const { url } = req.query;
   if (!url) {
     return res.status(400).json({ status: false, error: "URL is required" });
@@ -240,7 +248,7 @@ app.get("/api/dl/igdl", async (req, res) => {
   }
 })
 
-app.get("/api/dl/ttdl", async (req, res) => {
+app.get("/api/ttdl", async (req, res) => {
   const { url } = req.query;
   if (!url) {
     return res.status(400).json({ status: false, error: "URL is required" });
@@ -256,7 +264,7 @@ app.get("/api/dl/ttdl", async (req, res) => {
   }
 })
 
-app.get("/api/dl/mfdl", async (req, res) => {
+app.get("/api/mfdl", async (req, res) => {
   const { url } = req.query;
   if (!url) {
     return res.status(400).json({ status: false, error: "URL is required" });
@@ -266,6 +274,201 @@ app.get("/api/dl/mfdl", async (req, res) => {
     res.status(200).json({
     status: true,
     data: response.result,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+// ===== MAKER
+
+app.get("/api/brat", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await axios.get(
+`https://api.siputzx.my.id/api/m/brat?text=${encodeURIComponent(text)}`, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/txtimage", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await axios.get(`https://dummyimage.com/600x400/000/fff&text=${Enc(q)}`, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+// ===== TOOLS
+
+app.get("/api/remini", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const res = await axios.get(url, { responseType: 'arraybuffer' });
+    const Buffr = Buffer.from(res.data);
+    const hdImg = await remini(Buffr);
+    const hdImage = await axios.get(hdImg, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/png');
+    res.send(hdImage.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/reminiv2", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const res = await axios.get(url, { responseType: 'arraybuffer' });
+    const imgs = Buffer.from(res.data);
+    const resu = await reminiv2(imgs, 'enhance');
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(resu);
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/recolor", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const res = await recolor(url);
+    const resu = await axios.get(res,{ responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(resu.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/dehaze", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const resultImage = await dehaze(url);
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(resultImage);
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/ssweb", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.vreden.my.id/api/ssweb?url=${Enc(url)}&type=phone`, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+// ===== CONVERT
+
+app.get("/api/tobase64", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = Buffer.from(q).toString('base64');
+    res.status(200).json({
+    status: true,
+    result: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/toutf8", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = Buffer.from(q, 'base64').toString('utf-8');
+    res.status(200).json({
+    status: true,
+    result: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/tohex", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = Buffer.from(q).toString('hex');
+    res.status(200).json({
+    status: true,
+    result: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/ghraw", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    if (!url.includes('github.com')) {
+      res.status(400).json({ status: false, error: "Requires Github Raw URL" })}
+    const rawUrl = url.replace('github.com', 'raw.githubusercontent.com').replace(/\/blob\/[^\/]+/, '').replace('/master', '').replace('/main', '');
+    res.status(200).json({
+    status: true,
+    result: rawUrl,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/ghori", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    if (!url.includes('raw.githubusercontent.com')) {
+      res.status(400).json({ status: false, error: "Requires Github Ori URL" })}
+    const ghUrl = url.replace('raw.githubusercontent.com', 'github.com').replace(/\/([^\/]+)$/, '/blob/$1').replace('/master', '/blob/master').replace('/main', '/blob/main');
+    res.status(200).json({
+    status: true,
+    result: ghUrl,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: "Failed" })
