@@ -32,6 +32,7 @@ app.get("/api/gpt4o-mini", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
+    const { ChatGPT } = require('./search/functions')
     const response = await ChatGPT(`${Enc(q)}`, "gpt-4o-mini")
     res.status(200).json({
     status: true,
@@ -48,6 +49,7 @@ app.get("/api/gpt-turbo", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
+    const { ChatGPT } = require('./search/functions')
     const response = await ChatGPT(`${Enc(q)}`, "gpt-3.5-turbo")
     res.status(200).json({
     status: true,
@@ -64,6 +66,7 @@ app.get("/api/gpt-turbov2", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
+    const { ChatGPT } = require('./search/functions')
     const response = await ChatGPT(`${Enc(q)}`, "gpt-3.5-turbo-0125")
     res.status(200).json({
     status: true,
