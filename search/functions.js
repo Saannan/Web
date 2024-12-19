@@ -1,6 +1,24 @@
 const axios = require('axios')
 const FormData = require('form-data')
 
+async function ChatGPT(message, model = "gpt-4o") {
+    const modelx = ["gpt-3.5-turbo", "gpt-3.5-turbo-0125", "gpt-4o-mini", "gpt-4o"];
+    const payload = {
+      messages: [{
+        role: "user",
+        content: message
+      }],
+      model: model
+    };
+    const response = await axios.post("https://mpzxsmlptc4kfw5qw2h6nat6iu0hvxiw.lambda-url.us-east-2.on.aws/process", payload, {
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Postify/1.0.0'
+      }
+    });
+    return response.data;
+}
+
 async function Ytdl(link, qualityIndex, typeIndex) {
 const qualities = {
 audio: { 1: '32', 2: '64', 3: '128', 4: '192' },
@@ -88,4 +106,4 @@ const response = await axios.post('https://www.ailabapi.com/api/image/enhance/im
 return Buffer.from(response.data.image, 'base64');
 }
 
-module.exports = { Ytdl, reminiv2, recolor, dehaze }
+module.exports = { ChatGPT, Ytdl, reminiv2, recolor, dehaze }
