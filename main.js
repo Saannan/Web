@@ -250,10 +250,10 @@ app.get("/api/mfdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/mediafiredl?url=${url}`);
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/download/mediafire?url=${url}`);
     res.status(200).json({
     status: true,
-    data: response.data.result,
+    data: response.data.data,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
