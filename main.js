@@ -15,6 +15,7 @@ app.get("/api/gpt4o", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
+    const { ChatGPT } = require('./search/functions')
     const response = await ChatGPT(`${Enc(q)}`, "gpt-4o")
     res.status(200).json({
     status: true,
