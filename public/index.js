@@ -1,6 +1,26 @@
 const categories = [{
     name: "AI",
     apis: [{
+        title: "gpt-4o",
+        service: "gpt4o",
+        q: "q=hai"
+      },
+      {
+        title: "gpt-4 mini",
+        service: "gpt4o-mini",
+        q: "q=hai"
+      },
+      {
+        title: "gpt-turbo",
+        service: "gpt-turbo",
+        q: "q=hai"
+      },
+      {
+        title: "gpt-turbo v2",
+        service: "gpt-turbov2",
+        q: "q=hai"
+      },
+      {
         title: "openai",
         service: "openai",
         q: "q=hai"
