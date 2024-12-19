@@ -81,7 +81,7 @@ const categories = [{
       {
         title: "mediafire",
         service: "mfdl",
-        q: "url=https://www.mediafire.com/file/m1op8fsaaysllht/aphro+Glitcher+v2.0.zip/file"
+        q: "url=https://www.mediafire.com/folder/4zhvcue3l75xa/Delirius+Test"
       },
     ],
   },
