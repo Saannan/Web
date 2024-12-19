@@ -23,7 +23,7 @@ app.get("/api/openai", async (req, res) => {
     result: response.data.data
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -39,7 +39,7 @@ app.get("/api/luminai", async (req, res) => {
     result: response.data.data
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -55,7 +55,7 @@ app.get("/api/llama", async (req, res) => {
     result: response.data.data
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -71,7 +71,7 @@ app.get("/api/blackbox", async (req, res) => {
     result: response.data.result
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -87,7 +87,7 @@ app.get("/api/simi", async (req, res) => {
     result: response.data.result
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -110,7 +110,7 @@ app.get("/api/google", async (req, res) => {
     })),
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -124,7 +124,7 @@ app.get("/api/gimage", async (req, res) => {
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -140,7 +140,7 @@ app.get("/api/playstore", async (req, res) => {
     data: response.data.result,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -156,7 +156,7 @@ app.get("/api/appstore", async (req, res) => {
     data: response.data,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -172,7 +172,7 @@ app.get("/api/yts", async (req, res) => {
     data: response.data.data,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -194,7 +194,7 @@ app.get("/api/ytdl", async (req, res) => {
       audio: ress.data.data.dl,
     },})
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -210,7 +210,7 @@ app.get("/api/fbdl", async (req, res) => {
     data: response.data.data,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -226,7 +226,7 @@ app.get("/api/igdl", async (req, res) => {
     data: response.data.result,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -242,7 +242,7 @@ app.get("/api/ttdl", async (req, res) => {
     data: response.data.result,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -258,7 +258,7 @@ app.get("/api/mfdl", async (req, res) => {
     data: response.data.result,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -274,7 +274,7 @@ app.get("/api/brat", async (req, res) => {
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -288,7 +288,7 @@ app.get("/api/txtimage", async (req, res) => {
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -308,7 +308,7 @@ app.get("/api/remini", async (req, res) => {
     res.setHeader('Content-Type', 'image/png');
     res.send(hdImage.data);
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -325,7 +325,7 @@ app.get("/api/reminiv2", async (req, res) => {
     res.setHeader('Content-Type', 'image/jpeg');
     res.send(resu);
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -341,7 +341,7 @@ app.get("/api/recolor", async (req, res) => {
     res.setHeader('Content-Type', 'image/jpeg');
     res.send(resu.data);
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -356,7 +356,7 @@ app.get("/api/dehaze", async (req, res) => {
     res.setHeader('Content-Type', 'image/jpeg');
     res.send(resultImage);
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -370,7 +370,7 @@ app.get("/api/ssweb", async (req, res) => {
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -388,7 +388,7 @@ app.get("/api/tobase64", async (req, res) => {
     result: response,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -404,7 +404,7 @@ app.get("/api/toutf8", async (req, res) => {
     result: response,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -420,7 +420,7 @@ app.get("/api/tohex", async (req, res) => {
     result: response,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -438,7 +438,7 @@ app.get("/api/ghraw", async (req, res) => {
     result: rawUrl,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
@@ -456,7 +456,7 @@ app.get("/api/ghori", async (req, res) => {
     result: ghUrl,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: "Failed" })
+    res.status(500).json({ status: false, error: "Failed" + error.message })
   }
 })
 
