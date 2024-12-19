@@ -184,13 +184,13 @@ app.get("/api/ytdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const res = await axios.get(`https://api.siputzx.my.id/api/d/ytmp4?url=${url}`);
+    const response = await axios.get(`https://api.siputzx.my.id/api/d/ytmp4?url=${url}`);
     const ress = await axios.get(`https://api.siputzx.my.id/api/d/ytmp3?url=${url}`);
     res.status(200).json({
     status: true,
     data: {
-      title: res.data.data.title,
-      video: res.data.data.dl,
+      title: response.data.data.title,
+      video: response.data.data.dl,
       audio: ress.data.data.dl,
     },})
   } catch (error) {
@@ -300,8 +300,8 @@ app.get("/api/remini", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const res = await axios.get(url, { responseType: 'arraybuffer' });
-    const Buffr = Buffer.from(res.data);
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    const Buffr = Buffer.from(response.data);
     const { remini } = require('./src/functions')
     const hdImg = await remini(Buffr);
     const hdImage = await axios.get(hdImg, { responseType: 'arraybuffer' });
@@ -318,8 +318,8 @@ app.get("/api/reminiv2", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const res = await axios.get(url, { responseType: 'arraybuffer' });
-    const imgs = Buffer.from(res.data);
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    const imgs = Buffer.from(response.data);
     const { reminiv2 } = require('./src/functions')
     const resu = await reminiv2(imgs, 'enhance');
     res.setHeader('Content-Type', 'image/jpeg');
@@ -336,7 +336,7 @@ app.get("/api/recolor", async (req, res) => {
   }
   try {
     const { recolor } = require('./src/functions')
-    const res = await recolor(url);
+    const response = await recolor(url);
     const resu = await axios.get(res,{ responseType: 'arraybuffer' });
     res.setHeader('Content-Type', 'image/jpeg');
     res.send(resu.data);
