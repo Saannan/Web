@@ -55,4 +55,4 @@ const response = await axios.post('https://www.ailabapi.com/api/image/enhance/im
 return Buffer.from(response.data.image, 'base64');
 }
 
-module.exports = { remini, reminiv2, recolor, dehaze  }
+module.exports = { remini, reminiv2, recolor, dehaze }
