@@ -79,17 +79,23 @@ app.get("/api/ai/blackbox", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    async function vAI(content) {
-      try {
-         const response = await axios.post('https://luminai.my.id/', { content, cName: "Vioo", cID: "Vioo0Uf9A72" });
+    const response = await fetchJson(`https://btch.us.kg/blackbox?text=${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    result: response.result
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
 
-         return response.data
-      } catch (error) {
-         console.error(error)
-         throw error
-      }
-    }
-    const response = await vAI(`${Enc(q)}`)
+app.get("/api/ai/simi", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await fetchJson(`https://btch.us.kg/simi?text=${Enc(q)}`)
     res.status(200).json({
     status: true,
     result: response.result
@@ -160,6 +166,106 @@ app.get("/api/src/appstore", async (req, res) => {
     res.status(200).json({
     status: true,
     data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/src/yts", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await fetchJson(`https://deliriussapi-oficial.vercel.app/search/ytsearch?q=${Enc(q)}`);
+    res.status(200).json({
+    status: true,
+    data: response.data,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/dl/ytdl", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const res = await fetchJson(`https://api.siputzx.my.id/api/d/ytmp4?url=${Enc(url)}`);
+    const ress = await fetchJson(`https://api.siputzx.my.id/api/d/ytmp3?url=${Enc(url)}`);
+    res.status(200).json({
+    status: true,
+    data: {
+      title: res.data.title,
+      video: res.data.dl,
+      audio: ress.data.dl,
+    },})
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/dl/fbdl", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const response = await fetchJson(`https://api.vreden.my.id/api/fbdl?url=${Enc(url)}`);
+    res.status(200).json({
+    status: true,
+    data: response.data,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/dl/igdl", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const response = await fetchJson(`https://api.vreden.my.id/api/igdownload?url=${Enc(url)}`);
+    res.status(200).json({
+    status: true,
+    data: response.result,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/dl/ttdl", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const response = await fetchJson(`https://api.vreden.my.id/api/tiktok?url=${Enc(url)}`);
+    res.status(200).json({
+    status: true,
+    data: response.result,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: "Failed" })
+  }
+})
+
+app.get("/api/dl/mfdl", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const response = await fetchJson(`https://api.vreden.my.id/api/mediafiredl?url=${Enc(url)}`);
+    res.status(200).json({
+    status: true,
+    data: response.result,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: "Failed" })
