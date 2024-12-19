@@ -202,8 +202,8 @@ app.get("/api/ytdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const res = await fetchJson(`https://api.siputzx.my.id/api/d/ytmp4?url=${Enc(url)}`);
-    const ress = await fetchJson(`https://api.siputzx.my.id/api/d/ytmp3?url=${Enc(url)}`);
+    const res = await fetchJson(`https://api.siputzx.my.id/api/d/ytmp4?url=${url}`);
+    const ress = await fetchJson(`https://api.siputzx.my.id/api/d/ytmp3?url=${url}`);
     res.status(200).json({
     status: true,
     data: {
@@ -222,7 +222,7 @@ app.get("/api/fbdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const response = await fetchJson(`https://api.vreden.my.id/api/fbdl?url=${Enc(url)}`);
+    const response = await fetchJson(`https://api.vreden.my.id/api/fbdl?url=${url}`);
     res.status(200).json({
     status: true,
     data: response.data,
@@ -238,7 +238,7 @@ app.get("/api/igdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const response = await fetchJson(`https://api.vreden.my.id/api/igdownload?url=${Enc(url)}`);
+    const response = await fetchJson(`https://api.vreden.my.id/api/igdownload?url=${url}`);
     res.status(200).json({
     status: true,
     data: response.result,
@@ -254,7 +254,7 @@ app.get("/api/ttdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const response = await fetchJson(`https://api.vreden.my.id/api/tiktok?url=${Enc(url)}`);
+    const response = await fetchJson(`https://api.vreden.my.id/api/tiktok?url=${url}`);
     res.status(200).json({
     status: true,
     data: response.result,
@@ -270,7 +270,7 @@ app.get("/api/mfdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const response = await fetchJson(`https://api.vreden.my.id/api/mediafiredl?url=${Enc(url)}`);
+    const response = await fetchJson(`https://api.vreden.my.id/api/mediafiredl?url=${url}`);
     res.status(200).json({
     status: true,
     data: response.result,
@@ -288,8 +288,7 @@ app.get("/api/brat", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const response = await axios.get(
-`https://api.siputzx.my.id/api/m/brat?text=${encodeURIComponent(text)}`, { responseType: 'arraybuffer' });
+    const response = await axios.get(`https://api.siputzx.my.id/api/m/brat?text=${Enc(q)}`, { responseType: 'arraybuffer' });
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
   } catch (error) {
@@ -381,7 +380,7 @@ app.get("/api/ssweb", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/ssweb?url=${Enc(url)}&type=phone`, { responseType: 'arraybuffer' });
+    const response = await axios.get(`https://api.vreden.my.id/api/ssweb?url=${url}&type=phone`, { responseType: 'arraybuffer' });
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
   } catch (error) {
