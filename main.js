@@ -7,7 +7,105 @@ function Enc(type) {
   return encodeURIComponent(type)
 }
 
-// ===== A
+// ===== AI
+
+app.get("/api/openai", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { ChatGPTv2 } = require('./search/functions')
+    const response = await ChatGPTv2(`${Enc(q)}`, "openai")
+    res.status(200).json({
+    status: true,
+    result: response
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/luminai", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.siputzx.my.id/api/ai/llama?prompt=You%20name%20is%LuminAI&message=${Enc(q)}`);
+    res.status(200).json({
+    status: true,
+    result: response.data.data
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/llama", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { ChatGPTv2 } = require('./search/functions')
+    const response = await ChatGPTv2(`${Enc(q)}`, "llama")
+    res.status(200).json({
+    status: true,
+    result: response
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/gemini", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.agatz.xyz/api/gemini?message=${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    result: response.data.data.answer
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/blackbox", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await axios.get(`https://btch.us.kg/blackbox?text=${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    result: response.data.result
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/simi", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await axios.get(`https://btch.us.kg/simi?text=${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    result: response.data.result
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
 
 app.get("/api/gpt4o", async (req, res) => {
   const { q } = req.query;
@@ -43,7 +141,7 @@ app.get("/api/gpt4o-mini", async (req, res) => {
   }
 })
 
-app.get("/api/gpt-turbo", async (req, res) => {
+app.get("/api/turbo-v1", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -60,7 +158,7 @@ app.get("/api/gpt-turbo", async (req, res) => {
   }
 })
 
-app.get("/api/gpt-turbov2", async (req, res) => {
+app.get("/api/turbo-v2", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -77,80 +175,34 @@ app.get("/api/gpt-turbov2", async (req, res) => {
   }
 })
 
-app.get("/api/openai", async (req, res) => {
+app.get("/api/mistralv1", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/ia/chatgpt?q=${Enc(q)}`);
+    const { ChatGPTv2 } = require('./search/functions')
+    const response = await ChatGPTv2(`${Enc(q)}`, "mistral")
     res.status(200).json({
     status: true,
-    result: response.data.data
+    result: response
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
-app.get("/api/luminai", async (req, res) => {
+app.get("/api/mistralv2", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const response = await axios.get(`https://api.siputzx.my.id/api/ai/llama?prompt=You%20name%20is%LuminAI&message=${Enc(q)}`);
+    const { ChatGPTv2 } = require('./search/functions')
+    const response = await ChatGPTv2(`${Enc(q)}`, "mistral-large")
     res.status(200).json({
     status: true,
-    result: response.data.data
-    })
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
-})
-
-app.get("/api/llama", async (req, res) => {
-  const { q } = req.query;
-  if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
-  }
-  try {
-    const response = await axios.get(`https://api.siputzx.my.id/api/ai/luminai?content=${Enc(q)}`);
-    res.status(200).json({
-    status: true,
-    result: response.data.data
-    })
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
-})
-
-app.get("/api/blackbox", async (req, res) => {
-  const { q } = req.query;
-  if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
-  }
-  try {
-    const response = await axios.get(`https://btch.us.kg/blackbox?text=${Enc(q)}`)
-    res.status(200).json({
-    status: true,
-    result: response.data.result
-    })
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
-})
-
-app.get("/api/simi", async (req, res) => {
-  const { q } = req.query;
-  if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
-  }
-  try {
-    const response = await axios.get(`https://btch.us.kg/simi?text=${Enc(q)}`)
-    res.status(200).json({
-    status: true,
-    result: response.data.result
+    result: response
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -351,6 +403,48 @@ app.get("/api/txtimage", async (req, res) => {
   }
   try {
     const response = await axios.get(`https://dummyimage.com/600x400/000/fff&text=${Enc(q)}`, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/blurimg", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.siputzx.my.id/api/m/blur?url=${url}`, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/beautiful", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.siputzx.my.id/api/m/beautiful?url=${url}`, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/facepalm", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.siputzx.my.id/api/m/facepalm?url=${url}`, { responseType: 'arraybuffer' });
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
   } catch (error) {
