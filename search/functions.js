@@ -128,46 +128,25 @@ quality,
 type
 }}
 
-async function remini(urlPath, method) {
-return new Promise(async (resolve, reject) => {
-let Methods = ["enhance", "recolor", "dehaze"];
-Methods.includes(method) ? (method = method) : (method = Methods[0]);
-let buffer,
-Form = new FormData(),
-scheme = "https" + "://" + "inferenceengine" + ".vyro" + ".ai/" + method;
-Form.append("model_version", 1, {
-"Content-Transfer-Encoding": "binary",
-contentType: "multipart/form-data; charset=uttf-8",
-});
-Form.append("image", Buffer.from(urlPath), {
+async function remini(imageUrl, method) {
+const Methods = ["enhance", "recolor", "dehaze"];
+method = Methods.includes(method) ? method : Methods[0];
+const url = `https://inferenceengine.vyro.ai/${method}`;
+const imageResponse = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+const formData = new FormData();
+formData.append("model_version", 1);
+formData.append("image", imageResponse.data, {
 filename: "enhance_image_body.jpg",
-contentType: "image/jpeg",
+contentType: "image/jpeg"
 });
-Form.submit({
-url: scheme,
-host: "inferenceengine" + ".vyro" + ".ai",
-path: "/" + method,
-protocol: "https:",
-headers: {
+const headers = {
+...formData.getHeaders(),
 "User-Agent": "okhttp/4.9.3",
 Connection: "Keep-Alive",
-"Accept-Encoding": "gzip",
-}, },
-function(err, res) {
-if (err) reject();
-let data = [];
-res
-.on("data", function(chunk, resp) {
-data.push(chunk);
-})
-.on("end", () => {
-resolve(Buffer.concat(data));
-});
-res.on("error", (e) => {
-reject();
-});
-});
-});
+"Accept-Encoding": "gzip"
+};
+const response = await axios.post(url, formData, { headers });
+return response.data
 }
 
 async function reminiv2(imageData, action) {
