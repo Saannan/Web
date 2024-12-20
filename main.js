@@ -618,6 +618,23 @@ app.get("/api/ghori", async (req, res) => {
   }
 })
 
+app.get("/api/audio2txt", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const { transcribe } = require('./search/functions')
+    const response = await transcribe(`${url}`)
+    res.status(200).json({
+    status: true,
+    result: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
