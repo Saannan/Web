@@ -128,33 +128,44 @@ quality,
 type
 }}
 
-async function remini(url, method) {
+async function remini(urlPath, method) {
 return new Promise(async (resolve, reject) => {
 let Methods = ["enhance", "recolor", "dehaze"];
-method = Methods.includes(method) ? method : Methods[0];
-const response = await axios.get(url, { responseType: 'arraybuffer' });
-const imageBuffer = Buffer.from(response.data);
-let Form = new FormData();
-Form.append("model_version", 1);
-Form.append("image", imageBuffer, {
+Methods.includes(method) ? (method = method) : (method = Methods[0]);
+let buffer,
+Form = new FormData(),
+scheme = "https" + "://" + "inferenceengine" + ".vyro" + ".ai/" + method;
+Form.append("model_version", 1, {
+"Content-Transfer-Encoding": "binary",
+contentType: "multipart/form-data; charset=uttf-8",
+});
+Form.append("image", Buffer.from(urlPath), {
 filename: "enhance_image_body.jpg",
 contentType: "image/jpeg",
 });
-const requestUrl = `https://inferenceengine.vyro.ai/${method}`;
 Form.submit({
-url: requestUrl,
+url: scheme,
+host: "inferenceengine" + ".vyro" + ".ai",
+path: "/" + method,
+protocol: "https:",
 headers: {
-...Form.getHeaders(),
 "User-Agent": "okhttp/4.9.3",
-"Connection": "Keep-Alive",
+Connection: "Keep-Alive",
 "Accept-Encoding": "gzip",
-},
-}, function (err, res) {
-if (err) return reject(err);
+}, },
+function(err, res) {
+if (err) reject();
 let data = [];
-res.on("data", chunk => data.push(chunk));
-res.on("end", () => resolve(Buffer.concat(data)));
-res.on("error", reject);
+res
+.on("data", function(chunk, resp) {
+data.push(chunk);
+})
+.on("end", () => {
+resolve(Buffer.concat(data));
+});
+res.on("error", (e) => {
+reject();
+});
 });
 });
 }
