@@ -235,7 +235,7 @@ app.get("/api/moshi-ai", async (req, res) => {
     const response = await axios.get(`https://api.siputzx.my.id/api/ai/moshiai?input=${Enc(q)}`)
     res.status(200).json({
     status: true,
-    result: response
+    result: response.data.data
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -558,11 +558,12 @@ app.get("/api/recolor", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const { recolor } = require('./search/functions')
-    const response = await recolor(url);
-    const resu = await axios.get(response,{ responseType: 'arraybuffer' });
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    const imgs = Buffer.from(response.data);
+    const { remini } = require('./search/functions')
+    const resu = await remini(imgs, 'recolor');
     res.setHeader('Content-Type', 'image/jpeg');
-    res.send(resu.data);
+    res.send(resu);
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
