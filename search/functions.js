@@ -129,28 +129,28 @@ type
 }}
 
 async function remini(url, method) {
+return new Promise(async (resolve, reject) => {
 let Methods = ["enhance", "recolor", "dehaze"];
 method = Methods.includes(method) ? method : Methods[0];
-let buffer, Form = new FormData();
-Form.append("model_version", 1, {
-"Content-Transfer-Encoding": "binary",
-contentType: "multipart/form-data; charset=utf-8",
-});
-Form.append("image", Buffer.from(url), {
+const response = await axios.get(url, { responseType: 'arraybuffer' });
+const imageBuffer = Buffer.from(response.data);
+let Form = new FormData();
+Form.append("model_version", 1);
+Form.append("image", imageBuffer, {
 filename: "enhance_image_body.jpg",
 contentType: "image/jpeg",
 });
-let requestUrl = `https://inferenceengine.vyro.ai/${method}`;
-return new Promise((resolve, reject) => {
+const requestUrl = `https://inferenceengine.vyro.ai/${method}`;
 Form.submit({
 url: requestUrl,
 headers: {
+...Form.getHeaders(),
 "User-Agent": "okhttp/4.9.3",
-Connection: "Keep-Alive",
+"Connection": "Keep-Alive",
 "Accept-Encoding": "gzip",
 },
-}, function(err, res) {
-if (err) reject(err);
+}, function (err, res) {
+if (err) return reject(err);
 let data = [];
 res.on("data", chunk => data.push(chunk));
 res.on("end", () => resolve(Buffer.concat(data)));
