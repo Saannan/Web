@@ -67,8 +67,8 @@ const categories = [{
         q: "q=hai"
       },
       {
-        title: "sana-ai",
-        service: "sana-ai",
+        title: "moshi-ai",
+        service: "moshi-ai",
         q: "q=car"
       },
     ],
@@ -96,7 +96,7 @@ const categories = [{
         q: "q=minecraft"
       },
       {
-        title: "yt search",
+        title: "yt-search",
         service: "yts",
         q: "q=christy"
       },
