@@ -69,7 +69,7 @@ const categories = [{
       {
         title: "moshi-ai",
         service: "moshi-ai",
-        q: "q=car"
+        q: "q=hai"
       },
     ],
   },
