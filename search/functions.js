@@ -139,4 +139,32 @@ const response = await axios.post('https://www.ailabapi.com/api/image/enhance/im
 return Buffer.from(response.data.image, 'base64');
 }
 
-module.exports = { ChatGPT, ChatGPTv2, Ytdl, reminiv2, recolor, dehaze }
+async function transcribe(url) {
+    const formData = new FormData()
+    const response = await axios.get(url, { responseType: 'stream' })
+    const roar = url.split('/').pop()
+    formData.append('file', response.data, {
+      filename: roar,
+      contentType: 'audio/mpeg'
+    })
+    const config = {
+      headers: {
+        ...formData.getHeaders(),
+        'authority': 'api.talknotes.io',
+        'accept': '*/*',
+        'accept-encoding': 'gzip, deflate, br',
+        'origin': 'https://talknotes.io',
+        'referer': 'https://talknotes.io/',
+        'User-Agent': 'Postify/1.0.0'
+      },
+      maxBodyLength: Infinity
+    }
+    const respons = await axios.post(
+      'https://api.talknotes.io/tools/converter',
+      formData,
+      config
+    )
+    return respons.data
+}
+
+module.exports = { ChatGPT, ChatGPTv2, Ytdl, reminiv2, recolor, dehaze, transcribe }
