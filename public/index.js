@@ -1,25 +1,6 @@
 const categories = [{
     name: "AI",
-    apis: [{
-        title: "gpt-4o",
-        service: "gpt4o",
-        q: "q=hai"
-      },
-      {
-        title: "gpt-4o mini",
-        service: "gpt4o-mini",
-        q: "q=hai"
-      },
-      {
-        title: "gpt turbo",
-        service: "gpt-turbo",
-        q: "q=hai"
-      },
-      {
-        title: "gpt turbov2",
-        service: "gpt-turbov2",
-        q: "q=hai"
-      },
+    apis: [
       {
         title: "openai",
         service: "openai",
@@ -36,6 +17,11 @@ const categories = [{
         q: "q=hai"
       },
       {
+        title: "gemini",
+        service: "gemini",
+        q: "q=hai"
+      },
+      {
         title: "blackbox",
         service: "blackbox",
         q: "q=hai"
@@ -43,6 +29,36 @@ const categories = [{
       {
         title: "simisimi",
         service: "simi",
+        q: "q=hai"
+      },
+      {
+        title: "gpt4o",
+        service: "gpt4o",
+        q: "q=hai"
+      },
+      {
+        title: "gpt4o mini",
+        service: "gpt4o-mini",
+        q: "q=hai"
+      },
+      {
+        title: "turbo-v1",
+        service: "turbo-v1",
+        q: "q=hai"
+      },
+      {
+        title: "turbo-v2",
+        service: "turbo-v2",
+        q: "q=hai"
+      },
+      {
+        title: "mistral-v1",
+        service: "mistralv1",
+        q: "q=hai"
+      },
+      {
+        title: "mistral-v2",
+        service: "mistralv2",
         q: "q=hai"
       },
     ],
@@ -116,6 +132,21 @@ const categories = [{
         title: "textimage",
         service: "txtimage",
         q: "q=hai"
+      },
+      {
+        title: "blur image",
+        service: "blurimg",
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
+      },
+      {
+        title: "beautiful",
+        service: "beautiful",
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
+      },
+      {
+        title: "facepalm",
+        service: "facepalm",
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
       },
     ],
   },
