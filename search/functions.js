@@ -76,34 +76,9 @@ result.answer = data.data.text.replace(/\d+/g, '')
 }
 if (data.data.sources) {
 result.source = data.data.sources
-}
-}
-}
+}}}
 })
 return result
-}
-
-async function SanaAI(prompt) {
-const url = 'https://api.freesana.ai/v1/images/generate'
-const headers = {
-'authority': 'api.freesana.ai',
-'origin': 'https://freesana.ai',
-'referer': 'https://freesana.ai/',
-'user-agent': 'Postify/1.0.0',
-}
-const data = {
-prompt,
-model: "sana_1_6b",
-width: 1024,
-height: 1024,
-guidance_scale: 5,
-pag_guidance_scale: 2,
-num_inference_steps: 18,
-steps: 20,
-seed: -1,
-}
-const response = await axios.post(url, data, { headers })
-return response.data
 }
 
 async function Ytdl(link, qualityIndex, typeIndex) {
@@ -151,34 +126,20 @@ titleSlug: videoInfo.titleSlug,
 videoUrl: videoInfo.url,
 quality,
 type
-};
-}
+}}
 
-async function remini(imageURL, scale = 2) {
-const uploadURL = 'https://ai-api.free-videoconverter.net/v4/sr/upload'
-const processURL = 'https://ai-api.free-videoconverter.net/v4/sr/sr'
-const KEY = 'KgACJju0JScxBvlP'
-const IV = 'wmozBgboU9HRzWG6'
-function reminiTokenSign(data, timestamp) {
-return `${Buffer.from(`${data}${timestamp}${KEY}`).toString('hex')}`
+async function remini(urlPath) {
+const data = new FormData()
+data.append('image_url', urlPath)
+data.append('scale', '2')
+const url = 'https://ai-picture-upscaler.p.rapidapi.com/upscaler/v2/'
+const headers = {
+'x-rapidapi-key': 'd9e028d85emshea6b0e8b786d07dp162e0bjsn6880ba6706ca',
+'x-rapidapi-host': 'ai-picture-upscaler.p.rapidapi.com',
+...data.getHeaders(),
 }
-const formData = new FormData()
-formData.append('img', imageURL)
-formData.append('name', `image_${Date.now()}.jpg`)
-const uploadResponse = await axios.post(uploadURL, formData, {
-headers: formData.getHeaders(),
-})
-const { token } = uploadResponse.data
-const timestamp = Date.now()
-const sign = reminiTokenSign(token, timestamp)
-const processForm = new FormData()
-processForm.append('token', token)
-processForm.append('scale', scale)
-processForm.append('sign', sign)
-const processResponse = await axios.post(processURL, processForm, {
-headers: processForm.getHeaders(),
-})
-return processResponse.data.result
+const response = await axios.post(url, data, { headers })
+return response.data
 }
 
 async function reminiv2(imageData, action) {
@@ -269,4 +230,4 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, ChatGPTv2, FeloAsk, SanaAI, Ytdl, remini, reminiv2, recolor, dehaze, bratv2, transcribe }
+module.exports = { ChatGPT, ChatGPTv2, FeloAsk, Ytdl, remini, reminiv2, recolor, dehaze, bratv2, transcribe }
