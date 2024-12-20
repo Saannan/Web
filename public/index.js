@@ -37,7 +37,7 @@ const categories = [{
         q: "q=hai"
       },
       {
-        title: "gpt4o mini",
+        title: "gpt4o-mini",
         service: "gpt4o-mini",
         q: "q=hai"
       },
@@ -52,14 +52,24 @@ const categories = [{
         q: "q=hai"
       },
       {
-        title: "mistral-v1",
+        title: "mistralv1",
         service: "mistralv1",
         q: "q=hai"
       },
       {
-        title: "mistral-v2",
+        title: "mistralv2",
         service: "mistralv2",
         q: "q=hai"
+      },
+      {
+        title: "felo-ai",
+        service: "felo-ai",
+        q: "q=hai"
+      },
+      {
+        title: "sana-ai",
+        service: "sana-ai",
+        q: "q=car"
       },
     ],
   },
@@ -124,8 +134,13 @@ const categories = [{
   {
     name: "Maker",
     apis: [{
-        title: "brat sticker",
-        service: "brat",
+        title: "bratv1",
+        service: "bratv1",
+        q: "q=hai"
+      },
+      {
+        title: "bratv2",
+        service: "bratv2",
         q: "q=hai"
       },
       {
@@ -156,6 +171,11 @@ const categories = [{
         title: "tinyurl",
         service: "tinyurl",
         q: "url=https://www.google.com"
+      },
+      {
+        title: "remini",
+        service: "remini",
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
       },
       {
         title: "reminiv2",
