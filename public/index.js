@@ -206,6 +206,11 @@ const categories = [{
         service: "ghori",
         q: "url=https://raw.githubusercontent.com/ViooWA/Web/main/vercel.json"
       },
+      {
+        title: "audio2text",
+        service: "ghori",
+        q: "url=https://pomf2.lain.la/f/21axy7kx.mp3"
+      },
     ],
   },
 ];
