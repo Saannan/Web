@@ -128,18 +128,43 @@ quality,
 type
 }}
 
-async function remini(urlPath) {
-const data = new FormData()
-data.append('image_url', urlPath)
-data.append('scale', '2')
-const url = 'https://ai-picture-upscaler.p.rapidapi.com/upscaler/v2/'
-const headers = {
-'x-rapidapi-key': 'd9e028d85emshea6b0e8b786d07dp162e0bjsn6880ba6706ca',
-'x-rapidapi-host': 'ai-picture-upscaler.p.rapidapi.com',
-...data.getHeaders(),
-}
-const response = await axios.post(url, data, { headers })
-return response.data
+async function remini(url, method) {
+return new Promise(async (resolve, reject) => {
+let Methods = ["enhance", "recolor", "dehaze"];
+method = Methods.includes(method) ? method : Methods[0];
+let buffer, Form = new FormData();
+Form.append("model_version", 1, {
+"Content-Transfer-Encoding": "binary",
+contentType: "multipart/form-data; charset=utf-8",
+});
+Form.append("image", Buffer.from(url), {
+filename: "enhance_image_body.jpg",
+contentType: "image/jpeg",
+});
+let requestUrl = `https://inferenceengine.vyro.ai/${method}`;
+Form.submit({
+url: requestUrl,
+headers: {
+"User-Agent": "okhttp/4.9.3",
+Connection: "Keep-Alive",
+"Accept-Encoding": "gzip",
+},
+},
+function(err, res) {
+if (err) reject();
+let data = [];
+res
+.on("data", function(chunk) {
+data.push(chunk);
+})
+.on("end", () => {
+resolve(Buffer.concat(data));
+});
+res.on("error", () => {
+reject();
+});
+});
+});
 }
 
 async function reminiv2(imageData, action) {
