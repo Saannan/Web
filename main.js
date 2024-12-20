@@ -209,6 +209,40 @@ app.get("/api/mistralv2", async (req, res) => {
   }
 })
 
+app.get("/api/felo-ai", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { FeloAsk } = require('./search/functions')
+    const response = await FeloAsk(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    result: response
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/sana-ai", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { SanaAI } = require('./search/functions')
+    const response = await SanaAI(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    result: response
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 // ===== SEARCH
 
 app.get("/api/google", async (req, res) => {
@@ -382,7 +416,7 @@ app.get("/api/mfdl", async (req, res) => {
 
 // ===== MAKER
 
-app.get("/api/brat", async (req, res) => {
+app.get("/api/bratv1", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -391,6 +425,22 @@ app.get("/api/brat", async (req, res) => {
     const response = await axios.get(`https://api.siputzx.my.id/api/m/brat?text=${Enc(q)}`, { responseType: 'arraybuffer' });
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/bratv2", async (req, res) => {
+  const { q } = req.query
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" })
+  }
+  try {
+    const bratImage = await bratv2(`${Enc(q)}`)
+    const base64Image = bratImage.split(',')[1]
+    const imageBuffer = Buffer.from(base64Image, 'base64')
+    res.setHeader('Content-Type', 'image/png')
+    res.send(imageBuffer)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
@@ -470,6 +520,23 @@ app.get("/api/tinyurl", async (req, res) => {
   }
 })
 
+app.get('/api/remini', async (req, res) => {
+  const { url } = req.query
+  if (!url) {
+    return res.status(400).json({ status: false, error: 'URL is required' })
+  }
+  try {
+    const response = await axios.get(url, { responseType: 'arraybuffer' })
+    const imgBuffer = Buffer.from(response.data)
+    const { remini } = require('./search/functions')
+    const result = await remini(imgBuffer)
+    res.setHeader('Content-Type', 'image/jpeg')
+    res.send(result)
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.get("/api/reminiv2", async (req, res) => {
   const { url } = req.query;
   if (!url) {
@@ -524,7 +591,7 @@ app.get("/api/ssweb", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/ssweb?url=${url}&type=phone`, { responseType: 'arraybuffer' });
+    const response = await axios.get(`https://api.screenshotmachine.com/?key=f4fd50&url=${url}&device=tablet&dimension=480x800&format=png&cacheLimit=0&delay=200`, { responseType: 'arraybuffer' });
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
   } catch (error) {
