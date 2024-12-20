@@ -521,9 +521,9 @@ app.get("/api/tinyurl", async (req, res) => {
 })
 
 app.get('/api/remini', async (req, res) => {
-  const { url } = req.query
+  const { url } = req.query;
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" })
+    return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
     const { remini } = require('./search/functions')
@@ -531,9 +531,9 @@ app.get('/api/remini', async (req, res) => {
     res.setHeader('Content-Type', 'image/jpeg');
     res.send(resu);
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
+    res.status(500).json({ status: false, error: error.message });
   }
-})
+});
 
 app.get("/api/reminiv2", async (req, res) => {
   const { url } = req.query;
@@ -563,9 +563,9 @@ app.get("/api/recolor", async (req, res) => {
     res.setHeader('Content-Type', 'image/jpeg');
     res.send(resu);
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
+    res.status(500).json({ status: false, error: error.message });
   }
-})
+});
 
 app.get("/api/dehaze", async (req, res) => {
   const { url } = req.query;
