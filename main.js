@@ -495,7 +495,7 @@ app.get("/api/recolor", async (req, res) => {
   try {
     const { recolor } = require('./search/functions')
     const response = await recolor(url);
-    const resu = await axios.get(res,{ responseType: 'arraybuffer' });
+    const resu = await axios.get(response,{ responseType: 'arraybuffer' });
     res.setHeader('Content-Type', 'image/jpeg');
     res.send(resu.data);
   } catch (error) {
