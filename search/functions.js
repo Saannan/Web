@@ -142,11 +142,11 @@ contentType: "image/jpeg"
 const headers = {
 ...formData.getHeaders(),
 "User-Agent": "okhttp/4.9.3",
-Connection: "Keep-Alive",
+"Connection": "Keep-Alive",
 "Accept-Encoding": "gzip"
 };
-const response = await axios.post(url, formData, { headers });
-return response.data
+const response = await axios.post(url, formData, { headers, responseType: 'arraybuffer' });
+return response.data;
 }
 
 async function reminiv2(imageData, action) {
