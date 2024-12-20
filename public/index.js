@@ -208,7 +208,7 @@ const categories = [{
       },
       {
         title: "audio2text",
-        service: "ghori",
+        service: "audio2txt",
         q: "url=https://pomf2.lain.la/f/21axy7kx.mp3"
       },
     ],
