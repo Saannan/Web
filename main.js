@@ -526,10 +526,8 @@ app.get('/api/remini', async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
-    const imgs = Buffer.from(response.data);
     const { remini } = require('./search/functions')
-    const resu = await remini(imgs, 'enhance');
+    const resu = await remini(url, 'enhance');
     res.setHeader('Content-Type', 'image/jpeg');
     res.send(resu);
   } catch (error) {
@@ -560,10 +558,8 @@ app.get("/api/recolor", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
-    const imgs = Buffer.from(response.data);
     const { remini } = require('./search/functions')
-    const resu = await remini(imgs, 'recolor');
+    const resu = await remini(url, 'recolor');
     res.setHeader('Content-Type', 'image/jpeg');
     res.send(resu);
   } catch (error) {
