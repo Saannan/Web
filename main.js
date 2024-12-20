@@ -526,10 +526,12 @@ app.get('/api/remini', async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    const imgs = Buffer.from(response.data);
     const { remini } = require('./search/functions')
-    const result = await remini(url)
-    res.setHeader('Content-Type', 'image/jpeg')
-    res.send(result)
+    const resu = await remini(imgs, 'enhance');
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(resu);
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
