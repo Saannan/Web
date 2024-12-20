@@ -129,7 +129,6 @@ type
 }}
 
 async function remini(url, method) {
-return new Promise(async (resolve, reject) => {
 let Methods = ["enhance", "recolor", "dehaze"];
 method = Methods.includes(method) ? method : Methods[0];
 let buffer, Form = new FormData();
@@ -142,6 +141,7 @@ filename: "enhance_image_body.jpg",
 contentType: "image/jpeg",
 });
 let requestUrl = `https://inferenceengine.vyro.ai/${method}`;
+return new Promise((resolve, reject) => {
 Form.submit({
 url: requestUrl,
 headers: {
@@ -149,20 +149,12 @@ headers: {
 Connection: "Keep-Alive",
 "Accept-Encoding": "gzip",
 },
-},
-function(err, res) {
-if (err) reject();
+}, function(err, res) {
+if (err) reject(err);
 let data = [];
-res
-.on("data", function(chunk) {
-data.push(chunk);
-})
-.on("end", () => {
-resolve(Buffer.concat(data));
-});
-res.on("error", () => {
-reject();
-});
+res.on("data", chunk => data.push(chunk));
+res.on("end", () => resolve(Buffer.concat(data)));
+res.on("error", reject);
 });
 });
 }
