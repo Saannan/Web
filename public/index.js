@@ -290,7 +290,7 @@ function renderCards() {
         "text-sm"
       );
       tryButton.innerText = "TRY";
-      tryButton.href = `https://api-vioo.my.id/api/${api.service}?${api.q}`;
+      tryButton.href = `https://api.vapis.my.id/api/${api.service}?${api.q}`;
       tryButton.target = "_blank";
       card.appendChild(leftSection);
       card.appendChild(tryButton);
