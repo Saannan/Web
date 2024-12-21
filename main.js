@@ -215,8 +215,8 @@ app.get("/api/felo-ai", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { FeloAsk } = require('./search/functions')
-    const response = await FeloAsk(`${Enc(q)}`)
+    const { feloask } = require('./search/functions')
+    const response = await feloask(`${Enc(q)}`)
     res.status(200).json({
     status: true,
     result: response
@@ -327,6 +327,90 @@ app.get("/api/yts", async (req, res) => {
   }
 })
 
+app.get("/api/spotifys", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { spotifys } = require('./search/functions ')
+    const response = await spotifys(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/bingsrc", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { bingS } = require('./search/functions ')
+    const response = await bingS(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/bingimg", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { bingI } = require('./search/functions ')
+    const response = await bingI(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/bingvd", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { bingV } = require('./search/functions ')
+    const response = await bingV(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/pinterest", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/search/pinterest?text=${Enc(q)}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.result,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 // ===== DOWNLOADER
 
 app.get("/api/ytdl", async (req, res) => {
@@ -335,9 +419,9 @@ app.get("/api/ytdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const { Ytdl } = require('./search/functions')
-    const vid = await Ytdl(url, 3, 2);
-    const aud = await Ytdl(url, 4, 1);
+    const { ytdl } = require('./search/functions')
+    const vid = await ytdl(url, 3, 2);
+    const aud = await ytdl(url, 4, 1);
     res.status(200).json({
     status: true,
     data: {
@@ -407,6 +491,23 @@ app.get("/api/mfdl", async (req, res) => {
     res.status(200).json({
     status: true,
     data: response.data.data,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/spotify", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const { spotifydl } = require('./search/functions')
+    const response = await spotifydl(`${url}`)
+    res.status(200).json({
+    status: true,
+    data: response,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
