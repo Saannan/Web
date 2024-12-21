@@ -2,25 +2,7 @@ const axios = require('axios')
 const cheerio = require('cheerio')
 const FormData = require('form-data')
 
-async function ChatGPT(message, model = "gpt-4o") {
-const modelx = ["gpt-3.5-turbo", "gpt-3.5-turbo-0125", "gpt-4o-mini", "gpt-4o"];
-const payload = {
-messages: [{
-role: "user",
-content: message
-}],
-model: model
-};
-const response = await axios.post("https://mpzxsmlptc4kfw5qw2h6nat6iu0hvxiw.lambda-url.us-east-2.on.aws/process", payload, {
-headers: {
-'Content-Type': 'application/json',
-'User-Agent': 'Postify/1.0.0'
-}
-});
-return response.data;
-}
-
-async function ChatGPTv2(question, model) {
+async function ChatGPT(question, model) {
 const validModels = ["openai", "llama", "mistral", "mistral-large"];
 const data = JSON.stringify({
 messages: [question],
@@ -80,6 +62,152 @@ result.source = data.data.sources
 }}}
 })
 return result
+}
+
+async function meiliai(query) {
+const data = JSON.stringify({
+"queries": [
+{
+"indexUid": "movies-en-US",
+"q": query,
+"attributesToHighlight": [
+"*"
+],
+"highlightPreTag": "__ais-highlight__",
+"highlightPostTag": "__/ais-highlight__",
+"limit": 10,
+"offset": 0,
+"hybrid": {
+"embedder": "small",
+"semanticRatio": 0.5
+},
+"rankingScoreThreshold": 0.3
+}]});
+const config = {
+method: 'POST',
+url: 'https://edge.meilisearch.com/multi-search',
+headers: {
+'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
+'Content-Type': 'application/json',
+'accept-language': 'id-ID',
+'referer': 'https://www.meilisearch.com/',
+'authorization': 'Bearer 6287312fd043d3fca95136cd40483a26154d37dc99aa2e79417f88794a80cd1c',
+'x-meilisearch-client': 'Meilisearch instant-meilisearch (v0.19.3) ; Meilisearch JavaScript (v0.41.0)',
+'origin': 'https://www.meilisearch.com',
+'sec-fetch-dest': 'empty',
+'sec-fetch-mode': 'cors',
+'sec-fetch-site': 'same-site',
+'priority': 'u=4',
+'te': 'trailers'
+}, data: data };
+const response = await axios.request(config);
+return JSON.stringify(response.data, null, 2);
+}
+
+async function islamai(question) {
+const url = 'https://vercel-server-psi-ten.vercel.app/chat';
+const data = {
+text: question,
+array: [
+{ content: "Assalamualaikum", role: "user" },
+{ content: "Waalaikumsalam", role: "assistant" }
+]};
+const response = await axios.post(url, data, {
+headers: {
+'Content-Type': 'application/json',
+'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
+'Referer': 'https://islamandai.com/'
+}})
+return response.data
+}
+
+async function veniceai(question, model = "llama-3.3-70b") {
+const data = JSON.stringify({
+"requestId": "scrape-for-all",
+"modelId": model,
+"prompt": [{ "content": question, "role": "user" }],
+"systemPrompt": "",
+"conversationType": "text",
+"temperature": 0.8,
+"webEnabled": true,
+"topP": 0.9,
+"isCharacter": false,
+"clientProcessingTime": 2834
+})
+const response = await axios.post('https://venice.ai/api/inference/chat', data, { headers: {
+'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
+'Content-Type': 'application/json',
+'accept-language': 'id-ID',
+'referer': 'https://venice.ai/chat',
+'x-venice-version': '20241221.032412',
+'origin': 'https://venice.ai',
+'sec-fetch-dest': 'empty',
+'sec-fetch-mode': 'cors',
+'sec-fetch-site': 'same-origin',
+'priority': 'u=4',
+'te': 'trailers'
+}})
+const chunks = response.data
+.split('\n')
+.filter(chunk => chunk)
+.map(chunk => JSON.parse(chunk))
+const answer = chunks.map(chunk => chunk.content).join('')
+return answer
+}
+
+async function cai(query, characterName = "Luffy") {
+const { data } = await axios.get("https://pastebin.com/raw/hX7neDQb")
+const characters = data.characters
+const prompt = characters.find(char => char.name.toLowerCase() === characterName.toLowerCase())?.instruction || character
+const postData = 
+`action=do_chat_with_ai` +
+`&ai_chatbot_nonce=22aa996020` +
+`&ai_name=${encodeURIComponent(characterName)}` +
+`&origin=` +
+`&instruction=${encodeURIComponent(prompt)}` +
+`&user_question=${query}`
+const response = await axios.post('https://onlinechatbot.ai/wp-admin/admin-ajax.php', postData, { headers: {
+'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
+'accept-language': 'id-ID',
+'referer': 'https://onlinechatbot.ai/chatbots/sakura/',
+'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+'x-requested-with': 'XMLHttpRequest',
+'origin': 'https://onlinechatbot.ai',
+'alt-used': 'onlinechatbot.ai',
+'sec-fetch-dest': 'empty',
+'sec-fetch-mode': 'cors',
+'sec-fetch-site': 'same-origin',
+'priority': 'u=0',
+'te': 'trailers',
+'Cookie': '_ga_PKHPWJ2GVY=GS1.1.1732933582.1.1.1732933609.0.0.0; _ga=GA1.1.261902946.1732933582'
+}})
+return response.data
+}
+
+async function ccai(name, prompt, query) {
+const postData = 
+`action=do_chat_with_ai` +
+`&ai_chatbot_nonce=22aa996020` +
+`&ai_name=${name}` +
+`&origin=` +
+`&instruction=${prompt}` +
+`&user_question=${query}`
+const response = await axios.post('https://onlinechatbot.ai/wp-admin/admin-ajax.php', postData, { headers: {
+'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
+'accept-language': 'id-ID',
+'referer': 'https://onlinechatbot.ai/chatbots/sakura/',
+'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+'x-requested-with': 'XMLHttpRequest',
+'origin': 'https://onlinechatbot.ai',
+'alt-used': 'onlinechatbot.ai',
+'sec-fetch-dest': 'empty',
+'sec-fetch-mode': 'cors',
+'sec-fetch-site': 'same-origin',
+'priority': 'u=0',
+'te': 'trailers',
+'Cookie': '_ga_PKHPWJ2GVY=GS1.1.1732933582.1.1.1732933609.0.0.0; _ga=GA1.1.261902946.1732933582'
+}})
+return response.data
 }
 
 async function spotifys(query) {
@@ -315,4 +443,4 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, ChatGPTv2, feloask, spotifys, bingS, bingI, bingV, ytdl, remini, reminiv2, dehaze, bratv2, transcribe }
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cai, ccai, spotifys, bingS, bingI, bingV, ytdl, remini, reminiv2, dehaze, bratv2, transcribe }
