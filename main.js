@@ -333,7 +333,7 @@ app.get("/api/spotifys", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { spotifys } = require('./search/functions ')
+    const { spotifys } = require('./search/functions')
     const response = await spotifys(`${Enc(q)}`)
     res.status(200).json({
     status: true,
@@ -350,7 +350,7 @@ app.get("/api/bingsrc", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { bingS } = require('./search/functions ')
+    const { bingS } = require('./search/functions')
     const response = await bingS(`${Enc(q)}`)
     res.status(200).json({
     status: true,
@@ -367,7 +367,7 @@ app.get("/api/bingimg", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { bingI } = require('./search/functions ')
+    const { bingI } = require('./search/functions')
     const response = await bingI(`${Enc(q)}`)
     res.status(200).json({
     status: true,
@@ -384,7 +384,7 @@ app.get("/api/bingvd", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { bingV } = require('./search/functions ')
+    const { bingV } = require('./search/functions')
     const response = await bingV(`${Enc(q)}`)
     res.status(200).json({
     status: true,
