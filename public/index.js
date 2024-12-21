@@ -96,9 +96,34 @@ const categories = [{
         q: "q=minecraft"
       },
       {
-        title: "yt-search",
+        title: "ytsearch",
         service: "yts",
-        q: "q=christy"
+        q: "q=mbappe"
+      },
+      {
+        title: "spotifys",
+        service: "spotifys",
+        q: "q=sofia"
+      },
+      {
+        title: "bing search",
+        service: "bingsrc",
+        q: "q=mbappe"
+      },
+      {
+        title: "bing image",
+        service: "bingimg",
+        q: "q=mbappe"
+      },
+      {
+        title: "bing video",
+        service: "bingvd",
+        q: "q=mbappe"
+      },
+      {
+        title: "pinterest",
+        service: "pinterest",
+        q: "q=mbappe"
       },
     ],
   },
@@ -123,6 +148,11 @@ const categories = [{
         title: "tiktok",
         service: "ttdl",
         q: "url=https://vm.tiktok.com/ZSjVn47bC/"
+      },
+      {
+        title: "spotify",
+        service: "spotify",
+        q: "url=https://open.spotify.com/track/2bNxCVI4Fub8BAwr0CQDyd"
       },
       {
         title: "mediafire",
