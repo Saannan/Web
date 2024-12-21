@@ -315,4 +315,4 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, ChatGPTv2, feloask, spotifys, bingS, bingI, bingV, ytdl, spotifydl, remini, reminiv2, dehaze, bratv2, transcribe }
+module.exports = { ChatGPT, ChatGPTv2, feloask, spotifys, bingS, bingI, bingV, ytdl, remini, reminiv2, dehaze, bratv2, transcribe }
