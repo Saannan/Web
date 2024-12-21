@@ -260,29 +260,16 @@ app.get("/api/moshiai", async (req, res) => {
 })
 
 app.get("/api/meiliai", async (req, res) => {
-  const { q } = req.query
+  const { q } = req.query;
   if (!q) {
-    return res.status(400).json({
-      status: false,
-      error: "Query is required"
-    })
+    return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
     const { meiliai } = require('./search/functions')
-    const rawResponse = await meiliai(`${Enc(q)}`)
-    const formattedResponse = rawResponse.results.map(result => ({
-      query: result.query,
-      hits: result.hits.map(hit => ({
-        id: hit.id,
-        title: hit.title || "Unknown Title",
-        description: hit.description || "No description available",
-        highlights: hit._formatted || {}
-      })),
-      totalHits: result.nbHits
-    }))
+    const response = await meiliai(`${Enc(q)}`)
     res.status(200).json({
-      status: true,
-      result: formattedResponse
+    status: true,
+    result: response
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -299,7 +286,7 @@ app.get("/api/islamai", async (req, res) => {
     const response = await islamai(`${Enc(q)}`)
     res.status(200).json({
     status: true,
-    result: response
+    result: response.result
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -314,46 +301,6 @@ app.get("/api/veniceai", async (req, res) => {
   try {
     const { veniceai } = require('./search/functions')
     const response = await veniceai(`${Enc(q)}`, "llama-3.3-70b")
-    res.status(200).json({
-    status: true,
-    result: response
-    })
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
-})
-
-app.get("/api/cai", async (req, res) => {
-  const { q, model } = req.query;
-  if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
-  } else if (!model) {
-    return res.status(400).json({ status: false, error: "Model is required\n\nList:\n- Sakura\n- Feng Xin\n- Mr. Beast\n- Lexi\n- Laura\n- Yuki\n- Luffy\n- Killua\n- Furina\n- Hanabi\n- Doraemon\n- Hari\n- Denki Kaminari\n- Anya Forger\n- Gojo Satoru\n- Mamo Ayase\n- Ken Takakura" });
-  }
-  try {
-    const { cai } = require('./search/functions')
-    const response = await cai(`${Enc(q)}`, model)
-    res.status(200).json({
-    status: true,
-    result: response
-    })
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
-})
-
-app.get("/api/createcai", async (req, res) => {
-  const { model, prompt, q } = req.query;
-  if (!model) {
-    return res.status(400).json({ status: false, error: "Model is required" });
-  } else if (!prompt) {
-    return res.status(400).json({ status: false, error: "Prompt is required" });
-  } else if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
-  }
-  try {
-    const { ccai } = require('./search/functions')
-    const response = await ccai(`${Enc(model)}`, `${Enc(prompt)}`, `${Enc(q)}`)
     res.status(200).json({
     status: true,
     result: response
@@ -602,6 +549,38 @@ app.get("/api/ttdl", async (req, res) => {
   }
 })
 
+app.get("/api/spotify", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/download/spotifydl?url=${url}`)
+    res.status(200).json({
+    status: true,
+    data: response.data.data,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/videy", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.agatz.xyz/api/videydl?url=${url}`)
+    res.status(200).json({
+    status: true,
+    data: response.data.data,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.get("/api/mfdl", async (req, res) => {
   const { url } = req.query;
   if (!url) {
@@ -618,13 +597,13 @@ app.get("/api/mfdl", async (req, res) => {
   }
 })
 
-app.get("/api/spotify", async (req, res) => {
+app.get("/api/gdrive", async (req, res) => {
   const { url } = req.query;
   if (!url) {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/download/spotifydl?url=${url}`)
+    const response = await axios.get(`https://api.siputzx.my.id/api/d/gdrive?url=${url}`)
     res.status(200).json({
     status: true,
     data: response.data.data,
