@@ -42,7 +42,7 @@ app.get("/api/luminai", async (req, res) => {
   }
 })
 
-app.get("/api/llama", async (req, res) => {
+app.get("/api/llamav1", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -50,6 +50,23 @@ app.get("/api/llama", async (req, res) => {
   try {
     const { ChatGPTv2 } = require('./search/functions')
     const response = await ChatGPTv2(`${Enc(q)}`, "llama")
+    res.status(200).json({
+    status: true,
+    result: response
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/llamav2", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { veniceai } = require('./search/functions')
+    const response = await veniceai(`${Enc(q)}`, "llama-3.2-3b-akash")
     res.status(200).json({
     status: true,
     result: response
@@ -113,62 +130,62 @@ app.get("/api/gpt4o", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { ChatGPT } = require('./search/functions')
-    const response = await ChatGPT(`${Enc(q)}`, "gpt-4o")
+    const prompt = "Your name is GPT-4o"
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/ia/gptprompt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
     res.status(200).json({
     status: true,
-    result: response
+    result: response.data.data
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
-app.get("/api/gpt4o-mini", async (req, res) => {
+app.get("/api/gpt4omini", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { ChatGPT } = require('./search/functions')
-    const response = await ChatGPT(`${Enc(q)}`, "gpt-4o-mini")
+    const prompt = "Your name is GPT-4o Mini"
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/ia/gptprompt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
     res.status(200).json({
     status: true,
-    result: response
+    result: response.data.data
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
-app.get("/api/turbo-v1", async (req, res) => {
+app.get("/api/turbov1", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { ChatGPT } = require('./search/functions')
-    const response = await ChatGPT(`${Enc(q)}`, "gpt-3.5-turbo")
+    const prompt = "Your name is GPT Turbo"
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/ia/gptprompt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
     res.status(200).json({
     status: true,
-    result: response
+    result: response.data.data
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
-app.get("/api/turbo-v2", async (req, res) => {
+app.get("/api/turbov2", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { ChatGPT } = require('./search/functions')
-    const response = await ChatGPT(`${Enc(q)}`, "gpt-3.5-turbo-0125")
+    const prompt = "Your name is GPT Turbo Large"
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/ia/gptprompt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
     res.status(200).json({
     status: true,
-    result: response
+    result: response.data.data
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -209,7 +226,7 @@ app.get("/api/mistralv2", async (req, res) => {
   }
 })
 
-app.get("/api/felo-ai", async (req, res) => {
+app.get("/api/feloai", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -226,7 +243,7 @@ app.get("/api/felo-ai", async (req, res) => {
   }
 })
 
-app.get("/api/moshi-ai", async (req, res) => {
+app.get("/api/moshiai", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
@@ -236,6 +253,97 @@ app.get("/api/moshi-ai", async (req, res) => {
     res.status(200).json({
     status: true,
     result: response.data.data
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/meiliai", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { meiliai } = require('./search/functions')
+    const response = await meiliai(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    result: response
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/islamai", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { islamai } = require('./search/functions')
+    const response = await islamai(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    result: response
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/veniceai", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { veniceai } = require('./search/functions')
+    const response = await veniceai(`${Enc(q)}`, "llama-3.3-70b")
+    res.status(200).json({
+    status: true,
+    result: response
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/cai", async (req, res) => {
+  const { q, model } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  } else if (!model) {
+    return res.status(400).json({ status: false, error: "Model is required\n\nList:\n- Sakura\n- Feng Xin\n- Mr. Beast\n- Lexi\n- Laura\n- Yuki\n- Luffy\n- Killua\n- Furina\n- Hanabi\n- Doraemon\n- Hari\n- Denki Kaminari\n- Anya Forger\n- Gojo Satoru\n- Mamo Ayase\n- Ken Takakura" });
+  }
+  try {
+    const { cai } = require('./search/functions')
+    const response = await cai(`${Enc(q)}`, model)
+    res.status(200).json({
+    status: true,
+    result: response
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/createcai", async (req, res) => {
+  const { model, prompt, q } = req.query;
+  if (!model) {
+    return res.status(400).json({ status: false, error: "Model is required" });
+  } else if (!prompt) {
+    return res.status(400).json({ status: false, error: "Prompt is required" });
+  } else if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { ccai } = require('./search/functions')
+    const response = await ccai(`${Enc(model)}`, `${Enc(prompt)}`, `${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    result: response
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
