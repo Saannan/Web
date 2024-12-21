@@ -1,4 +1,5 @@
 const axios = require('axios')
+const cheerio = require('cheerio')
 const FormData = require('form-data')
 
 async function ChatGPT(message, model = "gpt-4o") {
@@ -48,7 +49,7 @@ const response = await axios.request(config);
 return response.data;
 }
 
-async function FeloAsk(query) {
+async function feloask(query) {
 const headers = {
 "Accept": "*/*",
 "User-Agent": "Postify/1.0.0",
@@ -81,7 +82,77 @@ result.source = data.data.sources
 return result
 }
 
-async function Ytdl(link, qualityIndex, typeIndex) {
+async function spotifys(query) {
+const { data } = await axios.get(`https://www.bhandarimilan.info.np/spotisearch?query=${query}`);
+const results = data.map(ft => ({
+nama: ft.name,
+artis: ft.artist,
+rilis: ft.release_date,
+durasi: ft.duration,
+link: ft.link,
+image: ft.image_url
+}));
+return results
+}
+
+async function bingS(query) {
+const response = await axios.get(`https://www.bing.com/search?q=${query}`);
+const html = response.data;
+const $ = cheerio.load(html);
+const results = [];
+$('.b_algo').each((index, element) => {
+const title = $(element).find('h2').text();
+const link = $(element).find('a').attr('href');
+const snippet = $(element).find('.b_caption p').text();
+const image = $(element).find('.cico .rms_iac').attr('data-src');
+results.push({
+title,
+link,
+snippet,
+image: image ? `https:${image}` : undefined
+});
+});
+return results;
+}
+
+async function bingI(query) {
+const response = await axios.get(`https://www.bing.com/images/search?q=${query}`);
+const html = response.data;
+const $ = cheerio.load(html);
+const urls = [];
+$(".imgpt > a").each((i, el) => {
+urls[i] = $(el).attr("href");
+});
+const results = urls.map(url => ({
+photo: `https://www.bing.com${url}`
+}));
+return results;
+}
+
+async function bingV(query) {
+const { data } = await axios.get(`https://www.bing.com/videos/search?q=${query}`);
+const $ = cheerio.load(data);
+const videoDetails = [];
+$('.mc_vtvc').each((index, element) => {
+const title = $(element).find('.mc_vtvc_title strong').text();
+const duration = $(element).find('.mc_bc_rc.items').first().text();
+const views = $(element).find('.meta_vc_content').first().text();
+const uploadDate = $(element).find('.meta_pd_content').first().text();
+const channel = $(element).find('.mc_vtvc_meta_row_channel').text();
+const link = $(element).find('a').attr('href');
+videoDetails.push({
+title,
+duration,
+views,
+uploadDate,
+channel,
+link: `https://www.bing.com${link}`
+});
+});
+return videoDetails;
+}
+
+async function ytdl(link, qualityIndex, typeIndex) {
 const qualities = {
 audio: { 1: '32', 2: '64', 3: '128', 4: '192' },
 video: { 1: '144', 2: '240', 3: '360', 4: '480', 5: '720', 6: '1080', 7: '1440', 8: '2160' }
@@ -126,6 +197,25 @@ titleSlug: videoInfo.titleSlug,
 videoUrl: videoInfo.url,
 quality,
 type
+}}
+
+async function spotifydl(link) {
+const headers = {
+'authority': 'www.bhandarimilan.info.np',
+'accept': '*/*',
+'user-agent': 'Postify/1.0.0'
+}
+const { data } = await axios.get(`https://www.bhandarimilan.info.np/spotify?url=${link}`, { headers });
+const { id, artists, title, album, cover, isrc, releaseDate } = data.metadata;
+return {
+id,
+artists,
+title,
+album,
+cover,
+isrc,
+releaseDate,
+link: data.link
 }}
 
 async function remini(imageUrl, method) {
@@ -225,4 +315,4 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, ChatGPTv2, FeloAsk, Ytdl, remini, reminiv2, dehaze, bratv2, transcribe }
+module.exports = { ChatGPT, ChatGPTv2, feloask, spotifys, bingS, bingI, bingV, ytdl, spotifydl, remini, reminiv2, dehaze, bratv2, transcribe }
