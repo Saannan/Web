@@ -101,7 +101,7 @@ headers: {
 'te': 'trailers'
 }, data: data };
 const response = await axios.request(config);
-return JSON.stringify(response.data, null, 2);
+return response.data
 }
 
 async function islamai(question) {
@@ -153,61 +153,6 @@ const chunks = response.data
 .map(chunk => JSON.parse(chunk))
 const answer = chunks.map(chunk => chunk.content).join('')
 return answer
-}
-
-async function cai(query, characterName = "Luffy") {
-const { data } = await axios.get("https://pastebin.com/raw/hX7neDQb")
-const characters = data.characters
-const prompt = characters.find(char => char.name.toLowerCase() === characterName.toLowerCase())?.instruction || character
-const postData = 
-`action=do_chat_with_ai` +
-`&ai_chatbot_nonce=22aa996020` +
-`&ai_name=${encodeURIComponent(characterName)}` +
-`&origin=` +
-`&instruction=${encodeURIComponent(prompt)}` +
-`&user_question=${query}`
-const response = await axios.post('https://onlinechatbot.ai/wp-admin/admin-ajax.php', postData, { headers: {
-'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
-'accept-language': 'id-ID',
-'referer': 'https://onlinechatbot.ai/chatbots/sakura/',
-'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-'x-requested-with': 'XMLHttpRequest',
-'origin': 'https://onlinechatbot.ai',
-'alt-used': 'onlinechatbot.ai',
-'sec-fetch-dest': 'empty',
-'sec-fetch-mode': 'cors',
-'sec-fetch-site': 'same-origin',
-'priority': 'u=0',
-'te': 'trailers',
-'Cookie': '_ga_PKHPWJ2GVY=GS1.1.1732933582.1.1.1732933609.0.0.0; _ga=GA1.1.261902946.1732933582'
-}})
-return response.data
-}
-
-async function ccai(name, prompt, query) {
-const postData = 
-`action=do_chat_with_ai` +
-`&ai_chatbot_nonce=22aa996020` +
-`&ai_name=${name}` +
-`&origin=` +
-`&instruction=${prompt}` +
-`&user_question=${query}`
-const response = await axios.post('https://onlinechatbot.ai/wp-admin/admin-ajax.php', postData, { headers: {
-'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
-'accept-language': 'id-ID',
-'referer': 'https://onlinechatbot.ai/chatbots/sakura/',
-'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-'x-requested-with': 'XMLHttpRequest',
-'origin': 'https://onlinechatbot.ai',
-'alt-used': 'onlinechatbot.ai',
-'sec-fetch-dest': 'empty',
-'sec-fetch-mode': 'cors',
-'sec-fetch-site': 'same-origin',
-'priority': 'u=0',
-'te': 'trailers',
-'Cookie': '_ga_PKHPWJ2GVY=GS1.1.1732933582.1.1.1732933609.0.0.0; _ga=GA1.1.261902946.1732933582'
-}})
-return response.data
 }
 
 async function spotifys(query) {
@@ -443,4 +388,4 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cai, ccai, spotifys, bingS, bingI, bingV, ytdl, remini, reminiv2, dehaze, bratv2, transcribe }
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, spotifys, bingS, bingI, bingV, ytdl, remini, reminiv2, dehaze, bratv2, transcribe }
