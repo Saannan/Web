@@ -91,16 +91,6 @@ const categories = [{
         service: "veniceai",
         q: "q=hai"
       },
-      {
-        title: "character-ai",
-        service: "cai",
-        q: "q=hai&model=Gojo%20Satoru"
-      },
-      {
-        title: "create cai",
-        service: "createcai",
-        q: "model=Vioo&prompt=Your%20name%20is%20Vioo&q=hai"
-      },
     ],
   },
   {
@@ -185,9 +175,19 @@ const categories = [{
         q: "url=https://open.spotify.com/track/2bNxCVI4Fub8BAwr0CQDyd"
       },
       {
+        title: "videy",
+        service: "videy",
+        q: "url=https://videy.co/v?id=6eWSwq2t"
+      },
+      {
         title: "mediafire",
         service: "mfdl",
         q: "url=https://www.mediafire.com/folder/4zhvcue3l75xa/Delirius+Test"
+      },
+      {
+        title: "gdrive",
+        service: "gdrive",
+        q: "url=https://drive.google.com/file/d/1YTD7Ymux9puFNqu__5WPlYdFZHcGI3Wz/view?usp=drivesdk"
       },
     ],
   },
