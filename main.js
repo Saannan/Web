@@ -15,8 +15,8 @@ app.get("/api/openai", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { ChatGPTv2 } = require('./search/functions')
-    const response = await ChatGPTv2(`${Enc(q)}`, "openai")
+    const { ChatGPT } = require('./search/functions')
+    const response = await ChatGPT(`${Enc(q)}`, "openai")
     res.status(200).json({
     status: true,
     result: response
@@ -48,8 +48,8 @@ app.get("/api/llamav1", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { ChatGPTv2 } = require('./search/functions')
-    const response = await ChatGPTv2(`${Enc(q)}`, "llama")
+    const { ChatGPT } = require('./search/functions')
+    const response = await ChatGPT(`${Enc(q)}`, "llama")
     res.status(200).json({
     status: true,
     result: response
@@ -198,8 +198,8 @@ app.get("/api/mistralv1", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { ChatGPTv2 } = require('./search/functions')
-    const response = await ChatGPTv2(`${Enc(q)}`, "mistral")
+    const { ChatGPT } = require('./search/functions')
+    const response = await ChatGPT(`${Enc(q)}`, "mistral")
     res.status(200).json({
     status: true,
     result: response
@@ -215,8 +215,8 @@ app.get("/api/mistralv2", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const { ChatGPTv2 } = require('./search/functions')
-    const response = await ChatGPTv2(`${Enc(q)}`, "mistral-large")
+    const { ChatGPT } = require('./search/functions')
+    const response = await ChatGPT(`${Enc(q)}`, "mistral-large")
     res.status(200).json({
     status: true,
     result: response
@@ -260,16 +260,29 @@ app.get("/api/moshiai", async (req, res) => {
 })
 
 app.get("/api/meiliai", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({
+      status: false,
+      error: "Query is required"
+    })
   }
   try {
     const { meiliai } = require('./search/functions')
-    const response = await meiliai(`${Enc(q)}`)
+    const rawResponse = await meiliai(`${Enc(q)}`)
+    const formattedResponse = rawResponse.results.map(result => ({
+      query: result.query,
+      hits: result.hits.map(hit => ({
+        id: hit.id,
+        title: hit.title || "Unknown Title",
+        description: hit.description || "No description available",
+        highlights: hit._formatted || {}
+      })),
+      totalHits: result.nbHits
+    }))
     res.status(200).json({
-    status: true,
-    result: response
+      status: true,
+      result: formattedResponse
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
