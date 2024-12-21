@@ -269,7 +269,7 @@ app.get("/api/meiliai", async (req, res) => {
     const response = await meiliai(`${Enc(q)}`)
     res.status(200).json({
     status: true,
-    result: response
+    result: response.results
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
