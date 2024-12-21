@@ -503,11 +503,10 @@ app.get("/api/spotify", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const { spotifydl } = require('./search/functions')
-    const response = await spotifydl(`${url}`)
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/download/spotifydl?url=${url}`)
     res.status(200).json({
     status: true,
-    data: response,
+    data: response.data.data,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
