@@ -12,8 +12,13 @@ const categories = [{
         q: "q=hai"
       },
       {
-        title: "llama",
-        service: "llama",
+        title: "llamav1",
+        service: "llamav1",
+        q: "q=hai"
+      },
+      {
+        title: "llamav2",
+        service: "llamav2",
         q: "q=hai"
       },
       {
@@ -38,38 +43,63 @@ const categories = [{
       },
       {
         title: "gpt4o-mini",
-        service: "gpt4o-mini",
+        service: "gpt4omini",
         q: "q=hai"
       },
       {
         title: "turbo-v1",
-        service: "turbo-v1",
+        service: "turbov1",
         q: "q=hai"
       },
       {
         title: "turbo-v2",
-        service: "turbo-v2",
+        service: "turbov2",
         q: "q=hai"
       },
       {
-        title: "mistralv1",
+        title: "mistral-v1",
         service: "mistralv1",
         q: "q=hai"
       },
       {
-        title: "mistralv2",
+        title: "mistral-v2",
         service: "mistralv2",
         q: "q=hai"
       },
       {
-        title: "felo-ai",
-        service: "felo-ai",
+        title: "feloai",
+        service: "feloai",
         q: "q=hai"
       },
       {
-        title: "moshi-ai",
-        service: "moshi-ai",
+        title: "moshiai",
+        service: "moshiai",
         q: "q=hai"
+      },
+      {
+        title: "meiliai",
+        service: "meiliai",
+        q: "q=hai"
+      },
+      {
+        title: "islamai",
+        service: "islamai",
+        q: "q=hai"
+      },
+      {
+        title: "veniceai",
+        service: "veniceai",
+        q: "q=hai"
+      },
+      {
+        title: "character-ai",
+        service: "cai",
+        q: "q=hai&model=Gojo%20Satoru"
+      },
+      {
+        title: "create cai",
+        service: "createcai",
+        q: "model=Vioo&prompt=Your%20name%20is%20Vioo&q=hai"
       },
     ],
   },
