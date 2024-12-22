@@ -160,11 +160,6 @@ const categories = [{
         q: "url=https://www.facebook.com/share/r/12BFZAtjpS8/?mibextid=qDwCgo"
       },
       {
-        title: "facebookv2",
-        service: "fbdlv2",
-        q: "url=https://www.facebook.com/share/r/12BFZAtjpS8/?mibextid=qDwCgo"
-      },
-      {
         title: "instagram",
         service: "igdl",
         q: "url=https://www.instagram.com/p/DCQhOuXTRvE/?img_index=1&igsh=MWF2dXU3aWtpazY2NQ=="
