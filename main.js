@@ -517,6 +517,23 @@ app.get("/api/fbdl", async (req, res) => {
   }
 })
 
+app.get("/api/fbdlv2", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const { igfbdl } = require('./search/functions')
+    const response = await igfbdl(`${url}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.get("/api/igdl", async (req, res) => {
   const { url } = req.query;
   if (!url) {
@@ -533,6 +550,23 @@ app.get("/api/igdl", async (req, res) => {
   }
 })
 
+app.get("/api/igdlv2", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const { igfbdl } = require('./search/functions')
+    const response = await igfbdl(`${url}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.get("/api/ttdl", async (req, res) => {
   const { url } = req.query;
   if (!url) {
@@ -540,6 +574,23 @@ app.get("/api/ttdl", async (req, res) => {
   }
   try {
     const response = await axios.get(`https://api.vreden.my.id/api/tiktok?url=${url}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.result,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/ttdlv2", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const { tiktokdl } = require('./search/functions')
+    const response = await tiktokdl(`${url}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -774,7 +825,7 @@ app.get("/api/dehaze", async (req, res) => {
   }
   try {
     const { dehaze } = require('./search/functions')
-    const resultImage = await dehaze(url);
+    const resultImage = await dehaze(`${url}`);
     res.setHeader('Content-Type', 'image/jpeg');
     res.send(resultImage);
   } catch (error) {
