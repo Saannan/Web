@@ -517,23 +517,6 @@ app.get("/api/fbdl", async (req, res) => {
   }
 })
 
-app.get("/api/fbdlv2", async (req, res) => {
-  const { url } = req.query;
-  if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
-  }
-  try {
-    const { igfbdl } = require('./search/functions')
-    const response = await igfbdl(`${url}`)
-    res.status(200).json({
-    status: true,
-    data: response,
-    })
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
-})
-
 app.get("/api/igdl", async (req, res) => {
   const { url } = req.query;
   if (!url) {
@@ -593,7 +576,7 @@ app.get("/api/ttdlv2", async (req, res) => {
     const response = await tiktokdl(`${url}`)
     res.status(200).json({
     status: true,
-    data: response.data.result,
+    data: response,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
