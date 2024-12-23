@@ -356,11 +356,12 @@ function renderCards() {
       leftSection.classList.add("flex", "items-center", "space-x-3");
       const getBadge = document.createElement("span");
       getBadge.classList.add(
-        "bg-yellow-light",
-        "text-white",
+        "border",
+        "border-yellow-600",
+        "text-yellow-600",
         "px-3",
         "py-1",
-        "rounded-full",
+        "rounded-md",
         "text-xs",
         "font-bold",
         "shadow"
