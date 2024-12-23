@@ -308,7 +308,7 @@ const categories = [{
 function renderCards() {
   const container = document.getElementById("api-container");
   container.innerHTML = "";
-  categories.forEach((category) => {
+  categories.forEach((category, index) => {
     const section = document.createElement("div");
     section.classList.add(
       "divide-y",
@@ -320,6 +320,7 @@ function renderCards() {
       "border-gray-300",
       "shadow-sm"
     );
+
     const categoryTitle = document.createElement("div");
     categoryTitle.classList.add(
       "flex",
@@ -333,16 +334,23 @@ function renderCards() {
       "rounded-lg",
       "shadow-md",
       "tracking-wider",
-      "mb-4"
+      "cursor-pointer"
     );
     const categoryName = document.createElement("span");
     categoryName.innerText = category.name;
-    const totalEndpoints = document.createElement("span");
-    totalEndpoints.classList.add("text-sm", "font-medium");
-    totalEndpoints.innerText = `Total: ${category.apis.length}`;
+    const toggleIcon = document.createElement("i");
+    toggleIcon.classList.add("fas", "fa-chevron-down", "transition-transform", "duration-300");
     categoryTitle.appendChild(categoryName);
-    categoryTitle.appendChild(totalEndpoints);
+    categoryTitle.appendChild(toggleIcon);
     section.appendChild(categoryTitle);
+
+    const folder = document.createElement("div");
+    folder.classList.add("space-y-4", "mt-4", "hidden");
+    categoryTitle.addEventListener("click", () => {
+      folder.classList.toggle("hidden");
+      toggleIcon.classList.toggle("rotate-180");
+    });
+
     category.apis.forEach((api) => {
       const card = document.createElement("div");
       card.classList.add(
@@ -352,8 +360,10 @@ function renderCards() {
         "p-4",
         "bg-white"
       );
+
       const leftSection = document.createElement("div");
       leftSection.classList.add("flex", "items-center", "space-x-3");
+
       const getBadge = document.createElement("span");
       getBadge.classList.add(
         "border",
@@ -367,18 +377,22 @@ function renderCards() {
         "shadow"
       );
       getBadge.innerText = "GET";
+
       const apiTitle = document.createElement("span");
       apiTitle.classList.add("text-gray-800", "font-semibold", "text-lg");
       apiTitle.innerText = api.title;
+
       leftSection.appendChild(getBadge);
       leftSection.appendChild(apiTitle);
+
       const tryButton = document.createElement("a");
       tryButton.classList.add(
-        "bg-yellow-light",
-        "text-white",
+        "border",
+        "border-yellow-600",
+        "text-yellow-600",
         "px-3",
         "py-1",
-        "rounded-full",
+        "rounded-md",
         "text-xs",
         "font-bold",
         "shadow",
@@ -388,10 +402,13 @@ function renderCards() {
       tryButton.innerText = "TRY";
       tryButton.href = `https://vapis.my.id/api/${api.service}?${api.q}`;
       tryButton.target = "_blank";
+
       card.appendChild(leftSection);
       card.appendChild(tryButton);
-      section.appendChild(card);
+      folder.appendChild(card);
     });
+
+    section.appendChild(folder);
     container.appendChild(section);
   });
 }
