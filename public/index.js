@@ -4,92 +4,110 @@ const categories = [{
       {
         title: "openai",
         service: "openai",
-        q: "q=hai"
+        q: "q=hai",,
+        d: "Get repons from openai"
       },
       {
         title: "luminai",
         service: "luminai",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from luminai"
       },
       {
         title: "llamav1",
         service: "llamav1",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from llamav1"
       },
       {
         title: "llamav2",
         service: "llamav2",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from llamav2"
       },
       {
         title: "gemini",
         service: "gemini",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from gemini"
       },
       {
         title: "blackbox",
         service: "blackbox",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from blackbox"
       },
       {
         title: "simisimi",
         service: "simi",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from simisimi"
       },
       {
         title: "gpt4o",
         service: "gpt4o",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from gpt4o"
       },
       {
         title: "gpt4o-mini",
         service: "gpt4omini",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from gpt4o mini"
       },
       {
         title: "turbo-v1",
         service: "turbov1",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from gpt-turbo v1"
       },
       {
         title: "turbo-v2",
         service: "turbov2",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from gpt-turbo v2"
       },
       {
         title: "mistral-v1",
         service: "mistralv1",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from mistralv1"
       },
       {
         title: "mistral-v2",
         service: "mistralv2",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from mistralv2"
       },
       {
         title: "feloai",
         service: "feloai",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from felo ai"
       },
       {
         title: "moshiai",
         service: "moshiai",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from moshi ai"
       },
       {
         title: "meiliai",
         service: "meiliai",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from meili ai"
       },
       {
         title: "islamai",
         service: "islamai",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from islam ai"
       },
       {
         title: "veniceai",
         service: "veniceai",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Get repons from venice ai"
       },
     ],
   },
@@ -98,57 +116,68 @@ const categories = [{
     apis: [{
         title: "google",
         service: "google",
-        q: "q=ronaldo"
+        q: "q=ronaldo",
+        d: "Search with google"
       },
       {
         title: "gimage",
         service: "gimage",
-        q: "q=ronaldo"
+        q: "q=ronaldo",
+        d: "Search with gimage"
       },
       {
         title: "playstore",
         service: "playstore",
-        q: "q=minecraft"
+        q: "q=minecraft",
+        d: "Search with playstore"
       },
       {
         title: "appstore",
         service: "appstore",
-        q: "q=minecraft"
+        q: "q=minecraft",
+        d: "Search with appstore"
       },
       {
         title: "ytsearch",
         service: "yts",
-        q: "q=mbappe"
+        q: "q=mbappe",
+        d: "Search with youtube"
       },
       {
         title: "spotifys",
         service: "spotifys",
-        q: "q=sofia"
+        q: "q=sofia",
+        d: "Search with spotify"
       },
       {
         title: "bing search",
         service: "bingsrc",
-        q: "q=mbappe"
+        q: "q=mbappe",
+        d: "Search with bing-search"
       },
       {
         title: "bing image",
         service: "bingimg",
-        q: "q=mbappe"
+        q: "q=mbappe",
+        d: "Search with bing-image"
       },
       {
         title: "bing video",
         service: "bingvd",
-        q: "q=mbappe"
+        q: "q=mbappe",
+        d: "Search with bing-video"
       },
       {
         title: "pinterest",
         service: "pinterest",
-        q: "q=mbappe"
+        q: "q=mbappe",
+        d: "Search with pinterest"
       },
       {
         title: "lirik",
         service: "lirik",
-        q: "q=sofia"
+        q: "q=sofia",
+        d: "Search with lirik"
       },
     ],
   },
@@ -335,6 +364,7 @@ function renderCards() {
       "border-gray-300",
       "shadow-sm"
     );
+
     const categoryTitle = document.createElement("div");
     categoryTitle.classList.add(
       "flex",
@@ -358,17 +388,27 @@ function renderCards() {
     categoryTitle.appendChild(categoryName);
     categoryTitle.appendChild(totalEndpoints);
     section.appendChild(categoryTitle);
+
     category.apis.forEach((api) => {
       const card = document.createElement("div");
       card.classList.add(
         "flex",
-        "items-center",
-        "justify-between",
+        "flex-col",
+        "items-start",
         "p-4",
-        "bg-white"
+        "bg-white",
+        "cursor-pointer",
+        "rounded-md",
+        "border",
+        "hover:shadow-lg"
       );
+
+      const topSection = document.createElement("div");
+      topSection.classList.add("flex", "items-center", "justify-between", "w-full");
+
       const leftSection = document.createElement("div");
       leftSection.classList.add("flex", "items-center", "space-x-3");
+
       const getBadge = document.createElement("span");
       getBadge.classList.add(
         "bg-yellow-light",
@@ -381,32 +421,40 @@ function renderCards() {
         "shadow"
       );
       getBadge.innerText = "GET";
+
       const apiTitle = document.createElement("span");
       apiTitle.classList.add("text-gray-800", "font-semibold", "text-lg");
       apiTitle.innerText = api.title;
+
       leftSection.appendChild(getBadge);
       leftSection.appendChild(apiTitle);
+
       const tryButton = document.createElement("a");
-      tryButton.classList.add(
-        "bg-yellow-light",
-        "text-white",
-        "px-3",
-        "py-1",
-        "rounded-full",
-        "text-xs",
-        "font-bold",
-        "shadow",
-        "tracking-wide",
-        "text-sm"
-      );
-      tryButton.innerText = "TRY";
+      tryButton.classList.add("text-yellow-light", "text-2xl");
+      tryButton.innerHTML = `<i class="fas fa-arrow-right"></i>`;
       tryButton.href = `https://vapis.my.id/api/${api.service}?${api.q}`;
       tryButton.target = "_blank";
-      card.appendChild(leftSection);
-      card.appendChild(tryButton);
+
+      topSection.appendChild(leftSection);
+      topSection.appendChild(tryButton);
+      card.appendChild(topSection);
+
+      const d = document.createElement("p");
+      d.classList.add("hidden", "text-gray-600", "mt-3", "text-sm");
+      d.innerText = api.d;
+
+      card.appendChild(d);
+
+      card.addEventListener("click", () => {
+        const isHidden = d.classList.contains("hidden");
+        d.classList.toggle("hidden", !isHidden);
+      });
+
       section.appendChild(card);
     });
+
     container.appendChild(section);
   });
 }
+
 renderCards();
