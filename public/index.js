@@ -4,7 +4,7 @@ const categories = [{
       {
         title: "openai",
         service: "openai",
-        q: "q=hai",,
+        q: "q=hai",
         description: "Get repons from openai"
       },
       {
@@ -384,32 +384,9 @@ function renderCards() {
   container.innerHTML = "";
   categories.forEach((category) => {
     const section = document.createElement("div");
-    section.classList.add(
-      "divide-y",
-      "divide-gray-300",
-      "p-4",
-      "bg-white",
-      "rounded-lg",
-      "border",
-      "border-gray-300",
-      "shadow-sm"
-    );
-
+    section.classList.add("p-4", "bg-white", "rounded-lg", "border", "shadow-sm");
     const categoryTitle = document.createElement("div");
-    categoryTitle.classList.add(
-      "flex",
-      "justify-between",
-      "items-center",
-      "text-xl",
-      "font-bold",
-      "bg-yellow-light",
-      "text-white",
-      "p-3",
-      "rounded-lg",
-      "shadow-md",
-      "tracking-wider",
-      "mb-4"
-    );
+    categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "bg-yellow-light", "text-white", "p-3", "rounded-lg", "shadow-md", "mb-4");
     const categoryName = document.createElement("span");
     categoryName.innerText = category.name;
     const totalEndpoints = document.createElement("span");
@@ -418,73 +395,44 @@ function renderCards() {
     categoryTitle.appendChild(categoryName);
     categoryTitle.appendChild(totalEndpoints);
     section.appendChild(categoryTitle);
-
-    category.apis.forEach((api) => {
+    category.apis.forEach((api, index) => {
       const card = document.createElement("div");
-      card.classList.add(
-        "flex",
-        "flex-col",
-        "items-start",
-        "p-4",
-        "bg-white",
-        "cursor-pointer",
-        "rounded-md",
-        "border",
-        "hover:shadow-lg"
-      );
-
+      card.classList.add("card", "flex", "flex-col", "items-start", "p-4", "bg-white", "cursor-pointer", "rounded-md", "hover:shadow-lg");
       const topSection = document.createElement("div");
       topSection.classList.add("flex", "items-center", "justify-between", "w-full");
-
       const leftSection = document.createElement("div");
       leftSection.classList.add("flex", "items-center", "space-x-3");
-
       const getBadge = document.createElement("span");
-      getBadge.classList.add(
-        "bg-yellow-light",
-        "text-white",
-        "px-3",
-        "py-1",
-        "rounded-full",
-        "text-xs",
-        "font-bold",
-        "shadow"
-      );
+      getBadge.classList.add("bg-yellow-light", "text-white", "px-3", "py-1", "rounded-full", "text-xs", "font-bold", "shadow");
       getBadge.innerText = "GET";
-
       const apiTitle = document.createElement("span");
       apiTitle.classList.add("text-gray-800", "font-semibold", "text-lg");
       apiTitle.innerText = api.title;
-
       leftSection.appendChild(getBadge);
       leftSection.appendChild(apiTitle);
-
       const tryButton = document.createElement("a");
       tryButton.classList.add("text-yellow-light", "text-2xl");
       tryButton.innerHTML = `<i class="fas fa-arrow-right"></i>`;
       tryButton.href = `https://vapis.my.id/api/${api.service}?${api.q}`;
       tryButton.target = "_blank";
-
       topSection.appendChild(leftSection);
       topSection.appendChild(tryButton);
       card.appendChild(topSection);
-
       const description = document.createElement("p");
       description.classList.add("hidden", "text-gray-600", "mt-3", "text-sm");
       description.innerText = api.description;
-
       card.appendChild(description);
-
       card.addEventListener("click", () => {
-        const isHidden = description.classList.contains("hidden");
-        description.classList.toggle("hidden", !isHidden);
+        document.querySelectorAll("#api-container p").forEach((desc) => {
+          if (desc !== description) {
+            desc.classList.add("hidden");
+          }
+        });
+        description.classList.toggle("hidden");
       });
-
       section.appendChild(card);
     });
-
     container.appendChild(section);
   });
 }
-
 renderCards();
