@@ -186,62 +186,74 @@ const categories = [{
     apis: [{
         title: "youtube",
         service: "ytdl",
-        q: "url=https://youtu.be/3JSJ6h7LKb0"
+        q: "url=https://youtu.be/3JSJ6h7LKb0",
+        d: "Youtube downloader"
       },
       {
         title: "facebook",
         service: "fbdl",
-        q: "url=https://www.facebook.com/share/r/12BFZAtjpS8/?mibextid=qDwCgo"
+        q: "url=https://www.facebook.com/share/r/12BFZAtjpS8/?mibextid=qDwCgo",
+        d: "Facebook downloader"
       },
       {
         title: "instagram",
         service: "igdl",
-        q: "url=https://www.instagram.com/p/DCQhOuXTRvE/?img_index=1&igsh=MWF2dXU3aWtpazY2NQ=="
+        q: "url=https://www.instagram.com/p/DCQhOuXTRvE/?img_index=1&igsh=MWF2dXU3aWtpazY2NQ==",
+        d: "Instagram downloader"
       },
       {
         title: "instagramv2",
         service: "igdlv2",
-        q: "url=https://www.instagram.com/p/DCQhOuXTRvE/?img_index=1&igsh=MWF2dXU3aWtpazY2NQ=="
+        q: "url=https://www.instagram.com/p/DCQhOuXTRvE/?img_index=1&igsh=MWF2dXU3aWtpazY2NQ==",
+        d: "Instagramv2 downloader"
       },
       {
         title: "tiktok",
         service: "ttdl",
-        q: "url=https://vm.tiktok.com/ZSjVn47bC/"
+        q: "url=https://vm.tiktok.com/ZSjVn47bC/",
+        d: "Tiktok downloader"
       },
       {
         title: "tiktokv2",
         service: "ttdlv2",
-        q: "url=https://vm.tiktok.com/ZSjVn47bC/"
+        q: "url=https://vm.tiktok.com/ZSjVn47bC/",
+        d: "Tiktokv2 downloader"
       },
       {
         title: "spotify",
         service: "spotify",
-        q: "url=https://open.spotify.com/track/2bNxCVI4Fub8BAwr0CQDyd"
+        q: "url=https://open.spotify.com/track/2bNxCVI4Fub8BAwr0CQDyd",
+        d: "Spotify downloader"
       },
       {
         title: "videy",
         service: "videy",
-        q: "url=https://videy.co/v?id=6eWSwq2t"
+        q: "url=https://videy.co/v?id=6eWSwq2t",
+        d: "Videy downloader"
       },
       {
         title: "mediafire",
         service: "mfdl",
-        q: "url=https://www.mediafire.com/folder/4zhvcue3l75xa/Delirius+Test"
+        q: "url=https://www.mediafire.com/folder/4zhvcue3l75xa/Delirius+Test",
+        d: "Mediafire downloader"
       },
       {
         title: "gdrive",
         service: "gdrive",
-        q: "url=https://drive.google.com/file/d/1YTD7Ymux9puFNqu__5WPlYdFZHcGI3Wz/view?usp=drivesdk"
+        q: "url=https://drive.google.com/file/d/1YTD7Ymux9puFNqu__5WPlYdFZHcGI3Wz/view?usp=drivesdk",
+        d: "Gdrive downloader"
       },
       {
         title: "getlirik",
         service: "getlirik",
-        q: "url=https://www.lyrics.com/lyric/32849180/Alvaro+Soler/Sofia"
+        q: "url=https://www.lyrics.com/lyric/32849180/Alvaro+Soler/Sofia",
+        d: "Get lirik music"
       },
       {
         title: "pastebin",
         service: "pastebin",
-        q: "url=https://pastebin.com/Geq38sT1"
+        q: "url=https://pastebin.com/Geq38sT1",
+        d: "Get data url from pastebin"
       },
     ],
   },
@@ -250,32 +262,38 @@ const categories = [{
     apis: [{
         title: "bratv1",
         service: "bratv1",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Bratv1 sticker"
       },
       {
         title: "bratv2",
         service: "bratv2",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Bratv2 sticker"
       },
       {
         title: "textimage",
         service: "txtimage",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Text image dummy"
       },
       {
         title: "blur image",
         service: "blurimg",
-        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg",
+        d: "Blur your image"
       },
       {
         title: "beautiful",
         service: "beautiful",
-        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg",
+        d: "Beautiful image"
       },
       {
         title: "facepalm",
         service: "facepalm",
-        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg",
+        d: "Facepalm image"
       },
     ],
   },
@@ -284,32 +302,38 @@ const categories = [{
     apis: [{
         title: "tinyurl",
         service: "tinyurl",
-        q: "url=https://www.google.com"
+        q: "url=https://www.google.com",
+        d: "Changes to shortlink"
       },
       {
         title: "remini",
         service: "remini",
-        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg",
+        d: "Enhancev1 your image"
       },
       {
         title: "reminiv2",
         service: "reminiv2",
-        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg",
+        d: "Enhancev2 your image"
       },
       {
         title: "recolor",
         service: "recolor",
-        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg",
+        d: "Recolor your image"
       },
       {
         title: "dehaze",
         service: "dehaze",
-        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg",
+        d: "Dehaze your image"
       },
       {
         title: "screenshot web",
         service: "ssweb",
-        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg"
+        q: "url=https://pomf2.lain.la/f/c4njx2we.jpg",
+        d: "Screenshot website target"
       },
     ],
   },
@@ -318,32 +342,38 @@ const categories = [{
     apis: [{
         title: "tobase64",
         service: "tobase64",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Convert utf8 to base64"
       },
       {
         title: "toutf8",
         service: "toutf8",
-        q: "q=aGFp"
+        q: "q=aGFp",
+        d: "Convert base64 to utf8"
       },
       {
         title: "tohex",
         service: "tohex",
-        q: "q=hai"
+        q: "q=hai",
+        d: "Convert text to hex"
       },
       {
         title: "togithub-raw",
         service: "ghraw",
-        q: "url=https://github.com/ViooWA/Web/blob/main/vercel.json"
+        q: "url=https://github.com/ViooWA/Web/blob/main/vercel.json",
+        d: "Convert to github raw url"
       },
       {
         title: "togithub-ori",
         service: "ghori",
-        q: "url=https://raw.githubusercontent.com/ViooWA/Web/main/vercel.json"
+        q: "url=https://raw.githubusercontent.com/ViooWA/Web/main/vercel.json",
+        d: "Convert to github main url"
       },
       {
         title: "audio2text",
         service: "audio2txt",
-        q: "url=https://pomf2.lain.la/f/21axy7kx.mp3"
+        q: "url=https://pomf2.lain.la/f/21axy7kx.mp3",
+        d: "Voice to text"
       },
     ],
   },
@@ -439,15 +469,15 @@ function renderCards() {
       topSection.appendChild(tryButton);
       card.appendChild(topSection);
 
-      const d = document.createElement("p");
-      d.classList.add("hidden", "text-gray-600", "mt-3", "text-sm");
-      d.innerText = api.d;
+      const desc = document.createElement("p");
+      desc.classList.add("hidden", "text-gray-600", "mt-3", "text-sm");
+      desc.innerText = api.d;
 
-      card.appendChild(d);
+      card.appendChild(desc);
 
       card.addEventListener("click", () => {
-        const isHidden = d.classList.contains("hidden");
-        d.classList.toggle("hidden", !isHidden);
+        const isHidden = desc.classList.contains("hidden");
+        desc.classList.toggle("hidden", !isHidden);
       });
 
       section.appendChild(card);
