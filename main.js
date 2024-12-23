@@ -479,6 +479,23 @@ app.get("/api/pinterest", async (req, res) => {
   }
 })
 
+app.get("/api/lirik", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { srcLyrics } = require('./search/functions')
+    const response = await srcLyrics(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 // ===== DOWNLOADER
 
 app.get("/api/ytdl", async (req, res) => {
@@ -641,6 +658,40 @@ app.get("/api/gdrive", async (req, res) => {
     res.status(200).json({
     status: true,
     data: response.data.data,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/getlirik", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const { getLyrics } = require('./search/functions')
+    const response = await getLyrics(`${url}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/pastebin", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const { pastebin } = require('./search/functions')
+    const response = await pastebin(`${url}`)
+    res.status(200).json({
+    status: true,
+    data: response,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
