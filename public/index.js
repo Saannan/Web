@@ -308,45 +308,40 @@ const categories = [{
 function renderCards() {
   const container = document.getElementById("api-container");
   container.innerHTML = "";
-  categories.forEach((category, index) => {
+  categories.forEach((category) => {
     const section = document.createElement("div");
     section.classList.add(
-      "divide-y",
-      "divide-gray-300",
-      "p-4",
-      "bg-white",
       "rounded-lg",
-      "border",
-      "border-gray-300",
-      "shadow-sm"
+      "bg-white",
+      "shadow-md",
+      "overflow-hidden"
     );
 
-    const categoryTitle = document.createElement("div");
-    categoryTitle.classList.add(
+    const categoryHeader = document.createElement("div");
+    categoryHeader.classList.add(
       "flex",
       "justify-between",
       "items-center",
-      "text-xl",
-      "font-bold",
+      "p-4",
       "bg-yellow-light",
       "text-white",
-      "p-3",
-      "rounded-lg",
-      "shadow-md",
-      "tracking-wider",
       "cursor-pointer"
     );
+
     const categoryName = document.createElement("span");
+    categoryName.classList.add("text-lg", "font-bold");
     categoryName.innerText = category.name;
+
     const toggleIcon = document.createElement("i");
     toggleIcon.classList.add("fas", "fa-chevron-down", "transition-transform", "duration-300");
-    categoryTitle.appendChild(categoryName);
-    categoryTitle.appendChild(toggleIcon);
-    section.appendChild(categoryTitle);
+
+    categoryHeader.appendChild(categoryName);
+    categoryHeader.appendChild(toggleIcon);
+    section.appendChild(categoryHeader);
 
     const folder = document.createElement("div");
-    folder.classList.add("space-y-4", "mt-4", "hidden");
-    categoryTitle.addEventListener("click", () => {
+    folder.classList.add("hidden", "bg-gray-light", "space-y-4", "p-4");
+    categoryHeader.addEventListener("click", () => {
       folder.classList.toggle("hidden");
       toggleIcon.classList.toggle("rotate-180");
     });
@@ -358,11 +353,15 @@ function renderCards() {
         "items-center",
         "justify-between",
         "p-4",
-        "bg-white"
+        "bg-white",
+        "rounded-md",
+        "shadow-sm",
+        "border",
+        "border-gray-300"
       );
 
       const leftSection = document.createElement("div");
-      leftSection.classList.add("flex", "items-center", "space-x-3");
+      leftSection.classList.add("flex", "items-center", "space-x-4");
 
       const getBadge = document.createElement("span");
       getBadge.classList.add(
@@ -387,15 +386,15 @@ function renderCards() {
 
       const tryButton = document.createElement("a");
       tryButton.classList.add(
-        "border",
-        "border-yellow-600",
-        "text-yellow-600",
+        "bg-yellow-light",
+        "text-white",
         "px-3",
-        "py-1",
-        "rounded-md",
+        "py-2",
+        "rounded-full",
         "text-xs",
         "font-bold",
         "shadow",
+        "hover-bg-yellow-dark",
         "tracking-wide",
         "text-sm"
       );
