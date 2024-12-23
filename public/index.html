@@ -16,14 +16,15 @@
       --yellow-light: #facc15;
       --yellow-dark: #eab308;
       --gray-light: #f3f4f6;
+      --gray-dark: #d1d5db;
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
     .hover-bg-yellow-dark:hover { background-color: var(--yellow-dark); }
     .transition-smooth { transition: all 0.3s ease-in-out; }
     .rotate-180 { transform: rotate(180deg); }
-    .hidden-fold { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; }
-    .show-fold { max-height: 500px; }
+    .hidden-fold { max-height: 0; overflow: hidden; opacity: 0; transition: all 0.3s ease-in-out; }
+    .show-fold { max-height: 1000px; opacity: 1; }
   </style>
 </head>
 <body class="bg-gray-light text-gray-800 min-h-screen flex flex-col">

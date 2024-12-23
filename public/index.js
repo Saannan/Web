@@ -314,7 +314,6 @@ function renderCards() {
       "rounded-lg",
       "bg-white",
       "shadow-lg",
-      "overflow-hidden",
       "border",
       "border-gray-300"
     );
