@@ -313,9 +313,8 @@ function renderCards() {
     section.classList.add(
       "rounded-lg",
       "bg-white",
-      "shadow-lg",
-      "border",
-      "border-gray-300"
+      "shadow-md",
+      "overflow-hidden"
     );
 
     const categoryHeader = document.createElement("div");
@@ -326,8 +325,7 @@ function renderCards() {
       "p-4",
       "bg-yellow-light",
       "text-white",
-      "cursor-pointer",
-      "transition-smooth"
+      "cursor-pointer"
     );
 
     const categoryName = document.createElement("span");
@@ -335,20 +333,17 @@ function renderCards() {
     categoryName.innerText = category.name;
 
     const toggleIcon = document.createElement("i");
-    toggleIcon.classList.add("fas", "fa-chevron-down", "transition-smooth");
+    toggleIcon.classList.add("fas", "fa-chevron-down", "transition-transform", "duration-300");
 
     categoryHeader.appendChild(categoryName);
     categoryHeader.appendChild(toggleIcon);
     section.appendChild(categoryHeader);
 
     const folder = document.createElement("div");
-    folder.classList.add("hidden-fold", "bg-gray-light", "space-y-4", "p-4");
-
+    folder.classList.add("hidden", "bg-gray-light", "space-y-4", "p-4");
     categoryHeader.addEventListener("click", () => {
-      const isOpen = folder.classList.contains("show-fold");
-      folder.classList.toggle("hidden-fold", isOpen);
-      folder.classList.toggle("show-fold", !isOpen);
-      toggleIcon.classList.toggle("rotate-180", !isOpen);
+      folder.classList.toggle("hidden");
+      toggleIcon.classList.toggle("rotate-180");
     });
 
     category.apis.forEach((api) => {
@@ -393,7 +388,7 @@ function renderCards() {
       tryButton.classList.add(
         "bg-yellow-light",
         "text-white",
-        "px-4",
+        "px-3",
         "py-2",
         "rounded-full",
         "text-xs",
