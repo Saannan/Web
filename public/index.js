@@ -207,7 +207,7 @@ const categories = [{
       {
         title: "getlirik",
         service: "getlirik",
-        q: "url="
+        q: "url=https://www.lyrics.com/lyric/32849180/Alvaro+Soler/Sofia"
       },
       {
         title: "pastebin",
