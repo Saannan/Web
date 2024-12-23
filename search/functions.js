@@ -225,6 +225,26 @@ link: `https://www.bing.com${link}`
 return videoDetails;
 }
 
+async function srcLyrics(song) {
+const { data } = await axios.get(`https://www.lyrics.com/lyrics/${song}`);
+const $ = cheerio.load(data);
+const result = $('.best-matches .bm-case').map((i, element) => {
+const title = $(element).find('.bm-label a').first().text();
+const artist = $(element).find('.bm-label a').last().text();
+const album = $(element).find('.bm-label').eq(1).text().trim().replace(/\s+/g, ' ');
+const imageUrl = $(element).find('.album-thumb img').attr('src');
+const link = $(element).find('.bm-label a').first().attr('href');
+return {
+title,
+artist,
+album,
+imageUrl,
+link: `https://www.lyrics.com${link}`
+};
+}).get();
+return result
+}
+
 async function ytdl(link, qualityIndex, typeIndex) {
 const qualities = {
 audio: { 1: '32', 2: '64', 3: '128', 4: '192' },
@@ -383,24 +403,33 @@ coverUrl: result.dlink.cover
 }}
 }
 
-async function spotifydl(link) {
-const headers = {
-'authority': 'www.bhandarimilan.info.np',
-'accept': '*/*',
-'user-agent': 'Postify/1.0.0'
+async function getLyrics(url) {
+const { data } = await axios.get(url);
+const $ = cheerio.load(data);
+const artistImage = $('#featured-artist-avatar img').attr('src');
+const about = $('.artist-meta .bio').text().trim();
+const year = $('.lyric-details dt:contains("Year:") + dd').text().trim();
+const playlists = $('.lyric-details dt:contains("Playlists") + dd a').text().trim();
+const lyrics = $('#lyric-body-text').text().trim();
+const result = {
+artistImage,
+about,
+year,
+playlists,
+lyrics
+};
+return result;
 }
-const { data } = await axios.get(`https://www.bhandarimilan.info.np/spotify?url=${link}`, { headers });
-const { id, artists, title, album, cover, isrc, releaseDate } = data.metadata;
-return {
-id,
-artists,
-title,
-album,
-cover,
-isrc,
-releaseDate,
-link: data.link
-}}
+
+async function pastebin(url) {
+let rawUrl = url;
+if (!url.includes('/raw/')) {
+const pasteId = url.split('/').pop();
+rawUrl = `https://pastebin.com/raw/${pasteId}`;
+}
+const response = await axios.get(rawUrl);
+return response.data;
+}
 
 async function remini(imageUrl, method) {
 const Methods = ["enhance", "recolor", "dehaze"];
@@ -499,4 +528,4 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, spotifys, bingS, bingI, bingV, ytdl, igfbdl, tiktokdl, remini, reminiv2, dehaze, bratv2, transcribe }
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, spotifys, bingS, bingI, bingV, srcLyrics, ytdl, igfbdl, tiktokdl, getLyrics, pastebin, remini, reminiv2, dehaze, bratv2, transcribe }
