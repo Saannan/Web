@@ -310,6 +310,34 @@ app.get("/api/veniceai", async (req, res) => {
   }
 })
 
+app.get("/api/txt2imgv1", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/waifu-diff?prompt=${Enc(q)}&style=Anime`, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/txt2imgv2", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/waifu-diff?prompt=${Enc(q)}&style=Cute-Anime`, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 // ===== SEARCH
 
 app.get("/api/google", async (req, res) => {
