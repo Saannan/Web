@@ -145,6 +145,11 @@ const categories = [{
         service: "pinterest",
         q: "q=mbappe"
       },
+      {
+        title: "lirik",
+        service: "lirik",
+        q: "q=sofia"
+      },
     ],
   },
   {
@@ -198,6 +203,16 @@ const categories = [{
         title: "gdrive",
         service: "gdrive",
         q: "url=https://drive.google.com/file/d/1YTD7Ymux9puFNqu__5WPlYdFZHcGI3Wz/view?usp=drivesdk"
+      },
+      {
+        title: "getlirik",
+        service: "getlirik",
+        q: "url="
+      },
+      {
+        title: "pastebin",
+        service: "pastebin",
+        q: "url=https://pastebin.com/Geq38sT1"
       },
     ],
   },
@@ -311,41 +326,38 @@ function renderCards() {
   categories.forEach((category) => {
     const section = document.createElement("div");
     section.classList.add(
-      "rounded-lg",
+      "divide-y",
+      "divide-gray-300",
+      "p-4",
       "bg-white",
-      "shadow-md",
-      "overflow-hidden"
+      "rounded-lg",
+      "border",
+      "border-gray-300",
+      "shadow-sm"
     );
-
-    const categoryHeader = document.createElement("div");
-    categoryHeader.classList.add(
+    const categoryTitle = document.createElement("div");
+    categoryTitle.classList.add(
       "flex",
       "justify-between",
       "items-center",
-      "p-4",
+      "text-xl",
+      "font-bold",
       "bg-yellow-light",
       "text-white",
-      "cursor-pointer"
+      "p-3",
+      "rounded-lg",
+      "shadow-md",
+      "tracking-wider",
+      "mb-4"
     );
-
     const categoryName = document.createElement("span");
-    categoryName.classList.add("text-lg", "font-bold");
     categoryName.innerText = category.name;
-
-    const toggleIcon = document.createElement("i");
-    toggleIcon.classList.add("fas", "fa-chevron-down", "transition-transform", "duration-300");
-
-    categoryHeader.appendChild(categoryName);
-    categoryHeader.appendChild(toggleIcon);
-    section.appendChild(categoryHeader);
-
-    const folder = document.createElement("div");
-    folder.classList.add("hidden", "bg-gray-light", "space-y-4", "p-4");
-    categoryHeader.addEventListener("click", () => {
-      folder.classList.toggle("hidden");
-      toggleIcon.classList.toggle("rotate-180");
-    });
-
+    const totalEndpoints = document.createElement("span");
+    totalEndpoints.classList.add("text-sm", "font-medium");
+    totalEndpoints.innerText = `Total: ${category.apis.length}`;
+    categoryTitle.appendChild(categoryName);
+    categoryTitle.appendChild(totalEndpoints);
+    section.appendChild(categoryTitle);
     category.apis.forEach((api) => {
       const card = document.createElement("div");
       card.classList.add(
@@ -353,61 +365,47 @@ function renderCards() {
         "items-center",
         "justify-between",
         "p-4",
-        "bg-white",
-        "rounded-md",
-        "shadow-sm",
-        "border",
-        "border-gray-300"
+        "bg-white"
       );
-
       const leftSection = document.createElement("div");
-      leftSection.classList.add("flex", "items-center", "space-x-4");
-
+      leftSection.classList.add("flex", "items-center", "space-x-3");
       const getBadge = document.createElement("span");
       getBadge.classList.add(
-        "border",
-        "border-yellow-600",
-        "text-yellow-600",
+        "bg-yellow-light",
+        "text-white",
         "px-3",
         "py-1",
-        "rounded-md",
+        "rounded-full",
         "text-xs",
         "font-bold",
         "shadow"
       );
       getBadge.innerText = "GET";
-
       const apiTitle = document.createElement("span");
       apiTitle.classList.add("text-gray-800", "font-semibold", "text-lg");
       apiTitle.innerText = api.title;
-
       leftSection.appendChild(getBadge);
       leftSection.appendChild(apiTitle);
-
       const tryButton = document.createElement("a");
       tryButton.classList.add(
         "bg-yellow-light",
         "text-white",
         "px-3",
-        "py-2",
+        "py-1",
         "rounded-full",
         "text-xs",
         "font-bold",
         "shadow",
-        "hover-bg-yellow-dark",
         "tracking-wide",
         "text-sm"
       );
       tryButton.innerText = "TRY";
       tryButton.href = `https://vapis.my.id/api/${api.service}?${api.q}`;
       tryButton.target = "_blank";
-
       card.appendChild(leftSection);
       card.appendChild(tryButton);
-      folder.appendChild(card);
+      section.appendChild(card);
     });
-
-    section.appendChild(folder);
     container.appendChild(section);
   });
 }
