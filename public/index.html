@@ -15,98 +15,25 @@
     :root {
       --yellow-light: #facc15;
       --gray-light: #d1d5db;
-      --dark-gray: #2c3e50;
-      --dark-blueish: #34495e;
     }
-    [data-theme="light"] {
-      --bg-color: white;
-      --text-color: white;
-      --header-bg: var(--yellow-light);
-      --card-bg: white;
-      --card-border: var(--gray-light);
-      --title-card: #1f2937;
-      --title-categories: white;
-      --button-bg: var(--yellow-light);
-      --button-border: transparent;
-      --divider-color: var(--gray-light);
-      --icon-color: var(--yellow-light);
-    }
-    [data-theme="dark"] {
-      --bg-color: var(--dark-gray);
-      --text-color: white;
-      --header-bg: var(--dark-blueish);
-      --card-bg: var(--dark-blueish);
-      --card-border: white;
-      --title-card: white;
-      --title-categories: white;
-      --button-bg: var(--yellow-light);
-      --button-border: transparent;
-      --divider-color: white;
-      --icon-color: var(--yellow-light);
-    }
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-    }
-    .bg-header { background-color: var(--header-bg); }
-    .bg-category { background-color: var(--yellow-light); }
-    .text-header { color: var(--text-color); }
-    .border-header { border-color: var(--card-border); }
-    .card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--card-border);
-      margin-bottom: 1rem;
-      padding: 1rem;
-    }
-    .title-card {
-      color: var(--title-card);
-    }
-    .title-categories {
-      color: var(--title-categories);
-    }
-    .theme-toggle {
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-    }
-    .theme-toggle i {
-      font-size: 1.5rem;
-      color: var(--text-color);
-    }
-    .divider {
-      border-top: 1px solid var(--divider-color);
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-    }
-    .get-badge {
-      background-color: var(--button-bg);
-      color: white;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-      font-size: 0.75rem;
-      font-weight: bold;
-      display: inline-block;
-    }
-    .icon-arrow {
-      color: var(--icon-color);
-    }
+    .bg-yellow-light { background-color: var(--yellow-light); }
+    .text-yellow-light { color: var(--yellow-light); }
+    .hidden { display: none; }
+    .card:not(:last-child) { border-bottom: 1px solid var(--gray-light); }
   </style>
 </head>
-<body data-theme="light" class="min-h-screen flex flex-col">
-  <header class="p-6 bg-header text-center shadow-lg relative">
+<body class="bg-white text-gray-800 min-h-screen flex flex-col">
+  <header class="p-6 bg-yellow-light text-center shadow-lg relative">
     <a href="https://vapisz.web.app" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl">
       <i class="fas fa-home"></i>
     </a>
-    <h1 class="text-4xl font-extrabold tracking-wide text-header">V-APIs</h1>
-    <p class="text-sm font-light mt-1 italic text-header">Fast, Easy, and Simple APIs</p>
-    <button id="theme-toggle" class="theme-toggle absolute right-4 top-1/2 transform -translate-y-1/2">
-      <i class="fas fa-sun"></i>
-    </button>
+    <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
+    <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Simple APIs</p>
   </header>
-  <main class="flex-1 p-6">
+  <main class="flex-1 p-6 bg-gray-50">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
-  <footer class="p-4 bg-header text-center text-header">
+  <footer class="p-4 bg-yellow-light text-center text-white">
     <p class="text-sm font-medium tracking-wide">
       <i class="fas fa-code"></i> 2024 V-APIs - All Rights Reserved
     </p>
