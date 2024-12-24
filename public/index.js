@@ -109,6 +109,36 @@ const categories = [{
         q: "q=hai",
         description: "Get repons from venice ai"
       },
+      {
+        title: "text2image v1",
+        service: "txt2imgv1",
+        q: "q=beautiful%20girl",
+        description: "Generate anime image"
+      },
+      {
+        title: "text2image v2",
+        service: "txt2imgv2",
+        q: "q=beautiful%20girl",
+        description: "Generate cute-anime image"
+      },
+      {
+        title: "flux imagev1",
+        service: "fluximgv1",
+        q: "q=beautiful%20girl",
+        description: "Generate image with fluxv1"
+      },
+      {
+        title: "flux imagev2",
+        service: "fluximgv2",
+        q: "q=beautiful%20girl",
+        description: "Generate image with fluxv2"
+      },
+      {
+        title: "sana-ai image",
+        service: "sanaai",
+        q: "q=beautiful%20girl",
+        description: "Generate image with sana ai"
+      },
     ],
   },
   {
