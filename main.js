@@ -350,7 +350,8 @@ app.get("/api/fluximgv1", async (req, res) => {
     if (response.result) {
       const imageBuffer = Buffer.from(response.result, 'base64');
       res.setHeader('Content-Type', 'image/png');
-      res.send(imageBuffer);
+      res.setHeader('Content-Length', imageBuffer.length);
+      res.end(imageBuffer);
     } else {
       res.status(500).json({ status: false, error: "Invalid image data" });
     }
