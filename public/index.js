@@ -1,3 +1,15 @@
+const themeToggle = document.getElementById("theme-toggle");
+const body = document.body;
+
+themeToggle.addEventListener("click", () => {
+  const currentTheme = body.getAttribute("data-theme");
+  const newTheme = currentTheme === "light" ? "dark" : "light";
+  body.setAttribute("data-theme", newTheme);
+
+  const icon = themeToggle.querySelector("i");
+  icon.className = newTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+});
+
 const categories = [{
     name: "AI",
     apis: [
@@ -396,42 +408,44 @@ function renderCards() {
   container.innerHTML = "";
   categories.forEach((category) => {
     const section = document.createElement("div");
-    section.classList.add("p-4", "bg-white", "rounded-lg", "border", "shadow-sm");
+    section.classList.add("p-4", "rounded-lg", "border", "shadow-sm", "bg-header", "border-header");
     const categoryTitle = document.createElement("div");
-    categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "bg-yellow-light", "text-white", "p-3", "rounded-lg", "shadow-md", "mb-4");
+    categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "bg-header", "text-header", "p-3", "rounded-lg", "shadow-md", "mb-4");
     const categoryName = document.createElement("span");
     categoryName.innerText = category.name;
     const totalEndpoints = document.createElement("span");
-    totalEndpoints.classList.add("text-sm", "font-medium");
+    totalEndpoints.classList.add("text-sm", "font-medium", "text-header");
     totalEndpoints.innerText = `Total: ${category.apis.length}`;
     categoryTitle.appendChild(categoryName);
     categoryTitle.appendChild(totalEndpoints);
     section.appendChild(categoryTitle);
-    category.apis.forEach((api, index) => {
+    category.apis.forEach((api) => {
       const card = document.createElement("div");
-      card.classList.add("card", "flex", "flex-col", "items-start", "p-4", "bg-white", "cursor-pointer", "rounded-md", "hover:shadow-lg");
+      card.classList.add("card", "flex", "flex-col", "items-start", "p-4", "cursor-pointer", "rounded-md", "hover:shadow-lg", "bg-header", "border-header");
       const topSection = document.createElement("div");
       topSection.classList.add("flex", "items-center", "justify-between", "w-full");
       const leftSection = document.createElement("div");
       leftSection.classList.add("flex", "items-center", "space-x-3");
       const getBadge = document.createElement("span");
-      getBadge.classList.add("bg-yellow-light", "text-white", "px-3", "py-1", "rounded-full", "text-xs", "font-bold", "shadow");
+      getBadge.classList.add("px-3", "py-1", "rounded-full", "text-xs", "font-bold", "shadow");
+      getBadge.style.backgroundColor = "var(--yellow-light)";
+      getBadge.style.color = "white";
       getBadge.innerText = "GET";
       const apiTitle = document.createElement("span");
-      apiTitle.classList.add("text-gray-800", "font-semibold", "text-lg");
+      apiTitle.classList.add("font-semibold", "text-lg", "text-header");
       apiTitle.innerText = api.title;
       leftSection.appendChild(getBadge);
       leftSection.appendChild(apiTitle);
       const tryButton = document.createElement("a");
-      tryButton.classList.add("text-yellow-light", "text-2xl");
-      tryButton.innerHTML = `<i class="fas fa-arrow-right"></i>`;
+      tryButton.classList.add("text-2xl");
+      tryButton.innerHTML = `<i class="fas fa-arrow-right" style="color: var(--yellow-light);"></i>`;
       tryButton.href = `https://vapis.my.id/api/${api.service}?${api.q}`;
       tryButton.target = "_blank";
       topSection.appendChild(leftSection);
       topSection.appendChild(tryButton);
       card.appendChild(topSection);
       const description = document.createElement("p");
-      description.classList.add("hidden", "text-gray-600", "mt-3", "text-sm");
+      description.classList.add("hidden", "mt-3", "text-sm", "text-header");
       description.innerText = api.description;
       card.appendChild(description);
       card.addEventListener("click", () => {
