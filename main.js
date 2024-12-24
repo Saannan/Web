@@ -346,10 +346,8 @@ app.get("/api/fluximgv1", async (req, res) => {
   try {
     const { flux } = require('./search/functions')
     const response = await flux(`${Enc(q)}`, 1, 3, 1, 1, 1)
-    res.status(200).json({
-    status: true,
-    result: response
-    })
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data.result);
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
@@ -363,10 +361,8 @@ app.get("/api/fluximgv2", async (req, res) => {
   try {
     const { flux } = require('./search/functions')
     const response = await flux(`${Enc(q)}`, 2, 3, 2, 2, 2)
-    res.status(200).json({
-    status: true,
-    result: response
-    })
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data.result);
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
@@ -380,10 +376,8 @@ app.get("/api/sanaai", async (req, res) => {
   try {
     const { flux } = require('./search/functions')
     const response = await flux(`${Enc(q)}`, 3, 3, 3, 3, 3)
-    res.status(200).json({
-    status: true,
-    result: response
-    })
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data.result);
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
