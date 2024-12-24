@@ -12,51 +12,49 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
   <style>
-    :root {
-      --yellow-light: #facc15;
-      --gray-light: #d1d5db;
-      --dark-gray: #2c3e50;
-      --dark-blueish: #34495e;
-    }
-
+    :root { --yellow-light: #facc15; --gray-light: #d1d5db; --dark-gray: #2c3e50; --dark-blueish: #34495e; }
     [data-theme="light"] {
       --bg-color: white;
       --text-color: #1f2937;
       --header-bg: var(--yellow-light);
       --card-bg: white;
       --card-border: var(--gray-light);
-      --button-icon: var(--text-color);
+      --title-card: #1f2937;
+      --button-border: var(--yellow-light);
+      --button-bg: transparent;
+      --button-text: var(--yellow-light);
+      --divider-color: var(--gray-light);
     }
-
     [data-theme="dark"] {
       --bg-color: var(--dark-gray);
-      --text-color: var(--yellow-light);
+      --text-color: white;
       --header-bg: var(--dark-blueish);
       --card-bg: var(--dark-blueish);
       --card-border: var(--dark-gray);
-      --button-icon: var(--yellow-light);
+      --title-card: white;
+      --button-border: white;
+      --button-bg: transparent;
+      --button-text: white;
+      --divider-color: white;
     }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-    }
-
+    body { background-color: var(--bg-color); color: var(--text-color); }
     .bg-header { background-color: var(--header-bg); }
     .text-header { color: var(--text-color); }
     .border-header { border-color: var(--card-border); }
-    .card {
-      background-color: var(--card-bg);
-      border-color: var(--card-border);
-    }
-    .theme-toggle {
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-    }
-    .theme-toggle i {
-      font-size: 1.5rem;
-      color: var(--button-icon);
+    .card { background-color: var(--card-bg); border-color: var(--card-border); }
+    .title-card { color: var(--title-card); }
+    .theme-toggle { background-color: transparent; border: none; cursor: pointer; }
+    .theme-toggle i { font-size: 1.5rem; color: var(--text-color); }
+    .divider { border-top: 1px solid var(--divider-color); margin-top: 1rem; margin-bottom: 1rem; }
+    .get-badge {
+      background-color: var(--button-bg);
+      border: 2px solid var(--button-border);
+      color: var(--button-text);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: inline-block;
     }
   </style>
 </head>

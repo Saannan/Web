@@ -412,6 +412,7 @@ function renderCards() {
     const categoryTitle = document.createElement("div");
     categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "bg-header", "text-header", "p-3", "rounded-lg", "shadow-md", "mb-4");
     const categoryName = document.createElement("span");
+    categoryName.classList.add("title-card");
     categoryName.innerText = category.name;
     const totalEndpoints = document.createElement("span");
     totalEndpoints.classList.add("text-sm", "font-medium", "text-header");
@@ -423,13 +424,11 @@ function renderCards() {
       const card = document.createElement("div");
       card.classList.add("flex", "flex-col", "items-start", "p-4", "cursor-pointer", "rounded-md", "hover:shadow-lg", "card");
       const topSection = document.createElement("div");
-      topSection.classList.add("flex", "items-center", "justify-between", "w-full");
+      topSection.classList.add("flex", "items-center", "justify-between", "w-full", "divider");
       const leftSection = document.createElement("div");
       leftSection.classList.add("flex", "items-center", "space-x-3");
       const getBadge = document.createElement("span");
-      getBadge.classList.add("px-3", "py-1", "rounded-full", "text-xs", "font-bold", "shadow");
-      getBadge.style.backgroundColor = "var(--yellow-light)";
-      getBadge.style.color = "white";
+      getBadge.classList.add("get-badge");
       getBadge.innerText = "GET";
       const apiTitle = document.createElement("span");
       apiTitle.classList.add("font-semibold", "text-lg", "text-header");
@@ -438,7 +437,7 @@ function renderCards() {
       leftSection.appendChild(apiTitle);
       const tryButton = document.createElement("a");
       tryButton.classList.add("text-2xl");
-      tryButton.innerHTML = `<i class="fas fa-arrow-right" style="color: var(--yellow-light);"></i>`;
+      tryButton.innerHTML = `<i class="fas fa-arrow-right" style="color: var(--button-text);"></i>`;
       tryButton.href = `https://vapis.my.id/api/${api.service}?${api.q}`;
       tryButton.target = "_blank";
       topSection.appendChild(leftSection);
