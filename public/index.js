@@ -410,7 +410,7 @@ function renderCards() {
     const section = document.createElement("div");
     section.classList.add("p-4", "rounded-lg", "border", "shadow-sm", "card");
     const categoryTitle = document.createElement("div");
-    categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "bg-header", "text-header", "p-3", "rounded-lg", "shadow-md", "mb-4");
+    categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "bg-header", "p-3", "rounded-lg", "shadow-md", "mb-4");
     const categoryName = document.createElement("span");
     categoryName.classList.add("title-card");
     categoryName.innerText = category.name;
@@ -424,7 +424,7 @@ function renderCards() {
       const card = document.createElement("div");
       card.classList.add("flex", "flex-col", "items-start", "p-4", "cursor-pointer", "rounded-md", "hover:shadow-lg", "card");
       const topSection = document.createElement("div");
-      topSection.classList.add("flex", "items-center", "justify-between", "w-full", "divider");
+      topSection.classList.add("flex", "items-center", "justify-between", "w-full");
       const leftSection = document.createElement("div");
       leftSection.classList.add("flex", "items-center", "space-x-3");
       const getBadge = document.createElement("span");
@@ -437,7 +437,7 @@ function renderCards() {
       leftSection.appendChild(apiTitle);
       const tryButton = document.createElement("a");
       tryButton.classList.add("text-2xl");
-      tryButton.innerHTML = `<i class="fas fa-arrow-right" style="color: var(--button-text);"></i>`;
+      tryButton.innerHTML = `<i class="fas fa-arrow-right" style="color: var(--text-color);"></i>`;
       tryButton.href = `https://vapis.my.id/api/${api.service}?${api.q}`;
       tryButton.target = "_blank";
       topSection.appendChild(leftSection);
@@ -456,6 +456,10 @@ function renderCards() {
         description.classList.toggle("hidden");
       });
       section.appendChild(card);
+
+      const divider = document.createElement("div");
+      divider.classList.add("divider");
+      section.appendChild(divider);
     });
     container.appendChild(section);
   });
