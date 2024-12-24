@@ -412,7 +412,7 @@ function renderCards() {
     const categoryTitle = document.createElement("div");
     categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "bg-header", "p-3", "rounded-lg", "shadow-md", "mb-4");
     const categoryName = document.createElement("span");
-    categoryName.classList.add("title-card");
+    categoryName.classList.add("title-categories");
     categoryName.innerText = category.name;
     const totalEndpoints = document.createElement("span");
     totalEndpoints.classList.add("text-sm", "font-medium", "text-header");
@@ -431,13 +431,13 @@ function renderCards() {
       getBadge.classList.add("get-badge");
       getBadge.innerText = "GET";
       const apiTitle = document.createElement("span");
-      apiTitle.classList.add("font-semibold", "text-lg", "text-header");
+      apiTitle.classList.add("font-semibold", "text-lg", "title-card");
       apiTitle.innerText = api.title;
       leftSection.appendChild(getBadge);
       leftSection.appendChild(apiTitle);
       const tryButton = document.createElement("a");
       tryButton.classList.add("text-2xl");
-      tryButton.innerHTML = `<i class="fas fa-arrow-right" style="color: var(--text-color);"></i>`;
+      tryButton.innerHTML = `<i class="fas fa-arrow-right icon-arrow"></i>`;
       tryButton.href = `https://vapis.my.id/api/${api.service}?${api.q}`;
       tryButton.target = "_blank";
       topSection.appendChild(leftSection);
