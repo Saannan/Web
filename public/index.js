@@ -220,12 +220,6 @@ const categories = [{
         description: "Instagramv2 downloader"
       },
       {
-        title: "instagramv3",
-        service: "igdlv3",
-        q: "url=https://www.instagram.com/p/DCQhOuXTRvE/?img_index=1&igsh=MWF2dXU3aWtpazY2NQ==",
-        description: "Instagramv3 downloader"
-      },
-      {
         title: "tiktok",
         service: "ttdl",
         q: "url=https://vm.tiktok.com/ZSjVn47bC/",
