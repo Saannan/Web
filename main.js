@@ -347,8 +347,8 @@ app.get("/api/fluximgv1", async (req, res) => {
     const { flux } = require('./search/functions');
     const response = await flux(`${Enc(q)}`, 1, 3, 1, 1, 1);
 
-    if (response.data.result) {
-      const imageBuffer = Buffer.from(response.data.result, 'base64');
+    if (response.result) {
+      const imageBuffer = Buffer.from(response.result, 'base64');
       res.setHeader('Content-Type', 'image/png');
       res.send(imageBuffer);
     } else {
@@ -368,8 +368,8 @@ app.get("/api/fluximgv2", async (req, res) => {
     const { flux } = require('./search/functions');
     const response = await flux(`${Enc(q)}`, 2, 3, 2, 2, 2);
 
-    if (response.data.result) {
-      const imageBuffer = Buffer.from(response.data.result, 'base64');
+    if (response.result) {
+      const imageBuffer = Buffer.from(response.result, 'base64');
       res.setHeader('Content-Type', 'image/png');
       res.send(imageBuffer);
     } else {
@@ -389,8 +389,8 @@ app.get("/api/sanaai", async (req, res) => {
     const { flux } = require('./search/functions');
     const response = await flux(`${Enc(q)}`, 3, 3, 3, 3, 3);
 
-    if (response.data.result) {
-      const imageBuffer = Buffer.from(response.data.result, 'base64');
+    if (response.result) {
+      const imageBuffer = Buffer.from(response.result, 'base64');
       res.setHeader('Content-Type', 'image/png');
       res.send(imageBuffer);
     } else {
@@ -400,23 +400,6 @@ app.get("/api/sanaai", async (req, res) => {
     res.status(500).json({ status: false, error: error.message });
   }
 });
-
-app.get("/api/tes", async (req, res) => {
-  const { q } = req.query;
-  if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
-  }
-  try {
-    const { flux } = require('./search/functions');
-    const response = await flux(`${Enc(q)}`, 1, 3, 1, 1, 1);
-    res.status(200).json({
-    status: true,
-    result: response
-    })
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
-})
 
 // ===== SEARCH
 
