@@ -155,33 +155,6 @@ const answer = chunks.map(chunk => chunk.content).join('')
 return answer
 }
 
-async function flux(prompt, model = 1, size = 1, style = 1, color = 1, lighting = 1) {
-const models = ["flux_1_schnell", "flux_1_dev", "sana_1_6b"];
-const sizes = ["1_1", "1_1_HD", "1_2", "2_1", "2_3", "4_5", "9_16", "3_2", "4_3", "16_9"];
-const styles = ["no_style", "anime", "digital", "fantasy", "neon_punk", "dark", "low_poly", "line_art", "pixel_art", "comic", "analog_film", "surreal"];
-const colors = ["no_color", "cool", "muted", "vibrant", "pastel", "bw"];
-const lightings = ["no_lighting", "lighting", "dramatic", "volumetric", "studio", "sunlight", "low_light", "golden_hour"];
-const errors = [];
-const formData = new FormData();
-formData.append('prompt', prompt);
-formData.append('model', models[model - 1]);
-formData.append('size', sizes[size - 1]);
-formData.append('style', styles[style - 1]);
-formData.append('color', colors[color - 1]);
-formData.append('lighting', lightings[lighting - 1]);
-const response = await axios.post('https://api.freeflux.ai/v1/images/generate', formData, {
-headers: {
-'accept': 'application/json, text/plain, */*',
-'content-type': 'multipart/form-data',
-'origin': 'https://freeflux.ai',
-'priority': 'u=1, i',
-'referer': 'https://freeflux.ai/',
-'user-agent': 'Postify/1.0.0'
-}});
-const { id, status, result, processingTime, width, height, nsfw, seed } = response.data;
-return { id, status, result, processingTime, width, height, nsfw, seed }
-}
-
 async function spotifys(query) {
 const { data } = await axios.get(`https://www.bhandarimilan.info.np/spotisearch?query=${query}`);
 const results = data.map(ft => ({
@@ -592,4 +565,4 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, flux, spotifys, bingS, bingI, bingV, srcLyrics, ytdl, igfbdl, igdl, tiktokdl, getLyrics, pastebin, remini, reminiv2, dehaze, bratv2, transcribe }
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, spotifys, bingS, bingI, bingV, srcLyrics, ytdl, igfbdl, igdl, tiktokdl, getLyrics, pastebin, remini, reminiv2, dehaze, bratv2, transcribe }
