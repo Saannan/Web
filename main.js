@@ -595,23 +595,6 @@ app.get("/api/igdlv2", async (req, res) => {
   }
 })
 
-app.get("/api/igdlv3", async (req, res) => {
-  const { url } = req.query;
-  if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
-  }
-  try {
-    const { igdl } = require('./search/functions')
-    const response = await igdl(`${url}`)
-    res.status(200).json({
-    status: true,
-    data: response,
-    })
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
-})
-
 app.get("/api/ttdl", async (req, res) => {
   const { url } = req.query;
   if (!url) {
