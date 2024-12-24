@@ -121,24 +121,6 @@ const categories = [{
         q: "q=beautiful%20girl",
         description: "Generate cute-anime image"
       },
-      {
-        title: "flux imagev1",
-        service: "fluximgv1",
-        q: "q=beautiful%20girl",
-        description: "Generate image with fluxv1"
-      },
-      {
-        title: "flux imagev2",
-        service: "fluximgv2",
-        q: "q=beautiful%20girl",
-        description: "Generate image with fluxv2"
-      },
-      {
-        title: "sana-ai image",
-        service: "sanaai",
-        q: "q=beautiful%20girl",
-        description: "Generate image with sana ai"
-      },
     ],
   },
   {
@@ -236,6 +218,12 @@ const categories = [{
         service: "igdlv2",
         q: "url=https://www.instagram.com/p/DCQhOuXTRvE/?img_index=1&igsh=MWF2dXU3aWtpazY2NQ==",
         description: "Instagramv2 downloader"
+      },
+      {
+        title: "instagramv3",
+        service: "igdlv3",
+        q: "url=https://www.instagram.com/p/DCQhOuXTRvE/?img_index=1&igsh=MWF2dXU3aWtpazY2NQ==",
+        description: "Instagramv3 downloader"
       },
       {
         title: "tiktok",
