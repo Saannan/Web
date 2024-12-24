@@ -410,7 +410,7 @@ function renderCards() {
     const section = document.createElement("div");
     section.classList.add("p-4", "rounded-lg", "border", "shadow-sm", "card");
     const categoryTitle = document.createElement("div");
-    categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "bg-header", "p-3", "rounded-lg", "shadow-md", "mb-4");
+    categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "bg-category", "p-3", "rounded-lg", "shadow-md", "mb-4");
     const categoryName = document.createElement("span");
     categoryName.classList.add("title-categories");
     categoryName.innerText = category.name;

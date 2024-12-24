@@ -15,6 +15,7 @@
     :root {
       --yellow-light: #facc15;
       --gray-light: #d1d5db;
+      --dark-gray: #2c3e50;
       --dark-blueish: #34495e;
     }
     [data-theme="light"] {
@@ -31,7 +32,7 @@
       --icon-color: var(--yellow-light);
     }
     [data-theme="dark"] {
-      --bg-color: white;
+      --bg-color: var(--dark-gray);
       --text-color: white;
       --header-bg: var(--dark-blueish);
       --card-bg: var(--dark-blueish);
@@ -41,13 +42,14 @@
       --button-bg: var(--yellow-light);
       --button-border: transparent;
       --divider-color: white;
-      --icon-color: white;
+      --icon-color: var(--yellow-light);
     }
     body {
       background-color: var(--bg-color);
       color: var(--text-color);
     }
     .bg-header { background-color: var(--header-bg); }
+    .bg-category { background-color: var(--yellow-light); }
     .text-header { color: var(--text-color); }
     .border-header { border-color: var(--card-border); }
     .card {
