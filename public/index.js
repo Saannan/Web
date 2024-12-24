@@ -408,7 +408,7 @@ function renderCards() {
   container.innerHTML = "";
   categories.forEach((category) => {
     const section = document.createElement("div");
-    section.classList.add("p-4", "rounded-lg", "border", "shadow-sm", "bg-header", "border-header");
+    section.classList.add("p-4", "rounded-lg", "border", "shadow-sm", "card");
     const categoryTitle = document.createElement("div");
     categoryTitle.classList.add("flex", "justify-between", "items-center", "text-xl", "font-bold", "bg-header", "text-header", "p-3", "rounded-lg", "shadow-md", "mb-4");
     const categoryName = document.createElement("span");
@@ -421,7 +421,7 @@ function renderCards() {
     section.appendChild(categoryTitle);
     category.apis.forEach((api) => {
       const card = document.createElement("div");
-      card.classList.add("card", "flex", "flex-col", "items-start", "p-4", "cursor-pointer", "rounded-md", "hover:shadow-lg", "bg-header", "border-header");
+      card.classList.add("flex", "flex-col", "items-start", "p-4", "cursor-pointer", "rounded-md", "hover:shadow-lg", "card");
       const topSection = document.createElement("div");
       topSection.classList.add("flex", "items-center", "justify-between", "w-full");
       const leftSection = document.createElement("div");

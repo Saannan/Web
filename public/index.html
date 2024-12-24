@@ -15,23 +15,26 @@
     :root {
       --yellow-light: #facc15;
       --gray-light: #d1d5db;
-      --dark-bg: #1e293b;
-      --dark-text: #e2e8f0;
-      --dark-gray: #334155;
+      --dark-gray: #2c3e50;
+      --dark-blueish: #34495e;
     }
 
     [data-theme="light"] {
       --bg-color: white;
       --text-color: #1f2937;
-      --border-color: var(--gray-light);
       --header-bg: var(--yellow-light);
+      --card-bg: white;
+      --card-border: var(--gray-light);
+      --button-icon: var(--text-color);
     }
 
     [data-theme="dark"] {
-      --bg-color: var(--dark-bg);
-      --text-color: var(--dark-text);
-      --border-color: var(--dark-gray);
-      --header-bg: var(--dark-gray);
+      --bg-color: var(--dark-gray);
+      --text-color: var(--yellow-light);
+      --header-bg: var(--dark-blueish);
+      --card-bg: var(--dark-blueish);
+      --card-border: var(--dark-gray);
+      --button-icon: var(--yellow-light);
     }
 
     body {
@@ -41,8 +44,11 @@
 
     .bg-header { background-color: var(--header-bg); }
     .text-header { color: var(--text-color); }
-    .border-header { border-color: var(--border-color); }
-
+    .border-header { border-color: var(--card-border); }
+    .card {
+      background-color: var(--card-bg);
+      border-color: var(--card-border);
+    }
     .theme-toggle {
       background-color: transparent;
       border: none;
@@ -50,7 +56,7 @@
     }
     .theme-toggle i {
       font-size: 1.5rem;
-      color: var(--text-color);
+      color: var(--button-icon);
     }
   </style>
 </head>
@@ -65,7 +71,7 @@
       <i class="fas fa-sun"></i>
     </button>
   </header>
-  <main class="flex-1 p-6 bg-gray-50">
+  <main class="flex-1 p-6">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
   <footer class="p-4 bg-header text-center text-header">
