@@ -461,7 +461,7 @@ function renderCards() {
       topSection.appendChild(tryButton);
       card.appendChild(topSection);
       const description = document.createElement("p");
-      description.classList.add("hidden", "text-gray-600", "mt-3", "text-sm");
+      description.classList.add("hidden", "text-gray-600", "mt-3", "italic", "text-sm");
       description.innerText = api.description;
       card.appendChild(description);
       card.addEventListener("click", () => {
