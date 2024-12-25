@@ -407,6 +407,23 @@ app.get("/api/appstore", async (req, res) => {
   }
 })
 
+app.get("/api/apkpure", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { apkpure } = require('./search/functions')
+    const response = await apkpure(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.get("/api/yts", async (req, res) => {
   const { q } = req.query;
   if (!q) {
@@ -515,6 +532,23 @@ app.get("/api/lirik", async (req, res) => {
   try {
     const { srcLyrics } = require('./search/functions')
     const response = await srcLyrics(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/sfilesrc", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { sfilesrc } = require('./search/functions')
+    const response = await sfilesrc(`${Enc(q)}`)
     res.status(200).json({
     status: true,
     data: response,
@@ -734,6 +768,23 @@ app.get("/api/pastebin", async (req, res) => {
   try {
     const { pastebin } = require('./search/functions')
     const response = await pastebin(`${url}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/sfiledl", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const { sfiledl} = require('./search/functions')
+    const response = await sfiledl(`${url}`)
     res.status(200).json({
     status: true,
     data: response,
