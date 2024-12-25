@@ -546,6 +546,26 @@ app.get("/api/ytdl", async (req, res) => {
   }
 })
 
+app.get("/api/ytdlv2", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const { ytdlv2 } = require('./search/functions')
+    const vid = await ytdlv2(url, '480');
+    const aud = await ytdlv2(url, 'mp3');
+    res.status(200).json({
+    status: true,
+    data: {
+    video: vid,
+    audio: aud,
+    }})
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.get("/api/fbdl", async (req, res) => {
   const { url } = req.query;
   if (!url) {
