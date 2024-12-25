@@ -155,6 +155,27 @@ const answer = chunks.map(chunk => chunk.content).join('')
 return answer
 }
 
+async function apkpure(text) {
+let url = `https://apkpure.net/id/search?q=${text}`;
+let { data } = await axios.get(url);
+let $ = cheerio.load(data);
+let results = [];
+$('a.apk-item').each((_, el) => {
+let title = $(el).find('div.title').text().trim();
+let dev = $(el).find('div.dev').text().trim();
+let rating = $(el).find('span.stars').text().trim();
+let link = 'https://apkpure.net' + $(el).attr('href');
+if (title && dev && rating && link) {
+results.push({
+title,
+developer: dev,
+rating,
+link
+})}
+});
+return results;
+}
+
 async function spotifys(query) {
 const { data } = await axios.get(`https://www.bhandarimilan.info.np/spotisearch?query=${query}`);
 const results = data.map(ft => ({
@@ -245,6 +266,24 @@ link: `https://www.lyrics.com${link}`
 return result
 }
 
+async function sfilesrc(teks) {
+try {
+const response = await axios.get(`https://sfile-api.vercel.app/search/${encodeURIComponent(teks)}`)
+if (response.data) {
+const { data } = response.data.data
+return {
+files: data.map(file => ({
+icon: file.icon,
+size: file.size,
+title: file.title,
+id: 'https://sfile.mobi/'+file.id
+}))
+}}
+} catch (e) {
+console.error('Error: '+e)
+return null
+}}
+
 async function ytdl(link, qualityIndex, typeIndex) {
 const qualities = {
 audio: { 1: '32', 2: '64', 3: '128', 4: '192' },
@@ -295,6 +334,21 @@ type
 const formatAudio = ['mp3', 'm4a', 'webm', 'acc', 'flac', 'opus', 'ogg', 'wav'];
 const formatVideo = ['360', '480', '720', '1080', '1440', '4k'];
 
+async function cekProgress(id) {
+const configProgress = {
+method: 'GET',
+url: `https://p.oceansaver.in/ajax/progress.php?id=${id}`,
+headers: {
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+}}
+while (true) {
+const response = await axios.request(configProgress);
+if (response.data && response.data.success && response.data.progress === 1000) {
+return response.data.download_url;
+}
+await new Promise(resolve => setTimeout(resolve, 5000));
+}}
+
 async function ytdlv2(url, format) {
 if (!formatAudio.includes(format) && !formatVideo.includes(format)) {
 throw new Error('Format nya gak valid bro.');
@@ -316,21 +370,6 @@ title: title,
 downloadUrl: downloadUrl
 }} else {
 throw new Error('Failed to fetch video details.');
-}}
-
-async function cekProgress(id) {
-const configProgress = {
-method: 'GET',
-url: `https://p.oceansaver.in/ajax/progress.php?id=${id}`,
-headers: {
-'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-}}
-while (true) {
-const response = await axios.request(configProgress);
-if (response.data && response.data.success && response.data.progress === 1000) {
-return response.data.download_url;
-}
-await new Promise(resolve => setTimeout(resolve, 5000));
 }}
 
 async function igfbdl(link) {
@@ -472,6 +511,21 @@ const response = await axios.get(rawUrl);
 return response.data;
 }
 
+async function sfiledl(url) {
+try {
+const id = url.split('/').pop()
+const response = await axios.get(`https://sfile-api.vercel.app/download/${id}`)
+if (response.data) {
+const { url, date, downloaded } = response.data.data
+return {
+dl: url,
+date: date,
+dcount: downloaded
+}}} catch (e) {
+console.error('Error: '+e)
+return null
+}}
+
 async function remini(imageUrl, method) {
 const Methods = ["enhance", "recolor", "dehaze"];
 method = Methods.includes(method) ? method : Methods[0];
@@ -569,4 +623,4 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, spotifys, bingS, bingI, bingV, srcLyrics, ytdl, ytdlv2, igfbdl, tiktokdl, getLyrics, pastebin, remini, reminiv2, dehaze, bratv2, transcribe }
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, apkpure, spotifys, bingS, bingI, bingV, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, transcribe }
