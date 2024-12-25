@@ -202,6 +202,12 @@ const categories = [{
         description: "Youtube downloader"
       },
       {
+        title: "youtubev2",
+        service: "ytdlv2",
+        q: "url=https://youtu.be/3JSJ6h7LKb0",
+        description: "Youtubev2 downloader"
+      },
+      {
         title: "facebook",
         service: "fbdl",
         q: "url=https://www.facebook.com/share/r/12BFZAtjpS8/?mibextid=qDwCgo",
