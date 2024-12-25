@@ -98,7 +98,7 @@ app.get("/api/blackbox", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const response = await axios.get(`https://btch.us.kg/blackbox?text=${Enc(q)}`)
+    const response = await axios.get(`https://api.tioo.eu.org/blackbox?text=${Enc(q)}`)
     res.status(200).json({
     status: true,
     result: response.data.result
@@ -114,7 +114,7 @@ app.get("/api/simi", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const response = await axios.get(`https://btch.us.kg/simi?text=${Enc(q)}`)
+    const response = await axios.get(`https://api.tioo.eu.org/simi?text=${Enc(q)}`)
     res.status(200).json({
     status: true,
     result: response.data.result
@@ -367,7 +367,7 @@ app.get("/api/gimage", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const response = await axios.get(`https://btch.us.kg/gimage?query=${Enc(q)}`, { responseType: 'arraybuffer' });
+    const response = await axios.get(`https://api.tioo.eu.org/gimage?query=${Enc(q)}`, { responseType: 'arraybuffer' });
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
   } catch (error) {
