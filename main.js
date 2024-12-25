@@ -553,14 +553,11 @@ app.get("/api/ytdlv2", async (req, res) => {
   }
   try {
     const { ytdlv2 } = require('./search/functions')
-    const vid = await ytdlv2(url, '480');
-    const aud = await ytdlv2(url, 'mp3');
+    const response = await ytdlv2(url, '360');
     res.status(200).json({
     status: true,
-    data: {
-    video: vid,
-    audio: aud,
-    }})
+    data: response,
+    })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
