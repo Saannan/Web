@@ -150,6 +150,12 @@ const categories = [{
         description: "Search with appstore"
       },
       {
+        title: "apkpure",
+        service: "apkpure",
+        q: "q=minecraft",
+        description: "Search with apkpure"
+      },
+      {
         title: "ytsearch",
         service: "yts",
         q: "q=mbappe",
@@ -190,6 +196,12 @@ const categories = [{
         service: "lirik",
         q: "q=sofia",
         description: "Search with lirik"
+      },
+      {
+        title: "sfilesrc",
+        service: "sfilesrc",
+        q: "q=minecraft",
+        description: "Search with sfilesrc"
       },
     ],
   },
@@ -272,6 +284,12 @@ const categories = [{
         service: "pastebin",
         q: "url=https://pastebin.com/Geq38sT1",
         description: "Get data url from pastebin"
+      },
+      {
+        title: "sfiledl",
+        service: "sfiledl",
+        q: "url=https://sfile.mobi/4MJIjvGqTmi",
+        description: "Sfile downloader"
       },
     ],
   },
