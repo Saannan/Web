@@ -155,6 +155,45 @@ const answer = chunks.map(chunk => chunk.content).join('')
 return answer
 }
 
+async function cbaby(urlBapak, urlEmak, gender = 'girl') {
+const _fetch = async (urls) => {
+const response = await axios.get(urls, { responseType: 'arraybuffer' })
+return `data:image/jpeg;base64,${Buffer.from(response.data).toString('base64')}`
+}
+const heatod = {
+'content-type': 'application/json',
+'origin': 'https://ai-baby-generator.net',
+'referer': 'https://ai-baby-generator.net/in',
+'user-agent': 'Postify/1.0.0',
+}
+const fotobapak = await _fetch(urlBapak)
+const fotoemak = await _fetch(urlEmak)
+const gdata = {
+"0": {
+"json": {
+"fatherImage": fotobapak,
+"motherImage": fotoemak,
+"gender": gender,
+}, },
+}
+const res2 = await axios.post('https://ai-baby-generator.net/api/ai.generateImage?batch=1', gdata, { headers: heatod })
+const _id = res2.data[0].result.data.json.taskId
+const _url = 'https://ai-baby-generator.net/api/ai.getTask?batch=1'
+let result
+do {
+await new Promise((resolve) => setTimeout(resolve, 5000))
+const _data = {
+"0": {
+"json": {
+"taskId": _id,
+}, },
+}
+const taskResponse = await axios.post(_url, _data, { headers: heatod })
+result = taskResponse.data[0].result.data.json
+} while (result.status !== 'SUCCEED')
+return result.imageUrl
+}
+
 async function apkpure(text) {
 let url = `https://apkpure.net/id/search?q=${text}`;
 let { data } = await axios.get(url);
@@ -483,6 +522,36 @@ coverUrl: result.dlink.cover
 }}
 }
 
+async function terabox(url) {
+return new Promise(async(resolve, reject) => {
+await axios.post('https://teradl-api.dapuntaratya.com/generate_file', {
+mode: 1,
+url: url
+}).then(async(a) => {
+const array = []
+for (let x of a.data.list) {
+let dl = await axios.post('https://teradl-api.dapuntaratya.com/generate_link', {
+js_token: a.data.js_token,
+cookie: a.data.cookie,
+sign: a.data.sign,
+timestamp: a.data.timestamp,
+shareid: a.data.shareid,
+uk: a.data.uk,
+fs_id: x.fs_id
+}).then(i => i.data).catch(e => e.response.data)
+;
+if (!dl.download_link) return
+array.push({
+fileName: x.name,
+type: x.type,
+thumb: x.image,
+...dl.download_link
+ });
+}
+resolve(array);
+})})
+}
+
 async function getLyrics(url) {
 const { data } = await axios.get(url);
 const $ = cheerio.load(data);
@@ -625,4 +694,4 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, apkpure, spotifys, bingS, bingI, bingV, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, transcribe }
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, apkpure, spotifys, bingS, bingI, bingV, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, transcribe }
