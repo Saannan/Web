@@ -1,3 +1,17 @@
+const textElement = document.getElementById("typing-text");
+const textToType = "Fast, Easy, and Simple APIs";
+let index = 0;
+
+function typeText() {
+  if (index < textToType.length) {
+    textElement.textContent += textToType[index];
+    index++;
+    setTimeout(typeText, 100);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", typeText);
+
 const categories = [{
     name: "AI",
     apis: [
