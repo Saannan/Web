@@ -28,6 +28,21 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    .typing {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 3s steps(30, end), blink 0.5s step-end infinite alternate;
+      border-right: 2px solid white;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      from { border-right-color: white; }
+      to { border-right-color: transparent; }
+    }
   </style>
   <script type="application/ld+json">
   {
@@ -53,7 +68,9 @@
     <h1 class="text-4xl font-extrabold text-white tracking-wide">
       V-<span class="gradient-text">API</span>s
     </h1>
-    <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Simple APIs</p>
+    <p class="text-sm text-white font-light mt-1 italic">
+      <span class="typing">Fast, Easy, and Simple APIs</span>
+    </p>
   </header>
   <main class="flex-1 p-6 bg-gray-50">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
