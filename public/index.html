@@ -20,6 +20,11 @@
     .text-yellow-light { color: var(--yellow-light); }
     .hidden { display: none; }
     .card:not(:last-child) { border-bottom: 1px solid var(--gray-light); }
+    .gradient-text {
+      background: linear-gradient(to right, #6a11cb, #ff7e5f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
   </style>
 </head>
 <body class="bg-white text-gray-800 min-h-screen flex flex-col">
@@ -27,7 +32,9 @@
     <a href="https://vapisz.web.app" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl">
       <i class="fas fa-home"></i>
     </a>
-    <h1 class="text-4xl font-extrabold text-white tracking-wide">V-APIs</h1>
+    <h1 class="text-4xl font-extrabold text-white tracking-wide">
+      V-<span class="gradient-text">APIs</span>
+    </h1>
     <p class="text-sm text-white font-light mt-1 italic">Fast, Easy, and Simple APIs</p>
   </header>
   <main class="flex-1 p-6 bg-gray-50">
