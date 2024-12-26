@@ -121,6 +121,18 @@ const categories = [{
         q: "q=beautiful%20girl",
         description: "Generate cute-anime image"
       },
+      {
+        title: "ai-baby",
+        service: "aibaby",
+        q: "ayah=https://pomf2.lain.la/f/496snr7.jpg&ibu=https://pomf2.lain.la/f/48li9yvf.jpg&gender=boy",
+        description: "Generate baby face image with ai"
+      },
+      {
+        title: "ai moji",
+        service: "aimoji",
+        q: "q=beautiful%20girl",
+        description: "Generate image with aimoji"
+      },
     ],
   },
   {
@@ -262,6 +274,18 @@ const categories = [{
         description: "Videy downloader"
       },
       {
+        title: "twitter",
+        service: "twitter",
+        q: "url=https://twitter.com/Eminem/status/943590594491772928",
+        description: "Twitter downloader"
+      },
+      {
+        title: "terabox",
+        service: "terabox",
+        q: "url=https://terabox.com/s/1A6XAXNBdHuLneJ51dNNy0g",
+        description: "Terabox downloader"
+      },
+      {
         title: "mediafire",
         service: "mfdl",
         q: "url=https://www.mediafire.com/folder/4zhvcue3l75xa/Delirius+Test",
@@ -371,36 +395,48 @@ const categories = [{
         q: "url=https://pomf2.lain.la/f/c4njx2we.jpg",
         description: "Screenshot website target"
       },
+      {
+        title: "iplocation v1",
+        service: "cekipv1",
+        q: "ip=8.8.8.8",
+        description: "Check your ip location v1"
+      },
+      {
+        title: "iplocation v2",
+        service: "cekipv2",
+        q: "ip=8.8.8.8",
+        description: "Check your ip location v2"
+      },
     ],
   },
   {
     name: "Converter",
     apis: [{
-        title: "tobase64",
+        title: "to base64",
         service: "tobase64",
         q: "q=hai",
         description: "Convert utf8 to base64"
       },
       {
-        title: "toutf8",
+        title: "to utf8",
         service: "toutf8",
         q: "q=aGFp",
         description: "Convert base64 to utf8"
       },
       {
-        title: "tohex",
+        title: "to hex",
         service: "tohex",
         q: "q=hai",
         description: "Convert text to hex"
       },
       {
-        title: "togithub-raw",
+        title: "to github-raw",
         service: "ghraw",
         q: "url=https://github.com/ViooWA/Web/blob/main/vercel.json",
         description: "Convert to github raw url"
       },
       {
-        title: "togithub-ori",
+        title: "to github-ori",
         service: "ghori",
         q: "url=https://raw.githubusercontent.com/ViooWA/Web/main/vercel.json",
         description: "Convert to github main url"
@@ -410,6 +446,18 @@ const categories = [{
         service: "audio2txt",
         q: "url=https://pomf2.lain.la/f/21axy7kx.mp3",
         description: "Voice to text"
+      },
+      {
+        title: "to vurl",
+        service: "tovurl",
+        q: "url=https://pomf2.lain.la/f/21axy7kx.mp3",
+        description: "Convert any url to vurl"
+      },
+      {
+        title: "to isgd",
+        service: "toisgd",
+        q: "url=https://pomf2.lain.la/f/21axy7kx.mp3",
+        description: "Convert any url to isgd"
       },
     ],
   },
