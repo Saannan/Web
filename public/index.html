@@ -28,13 +28,13 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .cursor {
-      border-right: 2px solid white;
-      animation: blink 0.5s step-end infinite alternate;
-    }
     @keyframes blink {
       from { border-right-color: white; }
       to { border-right-color: transparent; }
+    }
+    .cursor {
+      border-right: 2px solid white;
+      animation: blink 0.5s step-end infinite alternate;
     }
   </style>
   <script type="application/ld+json">
@@ -61,7 +61,7 @@
     <h1 class="text-5xl font-extrabold text-white tracking-wide">
       V-<span class="gradient-text">API</span>s
     </h1>
-    <p class="text-lg text-white font-semibold mt-2 italic">
+    <p class="text-lg text-white font-medium mt-2 italic">
       <span id="typing-text"></span><span class="cursor"></span>
     </p>
   </header>
