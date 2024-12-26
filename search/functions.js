@@ -502,13 +502,15 @@ return result;
 }
 
 async function pastebin(url) {
-let rawUrl = url;
+let rawUrl
 if (!url.includes('/raw/')) {
-const pasteId = url.split('/').pop();
-rawUrl = `https://pastebin.com/raw/${pasteId}`;
+const pasteId = url.split('/').pop()
+rawUrl = `https://pastebin.com/raw/${pasteId}`
+} else {
+rawUrl = url
 }
-const response = await axios.get(rawUrl);
-return response.data;
+const response = await axios.get(rawUrl)
+return response.data
 }
 
 async function sfiledl(url) {
