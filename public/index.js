@@ -230,10 +230,10 @@ const categories = [{
         description: "Search with sfilesrc"
       },
       {
-        title: "wikipedia",
-        service: "wikipedia",
+        title: "wikimedia",
+        service: "wikimedia",
         q: "q=mbappe",
-        description: "Search with wikipedia"
+        description: "Search with wikimedia"
       },
     ],
   },
