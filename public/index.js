@@ -142,10 +142,10 @@ const categories = [{
         description: "Generate baby face image with ai"
       },
       {
-        title: "ai moji",
-        service: "aimoji",
+        title: "soft anime",
+        service: "softanime",
         q: "q=beautiful%20girl",
-        description: "Generate image with aimoji"
+        description: "Generate soft-anime image"
       },
     ],
   },
@@ -229,6 +229,12 @@ const categories = [{
         q: "q=minecraft",
         description: "Search with sfilesrc"
       },
+      {
+        title: "wikipedia",
+        service: "wikipedia",
+        q: "q=mbappe",
+        description: "Search with wikipedia"
+      },
     ],
   },
   {
@@ -298,6 +304,18 @@ const categories = [{
         service: "terabox",
         q: "url=https://terabox.com/s/1A6XAXNBdHuLneJ51dNNy0g",
         description: "Terabox downloader"
+      },
+      {
+        title: "threads",
+        service: "threads",
+        q: "url=https://www.threads.net/@melalibaliofficial/post/DECt01XSuyk?xmt=AQGznZWwI8lwsOmnsjwiaOhaoMgKAhwZChNQyLcdV-MVbQ",
+        description: "Threads downloader"
+      },
+      {
+        title: "capcut",
+        service: "capcut",
+        q: "url=https://www.capcut.com/t/Zs8Sw9wsE/%20aesthetic",
+        description: "Capcut downloader"
       },
       {
         title: "mediafire",
@@ -472,6 +490,46 @@ const categories = [{
         service: "toisgd",
         q: "url=https://pomf2.lain.la/f/21axy7kx.mp3",
         description: "Convert any url to isgd"
+      },
+    ],
+  },
+  {
+    name: "Stalker",
+    apis: [{
+        title: "github user",
+        service: "github-user",
+        q: "username=ViooWA",
+        description: "Github user stalk"
+      },
+      {
+        title: "github repo",
+        service: "github-repo",
+        q: "username=ViooWA&repo=Web",
+        description: "Github repository stalk"
+      },
+      {
+        title: "npm stalk",
+        service: "npm-stalk",
+        q: "pkgname=axios",
+        description: "Npm stalk with package name"
+      },
+      {
+        title: "tiktok stalk",
+        service: "tt-stalk",
+        q: "username=djayyz_1",
+        description: "Tiktok stalk with username"
+      },
+      {
+        title: "youtube stalk",
+        service: "yt-stalk",
+        q: "username=SanjayaAds",
+        description: "Youtube stalk with username"
+      },
+      {
+        title: "instagram stalk",
+        service: "ig-stalk",
+        q: "username=vioo.wa",
+        description: "Instagram stalk with username"
       },
     ],
   },
