@@ -552,6 +552,42 @@ resolve(array);
 })})
 }
 
+async function threads(link) {
+const { data } = await axios.get('https://threads.snapsave.app/api/action', {
+params: { url: link },
+headers: {
+'accept': 'application/json, text/plain, */*',
+'referer': 'https://threads.snapsave.app/',
+'user-agent': 'Postify/1.0.0'
+},
+timeout: 10000
+})
+const type = (type) => ({
+GraphImage: 'Photo',
+GraphVideo: 'Video',
+GraphSidecar: 'Gallery'
+}[type] || type);
+return {
+postInfo: {
+id: data.postinfo.id,
+username: data.postinfo.username,
+avatarUrl: data.postinfo.avatar_url,
+mediaTitle: data.postinfo.media_title,
+type: type(data.postinfo.__type)
+},
+media: data.items.map(item => ({
+type: type(item.__type),
+id: item.id,
+url: item.url,
+width: item.width,
+height: item.height,
+...(item.__type === 'GraphVideo' && {
+thumbnailUrl: item.display_url,
+videoUrl: item.video_url,
+duration: item.video_duration
+})}))
+}}
+
 async function getLyrics(url) {
 const { data } = await axios.get(url);
 const $ = cheerio.load(data);
@@ -694,4 +730,4 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, apkpure, spotifys, bingS, bingI, bingV, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, transcribe }
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, apkpure, spotifys, bingS, bingI, bingV, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, transcribe }
