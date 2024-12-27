@@ -588,13 +588,13 @@ app.get("/api/sfilesrc", async (req, res) => {
   }
 })
 
-app.get("/api/wikipedia", async (req, res) => {
+app.get("/api/wikimedia", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const response = await axios.get(`https://api.siputzx.my.id/api/s/wikipedia?query=${Enc(q)}`);
+    const response = await axios.get(`https://itzpire.com/search/wikimedia?query=${Enc(q)}`);
     res.status(200).json({
     status: true,
     data: response.data.data,
@@ -1267,7 +1267,7 @@ app.get("/api/github-user", async (req, res) => {
     const response = await axios.get(`https://api.siputzx.my.id/api/stalk/github?user=${username}`);
     res.status(200).json({
     status: true,
-    data: response.data.data
+    data: response.data.data,
     });
   } catch (error) {
     res.status(500).json({ status: false, error: error.message });
@@ -1276,14 +1276,14 @@ app.get("/api/github-user", async (req, res) => {
 
 app.get("/api/github-repo", async (req, res) => {
   const { username, repo } = req.query;
-  if (!username || !reponame) {
+  if (!username || !repo) {
     return res.status(400).json({ status: false, error: "Username and reponame are required" });
   }
   try {
     const response = await axios.get(`https://itzpire.com/stalk/github-repo?username=${username}&repoName=${repo}`);
     res.status(200).json({
     status: true,
-    data: response.data.data
+    data: response.data.data,
     });
   } catch (error) {
     res.status(500).json({ status: false, error: error.message });
@@ -1299,7 +1299,7 @@ app.get("/api/npm-stalk", async (req, res) => {
     const response = await axios.get(`https://api.siputzx.my.id/api/stalk/npm?packageName=${pkgname}`);
     res.status(200).json({
     status: true,
-    data: response.data.data
+    data: response.data.data,
     });
   } catch (error) {
     res.status(500).json({ status: false, error: error.message });
@@ -1315,7 +1315,7 @@ app.get("/api/tt-stalk", async (req, res) => {
     const response = await axios.get(`https://api.siputzx.my.id/api/stalk/tiktok?username=${username}`);
     res.status(200).json({
     status: true,
-    data: response.data.data
+    data: response.data.data,
     });
   } catch (error) {
     res.status(500).json({ status: false, error: error.message });
@@ -1331,7 +1331,7 @@ app.get("/api/yt-stalk", async (req, res) => {
     const response = await axios.get(`https://btch.us.kg/download/youtubestalk?text=${username}`);
     res.status(200).json({
     status: true,
-    data: response.data.result
+    data: response.data.result,
     });
   } catch (error) {
     res.status(500).json({ status: false, error: error.message });
@@ -1347,7 +1347,7 @@ app.get("/api/ig-stalk", async (req, res) => {
     const response = await axios.get(`https://btch.us.kg/download/igstalk?username=${username}`);
     res.status(200).json({
     status: true,
-    data: response.data.result
+    data: response.data.result,
     });
   } catch (error) {
     res.status(500).json({ status: false, error: error.message });
