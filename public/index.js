@@ -230,10 +230,10 @@ const categories = [{
         description: "Search with sfilesrc"
       },
       {
-        title: "wikimedia",
-        service: "wikimedia",
-        q: "q=mbappe",
-        description: "Search with wikimedia"
+        title: "gsmarena",
+        service: "gsmarena",
+        q: "q=infinix",
+        description: "Search with gsmarena"
       },
     ],
   },
@@ -496,16 +496,16 @@ const categories = [{
   {
     name: "Stalker",
     apis: [{
-        title: "github user",
-        service: "github-user",
+        title: "github userv1",
+        service: "github-userv1",
         q: "username=ViooWA",
-        description: "Github user stalk"
+        description: "Github user stalk v1"
       },
       {
-        title: "github repo",
-        service: "github-repo",
-        q: "username=ViooWA&repo=Web",
-        description: "Github repository stalk"
+        title: "github userv2",
+        service: "github-userv2",
+        q: "username=ViooWA",
+        description: "Github user stalk v2"
       },
       {
         title: "npm stalk",
@@ -530,6 +530,18 @@ const categories = [{
         service: "ig-stalk",
         q: "username=vioo.wa",
         description: "Instagram stalk with username"
+      },
+      {
+        title: "ff stalk",
+        service: "ff-stalk",
+        q: "id=12345678",
+        description: "Freefire stalk with id"
+      },
+      {
+        title: "ml stalk",
+        service: "ml-stalk",
+        q: "id=109088431&zoneid=2558",
+        description: "Ml stalk with id and zoneid"
       },
     ],
   },
