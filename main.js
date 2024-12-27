@@ -588,16 +588,16 @@ app.get("/api/sfilesrc", async (req, res) => {
   }
 })
 
-app.get("/api/wikimedia", async (req, res) => {
+app.get("/api/gsmarena", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const response = await axios.get(`https://itzpire.com/search/wikimedia?query=${Enc(q)}`);
+    const response = await axios.get(`https://api.agatz.xyz/api/gsmarenas?message=${Enc(q)}`);
     res.status(200).json({
     status: true,
-    data: response.data.data,
+    data: response.data.data.data,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -1258,7 +1258,7 @@ app.get("/api/toisgd", async (req, res) => {
 
 // ===== Stalker
 
-app.get("/api/github-user", async (req, res) => {
+app.get("/api/github-userv1", async (req, res) => {
   const { username } = req.query;
   if (!username) {
     return res.status(400).json({ status: false, error: "User is required" });
@@ -1274,13 +1274,13 @@ app.get("/api/github-user", async (req, res) => {
   }
 });
 
-app.get("/api/github-repo", async (req, res) => {
-  const { username, repo } = req.query;
-  if (!username || !repo) {
-    return res.status(400).json({ status: false, error: "Username and reponame are required" });
+app.get("/api/github-userv2", async (req, res) => {
+  const { username } = req.query;
+  if (!username) {
+    return res.status(400).json({ status: false, error: "Username is required" });
   }
   try {
-    const response = await axios.get(`https://itzpire.com/stalk/github-repo?username=${username}&repoName=${repo}`);
+    const response = await axios.get(`https://api.agatz.xyz/api/ghtstalk?name=${username}`);
     res.status(200).json({
     status: true,
     data: response.data.data,
@@ -1296,10 +1296,10 @@ app.get("/api/npm-stalk", async (req, res) => {
     return res.status(400).json({ status: false, error: "Pkgname is required" });
   }
   try {
-    const response = await axios.get(`https://api.siputzx.my.id/api/stalk/npm?packageName=${pkgname}`);
+    const response = await axios.get(`https://api.vreden.my.id/api/npmstalk?query=${pkgname}`);
     res.status(200).json({
     status: true,
-    data: response.data.data,
+    data: response.data.result,
     });
   } catch (error) {
     res.status(500).json({ status: false, error: error.message });
@@ -1345,6 +1345,38 @@ app.get("/api/ig-stalk", async (req, res) => {
   }
   try {
     const response = await axios.get(`https://btch.us.kg/download/igstalk?username=${username}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.result,
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/ff-stalk", async (req, res) => {
+  const { id } = req.query;
+  if (!id) {
+    return res.status(400).json({ status: false, error: "Id is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.vreden.my.id/api/ffstalk?id=${id}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.result,
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/ml-stalk", async (req, res) => {
+  const { id, zoneid } = req.query;
+  if (!id || !zoneid) {
+    return res.status(400).json({ status: false, error: "Id and zoneid are required" });
+  }
+  try {
+    const response = await axios.get(`https://api.vreden.my.id/api/mlstalk?id=${id}&zoneid=${zoneid}`);
     res.status(200).json({
     status: true,
     data: response.data.result,
