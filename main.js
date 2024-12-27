@@ -354,13 +354,13 @@ app.get("/api/aibaby", async (req, res) => {
   }
 });
 
-app.get("/api/aimoji", async (req, res) => {
+app.get("/api/softanime", async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/aimoji?prompt=${Enc(q)}`, { responseType: 'arraybuffer' });
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/waifu-diff?prompt=${Enc(q)}&style=Soft-Anime`, { responseType: 'arraybuffer' });
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
   } catch (error) {
@@ -588,6 +588,22 @@ app.get("/api/sfilesrc", async (req, res) => {
   }
 })
 
+app.get("/api/wikipedia", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.siputzx.my.id/api/s/wikipedia?query=${Enc(q)}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.data,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 // ===== DOWNLOADER
 
 app.get("/api/ytdl", async (req, res) => {
@@ -649,10 +665,10 @@ app.get("/api/igdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" });
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/igdownload?url=${url}`);
+    const response = await axios.get(`https://api.ryzendesu.vip/api/downloader/igdl?url=${url}`);
     res.status(200).json({
     status: true,
-    data: response.data.result,
+    data: response.data.data,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -768,6 +784,39 @@ app.get("/api/terabox", async (req, res) => {
     res.status(200).json({
     status: true,
     data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/threads", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const { threads } = require('./search/functions')
+    const response = await threads(url)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/capcut", async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.siputzx.my.id/api/d/capcut?url=${url}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.data,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -1206,6 +1255,104 @@ app.get("/api/toisgd", async (req, res) => {
     res.status(500).json({ status: false, error: error.message })
   }
 })
+
+// ===== Stalker
+
+app.get("/api/github-user", async (req, res) => {
+  const { username } = req.query;
+  if (!username) {
+    return res.status(400).json({ status: false, error: "User is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.siputzx.my.id/api/stalk/github?user=${username}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.data
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/github-repo", async (req, res) => {
+  const { username, repo } = req.query;
+  if (!username || !reponame) {
+    return res.status(400).json({ status: false, error: "Username and reponame are required" });
+  }
+  try {
+    const response = await axios.get(`https://itzpire.com/stalk/github-repo?username=${username}&repoName=${repo}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.data
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/npm-stalk", async (req, res) => {
+  const { pkgname } = req.query;
+  if (!pkgname) {
+    return res.status(400).json({ status: false, error: "Pkgname is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.siputzx.my.id/api/stalk/npm?packageName=${pkgname}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.data
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/tt-stalk", async (req, res) => {
+  const { username } = req.query;
+  if (!username) {
+    return res.status(400).json({ status: false, error: "Username is required" });
+  }
+  try {
+    const response = await axios.get(`https://api.siputzx.my.id/api/stalk/tiktok?username=${username}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.data
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/yt-stalk", async (req, res) => {
+  const { username } = req.query;
+  if (!username) {
+    return res.status(400).json({ status: false, error: "Username is required" });
+  }
+  try {
+    const response = await axios.get(`https://btch.us.kg/download/youtubestalk?text=${username}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.result
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/ig-stalk", async (req, res) => {
+  const { username } = req.query;
+  if (!username) {
+    return res.status(400).json({ status: false, error: "Username is required" });
+  }
+  try {
+    const response = await axios.get(`https://btch.us.kg/download/igstalk?username=${username}`);
+    res.status(200).json({
+    status: true,
+    data: response.data.result
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
