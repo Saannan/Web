@@ -1,7 +1,7 @@
-const express = require("express");
-const axios = require("axios");
-const app = express();
-const PORT = 3000;
+const express = require("express")
+const axios = require("axios")
+const app = express()
+const PORT = 3000
 
 function Enc(type) {
   return encodeURIComponent(type)
@@ -10,9 +10,9 @@ function Enc(type) {
 // ===== AI
 
 app.get("/api/openai", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { ChatGPT } = require('./search/functions')
@@ -27,12 +27,12 @@ app.get("/api/openai", async (req, res) => {
 })
 
 app.get("/api/luminai", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.siputzx.my.id/api/ai/llama?prompt=You%20name%20is%LuminAI&message=${Enc(q)}`);
+    const response = await axios.get(`https://api.siputzx.my.id/api/ai/llama?prompt=You%20name%20is%LuminAI&message=${Enc(q)}`)
     res.status(200).json({
     status: true,
     result: response.data.data
@@ -43,9 +43,9 @@ app.get("/api/luminai", async (req, res) => {
 })
 
 app.get("/api/llamav1", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { ChatGPT } = require('./search/functions')
@@ -60,9 +60,9 @@ app.get("/api/llamav1", async (req, res) => {
 })
 
 app.get("/api/llamav2", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { veniceai } = require('./search/functions')
@@ -77,15 +77,15 @@ app.get("/api/llamav2", async (req, res) => {
 })
 
 app.get("/api/gemini", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.agatz.xyz/api/gemini?message=${Enc(q)}`)
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/ia/gemini?query=${Enc(q)}`)
     res.status(200).json({
     status: true,
-    result: response.data.data.answer
+    result: response.data.message
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -93,9 +93,9 @@ app.get("/api/gemini", async (req, res) => {
 })
 
 app.get("/api/blackbox", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const response = await axios.get(`https://api.tioo.eu.org/blackbox?text=${Enc(q)}`)
@@ -109,9 +109,9 @@ app.get("/api/blackbox", async (req, res) => {
 })
 
 app.get("/api/simi", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const response = await axios.get(`https://api.tioo.eu.org/simi?text=${Enc(q)}`)
@@ -125,9 +125,9 @@ app.get("/api/simi", async (req, res) => {
 })
 
 app.get("/api/gpt4o", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const prompt = "Your name is GPT-4o"
@@ -142,9 +142,9 @@ app.get("/api/gpt4o", async (req, res) => {
 })
 
 app.get("/api/gpt4omini", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const prompt = "Your name is GPT-4o Mini"
@@ -159,9 +159,9 @@ app.get("/api/gpt4omini", async (req, res) => {
 })
 
 app.get("/api/turbov1", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const prompt = "Your name is GPT Turbo"
@@ -176,9 +176,9 @@ app.get("/api/turbov1", async (req, res) => {
 })
 
 app.get("/api/turbov2", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const prompt = "Your name is GPT Turbo Large"
@@ -193,9 +193,9 @@ app.get("/api/turbov2", async (req, res) => {
 })
 
 app.get("/api/mistralv1", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { ChatGPT } = require('./search/functions')
@@ -210,9 +210,9 @@ app.get("/api/mistralv1", async (req, res) => {
 })
 
 app.get("/api/mistralv2", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { ChatGPT } = require('./search/functions')
@@ -227,9 +227,9 @@ app.get("/api/mistralv2", async (req, res) => {
 })
 
 app.get("/api/feloai", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { feloask } = require('./search/functions')
@@ -244,9 +244,9 @@ app.get("/api/feloai", async (req, res) => {
 })
 
 app.get("/api/moshiai", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const response = await axios.get(`https://api.siputzx.my.id/api/ai/moshiai?input=${Enc(q)}`)
@@ -260,9 +260,9 @@ app.get("/api/moshiai", async (req, res) => {
 })
 
 app.get("/api/meiliai", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { meiliai } = require('./search/functions')
@@ -277,9 +277,9 @@ app.get("/api/meiliai", async (req, res) => {
 })
 
 app.get("/api/islamai", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { islamai } = require('./search/functions')
@@ -294,9 +294,9 @@ app.get("/api/islamai", async (req, res) => {
 })
 
 app.get("/api/veniceai", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { veniceai } = require('./search/functions')
@@ -311,58 +311,58 @@ app.get("/api/veniceai", async (req, res) => {
 })
 
 app.get("/api/txt2imgv1", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/waifu-diff?prompt=${Enc(q)}&style=Anime`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/waifu-diff?prompt=${Enc(q)}&style=Anime`, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/png')
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
 app.get("/api/txt2imgv2", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/waifu-diff?prompt=${Enc(q)}&style=Cute-Anime`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/waifu-diff?prompt=${Enc(q)}&style=Cute-Anime`, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/png')
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
 app.get("/api/aibaby", async (req, res) => {
-  const { ayah, ibu, gender } = req.query;
+  const { ayah, ibu, gender } = req.query
   if (!ayah || !ibu) {
-    return res.status(400).json({ status: false, error: "(URL) Bapak and Emak is required" });
+    return res.status(400).json({ status: false, error: "(URL) Bapak and Emak is required" })
   }
   try {
     const { cbaby } = require('./search/functions')
-    const imageUrl = await cbaby(ayah, ibu, gender || 'girl');
-    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/jpeg');
-    res.send(response.data);
+    const imageUrl = await cbaby(ayah, ibu, gender || 'girl')
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/jpeg')
+    res.send(response.data)
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    res.status(500).json({ status: false, error: error.message })
   }
-});
+})
 
 app.get("/api/softanime", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/waifu-diff?prompt=${Enc(q)}&style=Soft-Anime`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/waifu-diff?prompt=${Enc(q)}&style=Soft-Anime`, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/png')
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
@@ -371,13 +371,13 @@ app.get("/api/softanime", async (req, res) => {
 // ===== SEARCH
 
 app.get("/api/google", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://www.googleapis.com/customsearch/v1?q=${Enc(q)}&key=AIzaSyAajE2Y-Kgl8bjPyFvHQ-PgRUSMWgBEsSk&cx=e5c2be9c3f94c4bbb`);
-    const items = response.data.items;
+    const response = await axios.get(`https://www.googleapis.com/customsearch/v1?q=${Enc(q)}&key=AIzaSyAajE2Y-Kgl8bjPyFvHQ-PgRUSMWgBEsSk&cx=e5c2be9c3f94c4bbb`)
+    const items = response.data.items
     res.status(200).json({
     status: true,
     data: items.map(item => ({
@@ -392,26 +392,26 @@ app.get("/api/google", async (req, res) => {
 })
 
 app.get("/api/gimage", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.tioo.eu.org/gimage?query=${Enc(q)}`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
+    const response = await axios.get(`https://api.tioo.eu.org/gimage?query=${Enc(q)}`, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/png')
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
 app.get("/api/playstore", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/playstore?query=${Enc(q)}`);
+    const response = await axios.get(`https://api.vreden.my.id/api/playstore?query=${Enc(q)}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -422,12 +422,12 @@ app.get("/api/playstore", async (req, res) => {
 })
 
 app.get("/api/appstore", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/search/appstore?q=${Enc(q)}`);
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/search/appstore?q=${Enc(q)}`)
     res.status(200).json({
     status: true,
     data: response.data,
@@ -438,9 +438,9 @@ app.get("/api/appstore", async (req, res) => {
 })
 
 app.get("/api/apkpure", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { apkpure } = require('./search/functions')
@@ -455,12 +455,12 @@ app.get("/api/apkpure", async (req, res) => {
 })
 
 app.get("/api/yts", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/search/ytsearch?q=${Enc(q)}`);
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/search/ytsearch?q=${Enc(q)}`)
     res.status(200).json({
     status: true,
     data: response.data.data,
@@ -471,9 +471,9 @@ app.get("/api/yts", async (req, res) => {
 })
 
 app.get("/api/spotifys", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { spotifys } = require('./search/functions')
@@ -488,9 +488,9 @@ app.get("/api/spotifys", async (req, res) => {
 })
 
 app.get("/api/bingsrc", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { bingS } = require('./search/functions')
@@ -505,9 +505,9 @@ app.get("/api/bingsrc", async (req, res) => {
 })
 
 app.get("/api/bingimg", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { bingI } = require('./search/functions')
@@ -522,9 +522,9 @@ app.get("/api/bingimg", async (req, res) => {
 })
 
 app.get("/api/bingvd", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { bingV } = require('./search/functions')
@@ -539,12 +539,12 @@ app.get("/api/bingvd", async (req, res) => {
 })
 
 app.get("/api/pinterest", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/search/pinterest?text=${Enc(q)}`);
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/search/pinterest?text=${Enc(q)}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -555,9 +555,9 @@ app.get("/api/pinterest", async (req, res) => {
 })
 
 app.get("/api/lirik", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { srcLyrics } = require('./search/functions')
@@ -572,9 +572,9 @@ app.get("/api/lirik", async (req, res) => {
 })
 
 app.get("/api/sfilesrc", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
     const { sfilesrc } = require('./search/functions')
@@ -589,12 +589,12 @@ app.get("/api/sfilesrc", async (req, res) => {
 })
 
 app.get("/api/gsmarena", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.agatz.xyz/api/gsmarenas?message=${Enc(q)}`);
+    const response = await axios.get(`https://api.agatz.xyz/api/gsmarenas?message=${Enc(q)}`)
     res.status(200).json({
     status: true,
     data: response.data.data.data,
@@ -607,14 +607,14 @@ app.get("/api/gsmarena", async (req, res) => {
 // ===== DOWNLOADER
 
 app.get("/api/ytdl", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { ytdl } = require('./search/functions')
-    const vid = await ytdl(url, 3, 2);
-    const aud = await ytdl(url, 3, 1);
+    const vid = await ytdl(url, 3, 2)
+    const aud = await ytdl(url, 3, 1)
     res.status(200).json({
     status: true,
     data: {
@@ -627,13 +627,13 @@ app.get("/api/ytdl", async (req, res) => {
 })
 
 app.get("/api/ytdlv2", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { ytdlv2 } = require('./search/functions')
-    const response = await ytdlv2(url, '360');
+    const response = await ytdlv2(url, '360')
     res.status(200).json({
     status: true,
     data: response,
@@ -644,12 +644,12 @@ app.get("/api/ytdlv2", async (req, res) => {
 })
 
 app.get("/api/fbdl", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/fbdl?url=${url}`);
+    const response = await axios.get(`https://api.vreden.my.id/api/fbdl?url=${url}`)
     res.status(200).json({
     status: true,
     data: response.data.data,
@@ -660,12 +660,12 @@ app.get("/api/fbdl", async (req, res) => {
 })
 
 app.get("/api/igdl", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.ryzendesu.vip/api/downloader/igdl?url=${url}`);
+    const response = await axios.get(`https://api.ryzendesu.vip/api/downloader/igdl?url=${url}`)
     res.status(200).json({
     status: true,
     data: response.data.data,
@@ -676,9 +676,9 @@ app.get("/api/igdl", async (req, res) => {
 })
 
 app.get("/api/igdlv2", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { igfbdl } = require('./search/functions')
@@ -693,12 +693,12 @@ app.get("/api/igdlv2", async (req, res) => {
 })
 
 app.get("/api/ttdl", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/tiktok?url=${url}`);
+    const response = await axios.get(`https://api.vreden.my.id/api/tiktok?url=${url}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -709,9 +709,9 @@ app.get("/api/ttdl", async (req, res) => {
 })
 
 app.get("/api/ttdlv2", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { tiktokdl } = require('./search/functions')
@@ -726,9 +726,9 @@ app.get("/api/ttdlv2", async (req, res) => {
 })
 
 app.get("/api/spotify", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const response = await axios.get(`https://deliriussapi-oficial.vercel.app/download/spotifydl?url=${url}`)
@@ -742,9 +742,9 @@ app.get("/api/spotify", async (req, res) => {
 })
 
 app.get("/api/videy", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const response = await axios.get(`https://api.agatz.xyz/api/videydl?url=${url}`)
@@ -758,9 +758,9 @@ app.get("/api/videy", async (req, res) => {
 })
 
 app.get("/api/twitter", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const response = await axios.get(`https://api.agatz.xyz/api/twitter?url=${url}`)
@@ -774,9 +774,9 @@ app.get("/api/twitter", async (req, res) => {
 })
 
 app.get("/api/terabox", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { terabox } = require('./search/functions')
@@ -791,9 +791,9 @@ app.get("/api/terabox", async (req, res) => {
 })
 
 app.get("/api/threads", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { threads } = require('./search/functions')
@@ -808,12 +808,12 @@ app.get("/api/threads", async (req, res) => {
 })
 
 app.get("/api/capcut", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.siputzx.my.id/api/d/capcut?url=${url}`);
+    const response = await axios.get(`https://api.siputzx.my.id/api/d/capcut?url=${url}`)
     res.status(200).json({
     status: true,
     data: response.data.data,
@@ -824,12 +824,12 @@ app.get("/api/capcut", async (req, res) => {
 })
 
 app.get("/api/mfdl", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/download/mediafire?url=${url}`);
+    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/download/mediafire?url=${url}`)
     res.status(200).json({
     status: true,
     data: response.data.data,
@@ -840,9 +840,9 @@ app.get("/api/mfdl", async (req, res) => {
 })
 
 app.get("/api/gdrive", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const response = await axios.get(`https://api.siputzx.my.id/api/d/gdrive?url=${url}`)
@@ -856,9 +856,9 @@ app.get("/api/gdrive", async (req, res) => {
 })
 
 app.get("/api/getlirik", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { getLyrics } = require('./search/functions')
@@ -873,9 +873,9 @@ app.get("/api/getlirik", async (req, res) => {
 })
 
 app.get("/api/pastebin", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { pastebin } = require('./search/functions')
@@ -890,9 +890,9 @@ app.get("/api/pastebin", async (req, res) => {
 })
 
 app.get("/api/sfiledl", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { sfiledl} = require('./search/functions')
@@ -909,14 +909,14 @@ app.get("/api/sfiledl", async (req, res) => {
 // ===== MAKER
 
 app.get("/api/bratv1", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://brat.caliphdev.com/api/brat?text=${Enc(q)}`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
+    const response = await axios.get(`https://brat.caliphdev.com/api/brat?text=${Enc(q)}`, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/png')
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
@@ -940,56 +940,56 @@ app.get("/api/bratv2", async (req, res) => {
 })
 
 app.get("/api/txtimage", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://dummyimage.com/600x400/000/fff&text=${Enc(q)}`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
+    const response = await axios.get(`https://dummyimage.com/600x400/000/fff&text=${Enc(q)}`, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/png')
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
 app.get("/api/blurimg", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.siputzx.my.id/api/m/blur?url=${url}`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
+    const response = await axios.get(`https://api.siputzx.my.id/api/m/blur?url=${url}`, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/png')
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
 app.get("/api/beautiful", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.siputzx.my.id/api/m/beautiful?url=${url}`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
+    const response = await axios.get(`https://api.siputzx.my.id/api/m/beautiful?url=${url}`, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/png')
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
 app.get("/api/facepalm", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.siputzx.my.id/api/m/facepalm?url=${url}`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
+    const response = await axios.get(`https://api.siputzx.my.id/api/m/facepalm?url=${url}`, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/png')
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
@@ -998,12 +998,12 @@ app.get("/api/facepalm", async (req, res) => {
 // ===== TOOLS
 
 app.get("/api/tinyurl", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/tinyurl?url=${url}`);
+    const response = await axios.get(`https://api.vreden.my.id/api/tinyurl?url=${url}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -1014,85 +1014,85 @@ app.get("/api/tinyurl", async (req, res) => {
 })
 
 app.get('/api/remini', async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { remini } = require('./search/functions')
-    const resu = await remini(url, 'enhance');
-    res.setHeader('Content-Type', 'image/jpeg');
-    res.send(resu);
+    const resu = await remini(url, 'enhance')
+    res.setHeader('Content-Type', 'image/jpeg')
+    res.send(resu)
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    res.status(500).json({ status: false, error: error.message })
   }
-});
+})
 
 app.get("/api/reminiv2", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
-    const imgs = Buffer.from(response.data);
+    const response = await axios.get(url, { responseType: 'arraybuffer' })
+    const imgs = Buffer.from(response.data)
     const { reminiv2 } = require('./search/functions')
-    const resu = await reminiv2(imgs, 'enhance');
-    res.setHeader('Content-Type', 'image/jpeg');
-    res.send(resu);
+    const resu = await reminiv2(imgs, 'enhance')
+    res.setHeader('Content-Type', 'image/jpeg')
+    res.send(resu)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
 app.get("/api/recolor", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { remini } = require('./search/functions')
-    const resu = await remini(url, 'recolor');
-    res.setHeader('Content-Type', 'image/jpeg');
-    res.send(resu);
+    const resu = await remini(url, 'recolor')
+    res.setHeader('Content-Type', 'image/jpeg')
+    res.send(resu)
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    res.status(500).json({ status: false, error: error.message })
   }
-});
+})
 
 app.get("/api/dehaze", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { dehaze } = require('./search/functions')
-    const resultImage = await dehaze(url);
-    res.setHeader('Content-Type', 'image/jpeg');
-    res.send(resultImage);
+    const resultImage = await dehaze(url)
+    res.setHeader('Content-Type', 'image/jpeg')
+    res.send(resultImage)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
 app.get("/api/ssweb", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.screenshotmachine.com/?key=f4fd50&url=${url}&device=tablet&dimension=480x800&format=png&cacheLimit=0&delay=200`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
+    const response = await axios.get(`https://api.screenshotmachine.com/?key=f4fd50&url=${url}&device=tablet&dimension=480x800&format=png&cacheLimit=0&delay=200`, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/png')
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
 })
 
 app.get("/api/cekipv1", async (req, res) => {
-  const { ip } = req.query;
+  const { ip } = req.query
   if (!ip) {
-    return res.status(400).json({ status: false, error: "IP is required" });
+    return res.status(400).json({ status: false, error: "IP is required" })
   }
   try {
     const response = await axios.get(`https://api.ryzendesu.vip/api/tool/iplocation?ip=${ip}`)
@@ -1106,9 +1106,9 @@ app.get("/api/cekipv1", async (req, res) => {
 })
 
 app.get("/api/cekipv2", async (req, res) => {
-  const { ip } = req.query;
+  const { ip } = req.query
   if (!ip) {
-    return res.status(400).json({ status: false, error: "IP is required" });
+    return res.status(400).json({ status: false, error: "IP is required" })
   }
   try {
     const response = await axios.get(`https://api.ryzendesu.vip/api/tool/v2/iplocation?ip=${ip}`)
@@ -1124,12 +1124,12 @@ app.get("/api/cekipv2", async (req, res) => {
 // ===== CONVERT
 
 app.get("/api/tobase64", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = Buffer.from(q).toString('base64');
+    const response = Buffer.from(q).toString('base64')
     res.status(200).json({
     status: true,
     result: response,
@@ -1140,12 +1140,12 @@ app.get("/api/tobase64", async (req, res) => {
 })
 
 app.get("/api/toutf8", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = Buffer.from(q, 'base64').toString('utf-8');
+    const response = Buffer.from(q, 'base64').toString('utf-8')
     res.status(200).json({
     status: true,
     result: response,
@@ -1156,12 +1156,12 @@ app.get("/api/toutf8", async (req, res) => {
 })
 
 app.get("/api/tohex", async (req, res) => {
-  const { q } = req.query;
+  const { q } = req.query
   if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" });
+    return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = Buffer.from(q).toString('hex');
+    const response = Buffer.from(q).toString('hex')
     res.status(200).json({
     status: true,
     result: response,
@@ -1172,14 +1172,14 @@ app.get("/api/tohex", async (req, res) => {
 })
 
 app.get("/api/ghraw", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     if (!url.includes('github.com')) {
       res.status(400).json({ status: false, error: "Requires Github Raw URL" })}
-    const rawUrl = url.replace('github.com', 'raw.githubusercontent.com').replace(/\/blob\/[^\/]+/, '').replace('/master', '').replace('/main', '');
+    const rawUrl = url.replace('github.com', 'raw.githubusercontent.com').replace(/\/blob\/[^\/]+/, '').replace('/master', '').replace('/main', '')
     res.status(200).json({
     status: true,
     result: rawUrl,
@@ -1190,14 +1190,14 @@ app.get("/api/ghraw", async (req, res) => {
 })
 
 app.get("/api/ghori", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     if (!url.includes('raw.githubusercontent.com')) {
       res.status(400).json({ status: false, error: "Requires Github Ori URL" })}
-    const ghUrl = url.replace('raw.githubusercontent.com', 'github.com').replace(/\/([^\/]+)$/, '/blob/$1').replace('/master', '/blob/master').replace('/main', '/blob/main');
+    const ghUrl = url.replace('raw.githubusercontent.com', 'github.com').replace(/\/([^\/]+)$/, '/blob/$1').replace('/master', '/blob/master').replace('/main', '/blob/main')
     res.status(200).json({
     status: true,
     result: ghUrl,
@@ -1208,9 +1208,9 @@ app.get("/api/ghori", async (req, res) => {
 })
 
 app.get("/api/audio2txt", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const { transcribe } = require('./search/functions')
@@ -1225,9 +1225,9 @@ app.get("/api/audio2txt", async (req, res) => {
 })
 
 app.get("/api/tovurl", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const response = await axios.get(`https://deliriussapi-oficial.vercel.app/shorten/vurl?url=${url}`)
@@ -1241,9 +1241,9 @@ app.get("/api/tovurl", async (req, res) => {
 })
 
 app.get("/api/toisgd", async (req, res) => {
-  const { url } = req.query;
+  const { url } = req.query
   if (!url) {
-    return res.status(400).json({ status: false, error: "URL is required" });
+    return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
     const response = await axios.get(`https://deliriussapi-oficial.vercel.app/shorten/shorten?url=${url}`)
@@ -1259,136 +1259,330 @@ app.get("/api/toisgd", async (req, res) => {
 // ===== Stalker
 
 app.get("/api/github-userv1", async (req, res) => {
-  const { username } = req.query;
+  const { username } = req.query
   if (!username) {
-    return res.status(400).json({ status: false, error: "User is required" });
+    return res.status(400).json({ status: false, error: "User is required" })
   }
   try {
-    const response = await axios.get(`https://api.siputzx.my.id/api/stalk/github?user=${username}`);
+    const response = await axios.get(`https://api.siputzx.my.id/api/stalk/github?user=${username}`)
     res.status(200).json({
     status: true,
     data: response.data.data,
-    });
+    })
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    res.status(500).json({ status: false, error: error.message })
   }
-});
+})
 
 app.get("/api/github-userv2", async (req, res) => {
-  const { username } = req.query;
+  const { username } = req.query
   if (!username) {
-    return res.status(400).json({ status: false, error: "Username is required" });
+    return res.status(400).json({ status: false, error: "Username is required" })
   }
   try {
-    const response = await axios.get(`https://api.agatz.xyz/api/ghtstalk?name=${username}`);
+    const response = await axios.get(`https://api.agatz.xyz/api/ghtstalk?name=${username}`)
     res.status(200).json({
     status: true,
     data: response.data.data,
-    });
+    })
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    res.status(500).json({ status: false, error: error.message })
   }
-});
+})
 
 app.get("/api/npm-stalk", async (req, res) => {
-  const { pkgname } = req.query;
+  const { pkgname } = req.query
   if (!pkgname) {
-    return res.status(400).json({ status: false, error: "Pkgname is required" });
+    return res.status(400).json({ status: false, error: "Pkgname is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/npmstalk?query=${pkgname}`);
+    const response = await axios.get(`https://api.vreden.my.id/api/npmstalk?query=${pkgname}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
-    });
+    })
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    res.status(500).json({ status: false, error: error.message })
   }
-});
+})
 
 app.get("/api/tt-stalk", async (req, res) => {
-  const { username } = req.query;
+  const { username } = req.query
   if (!username) {
-    return res.status(400).json({ status: false, error: "Username is required" });
+    return res.status(400).json({ status: false, error: "Username is required" })
   }
   try {
-    const response = await axios.get(`https://api.siputzx.my.id/api/stalk/tiktok?username=${username}`);
+    const response = await axios.get(`https://api.siputzx.my.id/api/stalk/tiktok?username=${username}`)
     res.status(200).json({
     status: true,
     data: response.data.data,
-    });
+    })
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    res.status(500).json({ status: false, error: error.message })
   }
-});
+})
 
 app.get("/api/yt-stalk", async (req, res) => {
-  const { username } = req.query;
+  const { username } = req.query
   if (!username) {
-    return res.status(400).json({ status: false, error: "Username is required" });
+    return res.status(400).json({ status: false, error: "Username is required" })
   }
   try {
-    const response = await axios.get(`https://btch.us.kg/download/youtubestalk?text=${username}`);
+    const response = await axios.get(`https://btch.us.kg/download/youtubestalk?text=${username}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
-    });
+    })
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    res.status(500).json({ status: false, error: error.message })
   }
-});
+})
 
 app.get("/api/ig-stalk", async (req, res) => {
-  const { username } = req.query;
+  const { username } = req.query
   if (!username) {
-    return res.status(400).json({ status: false, error: "Username is required" });
+    return res.status(400).json({ status: false, error: "Username is required" })
   }
   try {
-    const response = await axios.get(`https://btch.us.kg/download/igstalk?username=${username}`);
+    const response = await axios.get(`https://btch.us.kg/download/igstalk?username=${username}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
-    });
+    })
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    res.status(500).json({ status: false, error: error.message })
   }
-});
+})
 
 app.get("/api/ff-stalk", async (req, res) => {
-  const { id } = req.query;
+  const { id } = req.query
   if (!id) {
-    return res.status(400).json({ status: false, error: "Id is required" });
+    return res.status(400).json({ status: false, error: "Id is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/ffstalk?id=${id}`);
+    const response = await axios.get(`https://api.vreden.my.id/api/ffstalk?id=${id}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
-    });
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/ml-stalk", async (req, res) => {
+  const { id, zoneid } = req.query
+  if (!id || !zoneid) {
+    return res.status(400).json({ status: false, error: "Id and zoneid are required" })
+  }
+  try {
+    const response = await axios.get(`https://api.vreden.my.id/api/mlstalk?id=${id}&zoneid=${zoneid}`)
+    res.status(200).json({
+    status: true,
+    data: response.data.result,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+// EPHOTO
+
+app.get("/api/glitchtext", async (req, res) => {
+  const { q } = req.query
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" })
+  }
+  try {
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('glitchtext', `${Enc(q)}`)
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/jpeg')
+    res.send(response.data)
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/writetext", async (req, res) => {
+  const { q } = req.query
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" })
+  }
+  try {
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('writetext', `${Enc(q)}`)
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/jpeg')
+    res.send(response.data)
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/advancedglow", async (req, res) => {
+  const { q } = req.query
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" })
+  }
+  try {
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('advancedglow', `${Enc(q)}`)
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/jpeg')
+    res.send(response.data)
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/logomaker", async (req, res) => {
+  const { q } = req.query
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" })
+  }
+  try {
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('logomaker', `${Enc(q)}`)
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' })
+    res.setHeader('Content-Type', 'image/jpeg')
+    res.send(response.data)
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/pixelglitch", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('pixelglitch', `${Enc(q)}`);
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(response.data);
   } catch (error) {
     res.status(500).json({ status: false, error: error.message });
   }
 });
 
-app.get("/api/ml-stalk", async (req, res) => {
-  const { id, zoneid } = req.query;
-  if (!id || !zoneid) {
-    return res.status(400).json({ status: false, error: "Id and zoneid are required" });
+app.get("/api/neonglitch", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/mlstalk?id=${id}&zoneid=${zoneid}`);
-    res.status(200).json({
-    status: true,
-    data: response.data.result,
-    });
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('neonglitch', `${Enc(q)}`);
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/flagtext", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('flagtext', `${Enc(q)}`);
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/flag3dtext", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('flag3dtext', `${Enc(q)}`);
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/deletingtext", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('deletingtext', `${Enc(q)}`);
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/sandsummer", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('sandsummer', `${Enc(q)}`);
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/makingneon", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('makingneon', `${Enc(q)}`);
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
+
+app.get("/api/royaltext", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" });
+  }
+  try {
+    const { ephoto } = require('./search/functions')
+    const imageUrl = await ephoto('royaltext', `${Enc(q)}`);
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(response.data);
   } catch (error) {
     res.status(500).json({ status: false, error: error.message });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
+  console.log(`Server is running at http://localhost:${PORT}`)
+})
 
 /*
  * © Sanjaya
