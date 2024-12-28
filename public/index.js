@@ -545,6 +545,82 @@ const categories = [{
       },
     ],
   },
+  {
+    name: "Ephoto",
+    apis: [{
+        title: "glitchtext",
+        service: "glitchtext",
+        q: "q=mbappe",
+        description: "Generate image with glitch text"
+      },
+      {
+        title: "writetext",
+        service: "writetext",
+        q: "q=mbappe",
+        description: "Generate image with write text"
+      },
+      {
+        title: "advancedglow",
+        service: "advancedglow",
+        q: "q=mbappe",
+        description: "Generate image with advanced glow"
+      },
+      {
+        title: "logomaker",
+        service: "logomaker",
+        q: "q=mbappe",
+        description: "Generate image with logo maker"
+      },
+      {
+        title: "pixelglitch",
+        service: "pixelglitch",
+        q: "q=mbappe",
+        description: "Generate image with pixel glitch"
+      },
+      {
+        title: "neonglitch",
+        service: "neonglitch",
+        q: "q=mbappe",
+        description: "Generate image with neong litch"
+      },
+      {
+        title: "flagtext",
+        service: "flagtext",
+        q: "q=mbappe",
+        description: "Generate image with flag text"
+      },
+      {
+        title: "flag3dtext",
+        service: "flag3dtext",
+        q: "q=mbappe",
+        description: "Generate image with flag3d text"
+      },
+      {
+        title: "deletingtext",
+        service: "deletingtext",
+        q: "q=mbappe",
+        description: "Generate image with deleting text"
+      },
+      {
+        title: "sandsummer",
+        service: "sandsummer",
+        q: "q=mbappe",
+        description: "Generate image with sand summer"
+      },
+      {
+        title: "makingneon",
+        service: "makingneon",
+        q: "q=mbappe",
+        description: "Generate image with making neon"
+      },
+      {
+        title: "royaltext",
+        service: "royaltext",
+        q: "q=mbappe",
+        description: "Generate image with royal text"
+      },
+    ],
+  },
 ];
 
 function renderCards() {
