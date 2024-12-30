@@ -643,6 +643,38 @@ app.get("/api/ytdlv2", async (req, res) => {
   }
 })
 
+app.get("/api/ytmp4", async (req, res) => {
+  const { url } = req.query
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" })
+  }
+  try {
+    const response = await axios.get(`https://axeel.my.id/api/download/video?url=${url}`)
+    res.status(200).json({
+    status: true,
+    data: response.data,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/ytmp3", async (req, res) => {
+  const { url } = req.query
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" })
+  }
+  try {
+    const response = await axios.get(`https://axeel.my.id/api/download/audio?url=${url}`)
+    res.status(200).json({
+    status: true,
+    data: response.data,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.get("/api/fbdl", async (req, res) => {
   const { url } = req.query
   if (!url) {
