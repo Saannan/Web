@@ -252,6 +252,18 @@ const categories = [{
         description: "Youtubev2 downloader"
       },
       {
+        title: "ytmp4",
+        service: "ytmp4",
+        q: "url=https://youtu.be/3JSJ6h7LKb0",
+        description: "Youtube mp4 downloader"
+      },
+      {
+        title: "ytmp3",
+        service: "ytmp3",
+        q: "url=https://youtu.be/3JSJ6h7LKb0",
+        description: "Youtube mp3 downloader"
+      },
+      {
         title: "facebook",
         service: "fbdl",
         q: "url=https://www.facebook.com/share/r/12BFZAtjpS8/?mibextid=qDwCgo",
