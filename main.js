@@ -411,7 +411,7 @@ app.get("/api/playstore", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/playstore?query=${Enc(q)}`)
+    const response = await axios.get(`https://api.vreden.web.id/api/playstore?query=${Enc(q)}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -681,7 +681,7 @@ app.get("/api/fbdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/fbdl?url=${url}`)
+    const response = await axios.get(`https://api.vreden.web.id/api/fbdl?url=${url}`)
     res.status(200).json({
     status: true,
     data: response.data.data,
@@ -730,7 +730,7 @@ app.get("/api/ttdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/tiktok?url=${url}`)
+    const response = await axios.get(`https://api.vreden.web.id/api/tiktok?url=${url}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -1035,7 +1035,7 @@ app.get("/api/tinyurl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/tinyurl?url=${url}`)
+    const response = await axios.get(`https://api.vreden.web.id/api/tinyurl?url=${url}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -1328,7 +1328,7 @@ app.get("/api/npm-stalk", async (req, res) => {
     return res.status(400).json({ status: false, error: "Pkgname is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/npmstalk?query=${pkgname}`)
+    const response = await axios.get(`https://api.vreden.web.id/api/npmstalk?query=${pkgname}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -1360,7 +1360,7 @@ app.get("/api/yt-stalk", async (req, res) => {
     return res.status(400).json({ status: false, error: "Username is required" })
   }
   try {
-    const response = await axios.get(`https://btch.us.kg/download/youtubestalk?text=${username}`)
+    const response = await axios.get(`https://api.tioo.eu.org/download/youtubestalk?text=${username}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -1376,7 +1376,7 @@ app.get("/api/ig-stalk", async (req, res) => {
     return res.status(400).json({ status: false, error: "Username is required" })
   }
   try {
-    const response = await axios.get(`https://btch.us.kg/download/igstalk?username=${username}`)
+    const response = await axios.get(`https://api.tioo.eu.org/download/igstalk?username=${username}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -1392,7 +1392,7 @@ app.get("/api/ff-stalk", async (req, res) => {
     return res.status(400).json({ status: false, error: "Id is required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/ffstalk?id=${id}`)
+    const response = await axios.get(`https://api.vreden.web.id/api/ffstalk?id=${id}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
@@ -1408,7 +1408,7 @@ app.get("/api/ml-stalk", async (req, res) => {
     return res.status(400).json({ status: false, error: "Id and zoneid are required" })
   }
   try {
-    const response = await axios.get(`https://api.vreden.my.id/api/mlstalk?id=${id}&zoneid=${zoneid}`)
+    const response = await axios.get(`https://api.vreden.web.id/api/mlstalk?id=${id}&zoneid=${zoneid}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
