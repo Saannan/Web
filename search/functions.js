@@ -766,54 +766,73 @@ config
 return respons.data
 }
 
-async function profileImg({
-  name,
-  level,
-  rank,
-  rankId,
-  exp,
-  requireExp,
-  avatarURL,
-}) {
-  const canvas = createCanvas(700, 250);
-  const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#2a2a2a";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  const avatar = await loadImage(avatarURL);
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(125, 125, 75, 0, Math.PI * 2, true);
-  ctx.closePath();
-  ctx.clip();
-  ctx.drawImage(avatar, 50, 50, 150, 150);
-  ctx.restore();
-  ctx.beginPath();
-  ctx.arc(125, 125, 75, 0, Math.PI * 2, true);
-  ctx.strokeStyle = "#facc15";
-  ctx.lineWidth = 6;
-  ctx.stroke();
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 36px Arial";
-  ctx.textAlign = "left";
-  ctx.fillText(name, 230, 100);
-  ctx.font = "20px Arial";
-  ctx.fillText(`RANK ${rankId}: ${rank}`, 230, 140);
-  ctx.fillText(`LEVEL: ${level}`, 230, 170);
-  const expBarX = 230;
-  const expBarY = 200;
-  const expBarWidth = 400;
-  const expBarHeight = 30;
-  ctx.strokeStyle = "#facc15";
-  ctx.lineWidth = 3;
-  ctx.strokeRect(expBarX, expBarY, expBarWidth, expBarHeight);
-  const filledWidth = (exp / requireExp) * expBarWidth;
-  ctx.fillStyle = "#facc15";
-  ctx.fillRect(expBarX, expBarY, filledWidth, expBarHeight);
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "18px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText(`${exp} / ${requireExp}`, expBarX + expBarWidth / 2, expBarY + 22);
-  return canvas.toBuffer();
+async function profileImg(options) {
+const canvas = createCanvas(1024, 352);
+const ctx = canvas.getContext("2d");
+const { backgroundURL, avatarURL, rankName, rankId, name, exp, requireExp } = options;
+const [backgroundImage, avatarImage] = await Promise.all([
+loadImage(backgroundURL),
+loadImage(avatarURL),
+]);
+const backgroundCanvas = createCanvas(canvas.width, canvas.height);
+const backgroundCtx = backgroundCanvas.getContext("2d");
+backgroundCtx.drawImage(backgroundImage, 0, 0, backgroundCanvas.width, backgroundCanvas.height);
+backgroundCtx.filter = 'blur(20px)';
+backgroundCtx.drawImage(backgroundCanvas, 0, 0);
+ctx.drawImage(backgroundCanvas, 0, 0);
+const avatarSize = 220;
+const avatarX = 50;
+const avatarY = canvas.height / 2 - avatarSize / 2;
+ctx.save();
+ctx.beginPath();
+ctx.arc(avatarX + avatarSize / 2, avatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
+ctx.clip();
+ctx.drawImage(avatarImage, avatarX, avatarY, avatarSize, avatarSize);
+ctx.restore();
+ctx.lineWidth = 10;
+ctx.strokeStyle = "#FFCC33";
+ctx.beginPath();
+ctx.arc(avatarX + avatarSize / 2, avatarY + avatarSize / 2, avatarSize / 2 + 5, 0, Math.PI * 2);
+ctx.stroke();
+const overlayHeight = 230;
+const overlayWidth = canvas.width - avatarX - avatarSize - 120;
+const overlayX = avatarX + avatarSize + 40;
+const overlayY = canvas.height / 2 - overlayHeight / 2;
+ctx.save();
+ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+ctx.beginPath();
+ctx.roundRect(overlayX, overlayY, overlayWidth, overlayHeight, 30);
+ctx.fill();
+ctx.restore();
+ctx.lineWidth = 8;
+ctx.strokeStyle = "#FFCC33";
+ctx.beginPath();
+ctx.roundRect(overlayX, overlayY, overlayWidth, overlayHeight, 25);
+ctx.stroke();
+const textStartX = overlayX + 30;
+const textStartY = overlayY + 40;
+ctx.font = "bold 32px Arial";
+ctx.fillStyle = "#FFD700";
+ctx.fillText(`${rankName} ${rankId}`, overlayX + overlayWidth - 240, textStartY);
+ctx.font = "bold 44px Arial";
+ctx.fillStyle = "#FFFFFF";
+ctx.fillText(name, textStartX, textStartY + 60);
+const progressBarX = overlayX + 30;
+const progressBarY = textStartY + 120;
+const progressBarWidth = overlayWidth - 60;
+const progressBarHeight = 18;
+ctx.font = "bold 28px Arial";
+ctx.fillStyle = "#FFFFFF";
+ctx.fillText(`${exp} / ${requireExp}`, progressBarX, progressBarY - 10);
+ctx.fillStyle = "#3e3e3e";
+ctx.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
+const progress = exp / requireExp;
+ctx.fillStyle = "#FFCC33";
+ctx.fillRect(progressBarX, progressBarY, progressBarWidth * progress, progressBarHeight);
+ctx.lineWidth = 15;
+ctx.strokeStyle = "#FFCC33";
+ctx.strokeRect(0, 0, canvas.width, canvas.height);
+return canvas.toBuffer();
 }
 
 module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, apkpure, spotifys, bingS, bingI, bingV, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, profileImg }
