@@ -1615,9 +1615,8 @@ app.get("/api/royaltext", async (req, res) => {
 // CANVAS
 
 app.get("/api/profile-img", async (req, res) => {
-  const { background, name, level, rank, rankid, exp, requirexp, avatar } = req.query
+  const { name, level, rank, rankid, exp, requirexp, avatar } = req.query
   if (
-    !background ||
     !name ||
     !level ||
     !rank ||
@@ -1631,7 +1630,6 @@ app.get("/api/profile-img", async (req, res) => {
   try {
     const { profileImg } = require('./search/functions')
     const buffer = await profileImg({
-      background,
       name,
       level: parseInt(level),
       rank,
