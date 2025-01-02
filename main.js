@@ -697,10 +697,10 @@ app.get("/api/igdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://api.ryzendesu.vip/api/downloader/igdl?url=${url}`)
+    const response = await axios.get(`https://api.vreden.web.id/api/igdownload?url=${url}`)
     res.status(200).json({
     status: true,
-    data: response.data.data,
+    data: response.data.result.response.data,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
