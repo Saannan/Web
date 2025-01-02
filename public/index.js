@@ -633,7 +633,17 @@ const categories = [{
       },
     ],
   },
-];
+  {
+    name: "Canvas",
+    apis: [{
+        title: "profile image",
+        service: "profile-img",
+        q: "background=https://files.catbox.moe/ruwmyy.jpg&name=Vioo&level=1&rank=bronze&rankid=5&exp=100&requirexp=200&avatar=https://files.catbox.moe/9g8e3a.jpg",
+        description: "Generate profile image with canvas"
+      }
+    ],
+  },
+]
 
 function renderCards() {
   const container = document.getElementById("api-container");
