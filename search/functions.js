@@ -1,7 +1,6 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
 const FormData = require('form-data')
-const { createCanvas, loadImage } = require('canvas')
 
 async function ChatGPT(question, model) {
 const validModels = ["openai", "llama", "mistral", "mistral-large"];
@@ -767,6 +766,7 @@ return respons.data
 }
 
 async function profileImg(options) {
+const { createCanvas, loadImage } = require('canvas')
 const canvas = createCanvas(1024, 352);
 const ctx = canvas.getContext("2d");
 const { backgroundURL, avatarURL, rankName, rankId, name, exp, requireExp } = options;
@@ -811,17 +811,17 @@ ctx.roundRect(overlayX, overlayY, overlayWidth, overlayHeight, 25);
 ctx.stroke();
 const textStartX = overlayX + 30;
 const textStartY = overlayY + 40;
-ctx.font = "bold 32px Arial";
+ctx.font = "bold 32px sans-serif";
 ctx.fillStyle = "#FFD700";
 ctx.fillText(`${rankName} ${rankId}`, overlayX + overlayWidth - 240, textStartY);
-ctx.font = "bold 44px Arial";
+ctx.font = "bold 44px sans-serif";
 ctx.fillStyle = "#FFFFFF";
 ctx.fillText(name, textStartX, textStartY + 60);
 const progressBarX = overlayX + 30;
 const progressBarY = textStartY + 120;
 const progressBarWidth = overlayWidth - 60;
 const progressBarHeight = 18;
-ctx.font = "bold 28px Arial";
+ctx.font = "bold 28px sans-serif";
 ctx.fillStyle = "#FFFFFF";
 ctx.fillText(`${exp} / ${requireExp}`, progressBarX, progressBarY - 10);
 ctx.fillStyle = "#3e3e3e";
