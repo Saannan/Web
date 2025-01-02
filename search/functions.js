@@ -766,13 +766,18 @@ config
 return respons.data
 }
 
-async function profileImg({ backgroundURL, name, level, rank, rankId, exp, requireExp, avatarURL }) {
+async function profileImg({
+  name,
+  level,
+  rank,
+  rankId,
+  exp,
+  requireExp,
+  avatarURL,
+}) {
   const canvas = createCanvas(700, 250);
-  const ctx = canvas.getContext('2d');
-
-  const background = await loadImage(backgroundURL);
-  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#2a2a2a";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   const avatar = await loadImage(avatarURL);
   ctx.save();
@@ -784,29 +789,29 @@ async function profileImg({ backgroundURL, name, level, rank, rankId, exp, requi
   ctx.restore();
   ctx.beginPath();
   ctx.arc(125, 125, 75, 0, Math.PI * 2, true);
-  ctx.strokeStyle = '#facc15';
+  ctx.strokeStyle = "#facc15";
   ctx.lineWidth = 6;
   ctx.stroke();
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 36px Arial';
-  ctx.textAlign = 'left';
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 36px Arial";
+  ctx.textAlign = "left";
   ctx.fillText(name, 230, 100);
-  ctx.font = '20px Arial';
+  ctx.font = "20px Arial";
   ctx.fillText(`RANK ${rankId}: ${rank}`, 230, 140);
   ctx.fillText(`LEVEL: ${level}`, 230, 170);
   const expBarX = 230;
   const expBarY = 200;
   const expBarWidth = 400;
   const expBarHeight = 30;
-  ctx.strokeStyle = '#facc15';
+  ctx.strokeStyle = "#facc15";
   ctx.lineWidth = 3;
   ctx.strokeRect(expBarX, expBarY, expBarWidth, expBarHeight);
   const filledWidth = (exp / requireExp) * expBarWidth;
-  ctx.fillStyle = '#facc15';
+  ctx.fillStyle = "#facc15";
   ctx.fillRect(expBarX, expBarY, filledWidth, expBarHeight);
-  ctx.fillStyle = '#ffffff';
-  ctx.font = '18px Arial';
-  ctx.textAlign = 'center';
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "18px Arial";
+  ctx.textAlign = "center";
   ctx.fillText(`${exp} / ${requireExp}`, expBarX + expBarWidth / 2, expBarY + 22);
   return canvas.toBuffer();
 }
