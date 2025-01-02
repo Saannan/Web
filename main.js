@@ -1622,13 +1622,13 @@ app.get("/api/profile-img", async (req, res) => {
     try {
         const { profileImg } = require('./search/functions')
         const options = {
-          backgroundURL: background,
-          avatarURL: avatar,
-          rankName: rank,
-          rankId: rankid,
+          background,
+          avatar,
+          rank,
+          rankid,
           exp: exp,
-          requireExp: requirexp,
-          name: name
+          requirexp,
+          name
         }
         const buffer = await profileImg(options)
         res.setHeader("Content-Type", "image/png")
