@@ -1615,34 +1615,27 @@ app.get("/api/royaltext", async (req, res) => {
 // CANVAS
 
 app.get("/api/profile-img", async (req, res) => {
-  const { name, level, rank, rankid, exp, requirexp, avatar } = req.query
-  if (
-    !name ||
-    !level ||
-    !rank ||
-    !rankid ||
-    !exp ||
-    !requirexp ||
-    !avatar
-  ) {
-    return res.status(400).json({ status: false, error: "All parameters are required" })
-  }
-  try {
-    const { profileImg } = require('./search/functions')
-    const buffer = await profileImg({
-      name,
-      level: parseInt(level),
-      rank,
-      rankid: parseInt(rankid),
-      exp: parseInt(exp),
-      requirexp: parseInt(requirexp),
-      avatar,
-    })
-    res.setHeader("Content-Type", "image/png")
-    res.send(buffer)
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
+    const { background, avatar, rank, rankid, name, exp, requirexp } = req.query
+    if (!background || !avatar || !rank || !rankid || !name || !exp || !requirexp) {
+        return res.status(400).json({ status: false, error: "All parameters are required" })
+    }
+    try {
+        const { profileImg } = require('./search/functions')
+        const options = {
+          backgroundURL: background,
+          avatarURL: avatar,
+          rankName: rank,
+          rankId: rankid,
+          exp: exp,
+          requireExp: requirexp,
+          name: name
+        }
+        const buffer = await profileImg(options)
+        res.setHeader("Content-Type", "image/png")
+        res.send(buffer)
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message })
+    }
 })
 
 app.listen(PORT, () => {
