@@ -1612,6 +1612,41 @@ app.get("/api/royaltext", async (req, res) => {
   }
 });
 
+// CANVAS
+
+app.get("/api/profile-img", async (req, res) => {
+  const { background, name, level, rank, rankid, exp, requirexp, avatar } = req.query
+  if (
+    !background ||
+    !name ||
+    !level ||
+    !rank ||
+    !rankid ||
+    !exp ||
+    !requirexp ||
+    !avatar
+  ) {
+    return res.status(400).json({ status: false, error: "All parameters are required" })
+  }
+  try {
+    const { profileImg } = require('./search/functions')
+    const buffer = await profileImg({
+      background,
+      name,
+      level: parseInt(level),
+      rank,
+      rankid: parseInt(rankid),
+      exp: parseInt(exp),
+      requirexp: parseInt(requirexp),
+      avatar,
+    })
+    res.setHeader("Content-Type", "image/png")
+    res.send(buffer)
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`)
 })
