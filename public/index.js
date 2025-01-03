@@ -638,7 +638,7 @@ const categories = [{
     apis: [{
         title: "profileimg",
         service: "profileimg",
-        q: "background=https://telegra.ph/file/ce0d92af0f361dd51a6ea.png&avatar=https://files.catbox.moe/9g8e3a.jpg&rank=bronze&rankid=1&exp=100&requirexp=200&level=1&name=Vioo",
+        q: "background=https://telegra.ph/file/ce0d92af0f361dd51a6ea.png&avatar=https://files.catbox.moe/9g8e3a.jpg&rank=bronze&rankid=1&exp=100&requireexp=200&level=1&name=Vioo",
         description: "Generate profile img with canvas"
       },
       {
