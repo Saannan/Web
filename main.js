@@ -1615,8 +1615,8 @@ app.get("/api/royaltext", async (req, res) => {
 // CANVAS
 
 app.get("/api/profileimg", async (req, res) => {
-    const { background, avatar, rank, rankid, exp, requirexp, level, name } = req.query
-    if (!background || !avatar || !rank || !rankid || !exp || !requirexp || !level || !name) {
+    const { background, avatar, rank, rankid, exp, requireexp, level, name } = req.query
+    if (!background || !avatar || !rank || !rankid || !exp || !requireexp || !level || !name) {
         return res.status(400).json({ status: false, error: "All parameters are required" })
     }
     try {
