@@ -1614,25 +1614,69 @@ app.get("/api/royaltext", async (req, res) => {
 
 // CANVAS
 
-app.get("/api/profile-img", async (req, res) => {
-    const { background, avatar, rank, rankid, name, exp, requirexp } = req.query
-    if (!background || !avatar || !rank || !rankid || !name || !exp || !requirexp) {
+app.get("/api/profileimg", async (req, res) => {
+    const { background, avatar, rank, rankid, exp, requirexp, level, name } = req.query
+    if (!background || !avatar || !rank || !rankid || !exp || !requirexp || !level || !name) {
         return res.status(400).json({ status: false, error: "All parameters are required" })
     }
     try {
         const { profileImg } = require('./search/functions')
         const options = {
-          background,
-          avatar,
-          rank,
-          rankid,
+          backgroundURL: background,
+          avatarURL: avatar,
+          rankName: rank,
+          rankId: rankid,
           exp: exp,
-          requirexp,
-          name
+          requireExp: requireexp,
+          level: level,
+          name: name
         }
-        const buffer = await profileImg(options)
+        const imageBuffer = await profileImg(options)
         res.setHeader("Content-Type", "image/png")
-        res.send(buffer)
+        res.send(imageBuffer)
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message })
+    }
+})
+
+app.get("/api/levelup", async (req, res) => {
+    const { background, avatar, level, levelup, name } = req.query
+    if (!background || !avatar || !level || !levelup || !name) {
+        return res.status(400).json({ status: false, error: "All parameters are required" })
+    }
+    try {
+        const { levelUp } = require('./search/functions')
+        const options = {
+          backgroundURL: background,
+          avatarURL: avatar,
+          fromLevel: level,
+          toLevel: levelup,
+          name: name
+        }
+        const imageBuffer = await levelUp(options)
+        res.setHeader("Content-Type", "image/png")
+        res.send(imageBuffer)
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message })
+    }
+})
+
+app.get("/api/notify", async (req, res) => {
+    const { background, avatar, title, desc } = req.query
+    if (!background || !avatar || !title || !desc) {
+        return res.status(400).json({ status: false, error: "All parameters are required" })
+    }
+    try {
+        const { notifGroup } = require('./search/functions')
+        const options = {
+          backgroundURL: background,
+          avatarURL: avatar,
+          title: title,
+          description: desc
+        }
+        const imageBuffer = await notifGroup(options)
+        res.setHeader("Content-Type", "image/png")
+        res.send(imageBuffer)
     } catch (error) {
         res.status(500).json({ status: false, error: error.message })
     }
