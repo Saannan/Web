@@ -633,28 +633,6 @@ const categories = [{
       },
     ],
   },
-  {
-    name: "Canvas",
-    apis: [{
-        title: "profileimg",
-        service: "profileimg",
-        q: "background=https://telegra.ph/file/ce0d92af0f361dd51a6ea.png&avatar=https://files.catbox.moe/9g8e3a.jpg&rank=bronze&rankid=1&exp=100&requireexp=200&level=1&name=Vioo",
-        description: "Generate profile img with canvas"
-      },
-      {
-        title: "levelup",
-        service: "levelup",
-        q: "background=https://telegra.ph/file/ce0d92af0f361dd51a6ea.png&avatar=https://files.catbox.moe/9g8e3a.jpg&level=1&levelup=2&name=Vioo",
-        description: "Generate levelup img with canvas"
-      },
-      {
-        title: "notify",
-        service: "notify",
-        q: "background=https://telegra.ph/file/ce0d92af0f361dd51a6ea.png&avatar=https://files.catbox.moe/9g8e3a.jpg&title=Hello&desc=Hello%20Everyone",
-        description: "Generate notify img with canvas"
-      },
-    ],
-  },
 ]
 
 function renderCards() {
