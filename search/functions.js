@@ -765,74 +765,333 @@ config
 return respons.data
 }
 
+const { createCanvas, loadImage } = require('canvas');
+
 async function profileImg(options) {
-const { createCanvas, loadImage } = require('canvas')
-const canvas = createCanvas(1024, 352);
-const ctx = canvas.getContext("2d");
-const { backgroundURL, avatarURL, rankName, rankId, name, exp, requireExp } = options;
-const [backgroundImage, avatarImage] = await Promise.all([
-loadImage(backgroundURL),
-loadImage(avatarURL),
-]);
-const backgroundCanvas = createCanvas(canvas.width, canvas.height);
-const backgroundCtx = backgroundCanvas.getContext("2d");
-backgroundCtx.drawImage(backgroundImage, 0, 0, backgroundCanvas.width, backgroundCanvas.height);
-backgroundCtx.filter = 'blur(20px)';
-backgroundCtx.drawImage(backgroundCanvas, 0, 0);
-ctx.drawImage(backgroundCanvas, 0, 0);
-const avatarSize = 220;
-const avatarX = 50;
-const avatarY = canvas.height / 2 - avatarSize / 2;
-ctx.save();
-ctx.beginPath();
-ctx.arc(avatarX + avatarSize / 2, avatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
-ctx.clip();
-ctx.drawImage(avatarImage, avatarX, avatarY, avatarSize, avatarSize);
-ctx.restore();
-ctx.lineWidth = 10;
-ctx.strokeStyle = "#FFCC33";
-ctx.beginPath();
-ctx.arc(avatarX + avatarSize / 2, avatarY + avatarSize / 2, avatarSize / 2 + 5, 0, Math.PI * 2);
-ctx.stroke();
-const overlayHeight = 230;
-const overlayWidth = canvas.width - avatarX - avatarSize - 120;
-const overlayX = avatarX + avatarSize + 40;
-const overlayY = canvas.height / 2 - overlayHeight / 2;
-ctx.save();
-ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
-ctx.beginPath();
-ctx.roundRect(overlayX, overlayY, overlayWidth, overlayHeight, 30);
-ctx.fill();
-ctx.restore();
-ctx.lineWidth = 8;
-ctx.strokeStyle = "#FFCC33";
-ctx.beginPath();
-ctx.roundRect(overlayX, overlayY, overlayWidth, overlayHeight, 25);
-ctx.stroke();
-const textStartX = overlayX + 30;
-const textStartY = overlayY + 40;
-ctx.font = "bold 32px sans-serif";
-ctx.fillStyle = "#FFD700";
-ctx.fillText(`${rankName} ${rankId}`, overlayX + overlayWidth - 240, textStartY);
-ctx.font = "bold 44px sans-serif";
-ctx.fillStyle = "#FFFFFF";
-ctx.fillText(name, textStartX, textStartY + 60);
-const progressBarX = overlayX + 30;
-const progressBarY = textStartY + 120;
-const progressBarWidth = overlayWidth - 60;
-const progressBarHeight = 18;
-ctx.font = "bold 28px sans-serif";
-ctx.fillStyle = "#FFFFFF";
-ctx.fillText(`${exp} / ${requireExp}`, progressBarX, progressBarY - 10);
-ctx.fillStyle = "#3e3e3e";
-ctx.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
-const progress = exp / requireExp;
-ctx.fillStyle = "#FFCC33";
-ctx.fillRect(progressBarX, progressBarY, progressBarWidth * progress, progressBarHeight);
-ctx.lineWidth = 15;
-ctx.strokeStyle = "#FFCC33";
-ctx.strokeRect(0, 0, canvas.width, canvas.height);
-return canvas.toBuffer();
+  const {
+    backgroundURL,
+    avatarURL,
+    rankName,
+    rankId,
+    exp,
+    requireExp,
+    level,
+    name,
+  } = options;
+
+  const width = 850;
+  const height = 300;
+  const canvas = createCanvas(width, height);
+  const ctx = canvas.getContext('2d');
+
+  ctx.clearRect(0, 0, width, height);
+
+  const background = await loadImage(backgroundURL);
+  ctx.drawImage(background, 0, 0, width, height);
+
+  const overlayX = 20;
+  const overlayY = 20;
+  const overlayWidth = width - 40;
+  const overlayHeight = height - 40;
+  const overlayRadius = 30;
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+  ctx.beginPath();
+  ctx.moveTo(overlayX + overlayRadius, overlayY);
+  ctx.arcTo(overlayX + overlayWidth, overlayY, overlayX + overlayWidth, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX + overlayWidth, overlayY + overlayHeight, overlayX, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX, overlayY + overlayHeight, overlayX, overlayY, overlayRadius);
+  ctx.arcTo(overlayX, overlayY, overlayX + overlayWidth, overlayY, overlayRadius);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.strokeStyle = '#FFCC33';
+  ctx.lineWidth = 9;
+  ctx.stroke();
+  ctx.restore();
+
+  const avatar = await loadImage(avatarURL);
+  const avatarSize = 120;
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(100, height / 2, avatarSize / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.clip();
+  ctx.drawImage(avatar, 40, height / 2 - avatarSize / 2, avatarSize, avatarSize);
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.arc(100, height / 2, avatarSize / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.strokeStyle = '#FFCC33';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  ctx.font = 'bold 36px Arial';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.textAlign = 'left';
+  ctx.fillText(name, 180, height / 2 - 20);
+
+  ctx.font = 'bold 28px Arial';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillText(`LEVEL ${level}`, width - 180, 80);
+
+  ctx.font = 'bold 22px Arial';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillText(`${rankName} ${rankId}`, width - 180, 120);
+
+  const barWidth = 600;
+  const barHeight = 30;
+  const barX = 180;
+  const barY = height / 2 + 20;
+  const progress = exp / requireExp;
+  const barRadius = 15;
+
+  ctx.fillStyle = '#555555';
+  ctx.beginPath();
+  ctx.moveTo(barX + barRadius, barY);
+  ctx.arcTo(barX + barWidth, barY, barX + barWidth, barY + barHeight, barRadius);
+  ctx.arcTo(barX + barWidth, barY + barHeight, barX, barY + barHeight, barRadius);
+  ctx.arcTo(barX, barY + barHeight, barX, barY, barRadius);
+  ctx.arcTo(barX, barY, barX + barWidth, barY, barRadius);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = '#FFCC33';
+  ctx.beginPath();
+  ctx.moveTo(barX + barRadius, barY);
+  ctx.arcTo(barX + barWidth * progress, barY, barX + barWidth * progress, barY + barHeight, barRadius);
+  ctx.arcTo(barX + barWidth * progress, barY + barHeight, barX, barY + barHeight, barRadius);
+  ctx.arcTo(barX, barY + barHeight, barX, barY, barRadius);
+  ctx.arcTo(barX, barY, barX + barWidth * progress, barY, barRadius);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.strokeStyle = '#FFCC33';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(barX + barRadius, barY);
+  ctx.arcTo(barX + barWidth, barY, barX + barWidth, barY + barHeight, barRadius);
+  ctx.arcTo(barX + barWidth, barY + barHeight, barX, barY + barHeight, barRadius);
+  ctx.arcTo(barX, barY + barHeight, barX, barY, barRadius);
+  ctx.arcTo(barX, barY, barX + barWidth, barY, barRadius);
+  ctx.closePath();
+  ctx.stroke();
+
+  ctx.font = 'bold 20px Arial';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.textAlign = 'center';
+  ctx.fillText(`${exp} / ${requireExp}`, barX + barWidth / 2, barY + barHeight - 5);
+
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.beginPath();
+  ctx.moveTo(overlayX + overlayRadius, overlayY);
+  ctx.arcTo(overlayX + overlayWidth, overlayY, overlayX + overlayWidth, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX + overlayWidth, overlayY + overlayHeight, overlayX, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX, overlayY + overlayHeight, overlayX, overlayY, overlayRadius);
+  ctx.arcTo(overlayX, overlayY, overlayX + overlayWidth, overlayY, overlayRadius);
+  ctx.closePath();
+  ctx.fill();
+
+  return canvas.toBuffer();
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, apkpure, spotifys, bingS, bingI, bingV, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, profileImg }
+async function levelUp(options) {
+  const { backgroundURL, avatarURL, fromLevel, toLevel, name } = options;
+
+  const width = 600;
+  const height = 150;
+  const canvas = createCanvas(width, height);
+  const ctx = canvas.getContext('2d');
+
+  ctx.clearRect(0, 0, width, height);
+
+  const background = await loadImage(backgroundURL);
+  ctx.drawImage(background, 0, 0, width, height);
+
+  const overlayX = 10;
+  const overlayY = 10;
+  const overlayWidth = width - 20;
+  const overlayHeight = height - 20;
+  const overlayRadius = 40;
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+  ctx.beginPath();
+  ctx.moveTo(overlayX + overlayRadius, overlayY);
+  ctx.arcTo(overlayX + overlayWidth, overlayY, overlayX + overlayWidth, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX + overlayWidth, overlayY + overlayHeight, overlayX, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX, overlayY + overlayHeight, overlayX, overlayY, overlayRadius);
+  ctx.arcTo(overlayX, overlayY, overlayX + overlayWidth, overlayY, overlayRadius);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.strokeStyle = '#FFCC33';
+  ctx.lineWidth = 8;
+  ctx.stroke();
+  ctx.restore();
+
+  const avatar = await loadImage(avatarURL);
+  const avatarSize = 100;
+  const avatarX = overlayX + overlayRadius + 10;
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(avatarX + avatarSize / 2, height / 2, avatarSize / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.clip();
+  ctx.drawImage(avatar, avatarX, height / 2 - avatarSize / 2, avatarSize, avatarSize);
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.arc(avatarX + avatarSize / 2, height / 2, avatarSize / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.strokeStyle = '#FFCC33';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  ctx.font = 'bold 28px Arial';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.textAlign = 'left';
+  ctx.fillText(name, avatarX + avatarSize + 20, height / 2 + 10);
+
+  const circleSize = 55;
+  const circleX1 = width - circleSize * 4 + 10;
+  const circleX2 = width - circleSize * 2 - 8;
+  const arrowX = circleX1 + circleSize + 10;
+
+  ctx.beginPath();
+  ctx.arc(circleX1 + circleSize / 2, height / 2, circleSize / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255, 204, 51, 0.3)';
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(circleX1 + circleSize / 2, height / 2, circleSize / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.strokeStyle = '#FFCC33';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  ctx.font = 'bold 24px Arial';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.textAlign = 'center';
+  ctx.fillText(fromLevel, circleX1 + circleSize / 2, height / 2 + 8);
+
+  ctx.beginPath();
+  ctx.moveTo(arrowX, height / 2 - 8);
+  ctx.lineTo(arrowX + 20, height / 2);
+  ctx.lineTo(arrowX, height / 2 + 8);
+  ctx.closePath();
+  ctx.fillStyle = '#FFCC33';
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(circleX2 + circleSize / 2, height / 2, circleSize / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255, 204, 51, 0.3)';
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(circleX2 + circleSize / 2, height / 2, circleSize / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.strokeStyle = '#FFCC33';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  ctx.font = 'bold 24px Arial';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.textAlign = 'center';
+  ctx.fillText(toLevel, circleX2 + circleSize / 2, height / 2 + 8);
+
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.beginPath();
+  ctx.moveTo(overlayX + overlayRadius, overlayY);
+  ctx.arcTo(overlayX + overlayWidth, overlayY, overlayX + overlayWidth, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX + overlayWidth, overlayY + overlayHeight, overlayX, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX, overlayY + overlayHeight, overlayX, overlayY, overlayRadius);
+  ctx.arcTo(overlayX, overlayY, overlayX + overlayWidth, overlayY, overlayRadius);
+  ctx.closePath();
+  ctx.fill();
+
+  return canvas.toBuffer();
+}
+
+async function notifGroup(options) {
+  const { backgroundURL, avatarURL, title, description } = options;
+
+  const width = 700;
+  const height = 350;
+  const canvas = createCanvas(width, height);
+  const ctx = canvas.getContext('2d');
+
+  ctx.clearRect(0, 0, width, height);
+
+  const background = await loadImage(backgroundURL);
+  ctx.drawImage(background, 0, 0, width, height);
+
+  const overlayX = 10;
+  const overlayY = 10;
+  const overlayWidth = width - 20;
+  const overlayHeight = height - 20;
+  const overlayRadius = 50;
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+  ctx.beginPath();
+  ctx.moveTo(overlayX + overlayRadius, overlayY);
+  ctx.arcTo(overlayX + overlayWidth, overlayY, overlayX + overlayWidth, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX + overlayWidth, overlayY + overlayHeight, overlayX, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX, overlayY + overlayHeight, overlayX, overlayY, overlayRadius);
+  ctx.arcTo(overlayX, overlayY, overlayX + overlayWidth, overlayY, overlayRadius);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.strokeStyle = '#FFCC33';
+  ctx.lineWidth = 10;
+  ctx.stroke();
+  ctx.restore();
+
+  const avatar = await loadImage(avatarURL);
+  const avatarSize = 150;
+  const avatarX = width / 2 - avatarSize / 2;
+  const avatarY = height / 2 - 140;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(avatarX + avatarSize / 2, avatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.clip();
+  ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.arc(avatarX + avatarSize / 2, avatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.strokeStyle = '#FFCC33';
+  ctx.lineWidth = 6;
+  ctx.stroke();
+
+  ctx.font = 'bold 40px Arial';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.textAlign = 'center';
+  ctx.fillText(title, width / 2, avatarY + avatarSize + 50);
+
+  ctx.font = '22px Arial';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillText(description, width / 2, avatarY + avatarSize + 90);
+
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.beginPath();
+  ctx.moveTo(overlayX + overlayRadius, overlayY);
+  ctx.arcTo(overlayX + overlayWidth, overlayY, overlayX + overlayWidth, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX + overlayWidth, overlayY + overlayHeight, overlayX, overlayY + overlayHeight, overlayRadius);
+  ctx.arcTo(overlayX, overlayY + overlayHeight, overlayX, overlayY, overlayRadius);
+  ctx.arcTo(overlayX, overlayY, overlayX + overlayWidth, overlayY, overlayRadius);
+  ctx.closePath();
+  ctx.fill();
+
+  return canvas.toBuffer();
+}
+
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, apkpure, spotifys, bingS, bingI, bingV, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, profileImg, levelUp, notifGroup }
