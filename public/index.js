@@ -136,6 +136,12 @@ const categories = [{
         description: "Generate cute-anime image"
       },
       {
+        title: "text2image v3",
+        service: "txt2imgv3",
+        q: "q=beautiful%20girl",
+        description: "Generate cute-anime image"
+      },
+      {
         title: "ai-baby",
         service: "aibaby",
         q: "ayah=https://pomf2.lain.la/f/496snr7.jpg&ibu=https://pomf2.lain.la/f/48li9yvf.jpg&gender=boy",
