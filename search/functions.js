@@ -194,6 +194,41 @@ result = taskResponse.data[0].result.data.json
 return result.imageUrl
 }
 
+async function text2img(prompt) {
+const requestData = JSON.stringify({ "prompt": prompt })
+const requestConfig = {
+method: 'POST',
+url: 'https://imgsys.org/api/initiate',
+headers: {
+'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
+'Content-Type': 'application/json',
+'accept-language': 'id-ID',
+'referer': 'https://imgsys.org/',
+'origin': 'https://imgsys.org',
+'sec-fetch-dest': 'empty',
+'sec-fetch-mode': 'cors',
+'sec-fetch-site': 'same-origin',
+'priority': 'u=0',
+'te': 'trailers'
+},
+data: requestData
+}
+try {
+const initiateResponse = await axios.request(requestConfig)
+const { requestId } = initiateResponse.data
+let imageResponse
+do {
+imageResponse = await axios.get(`https://imgsys.org/api/get?requestId=${requestId}`)
+if (imageResponse.data.message) {
+await new Promise(resolve => setTimeout(resolve, 1000))
+}
+} while (imageResponse.data.message)
+return imageResponse.data
+} catch (e) {
+console.error('Error:', e)
+throw e
+}}
+
 async function apkpure(text) {
 let url = `https://apkpure.net/id/search?q=${text}`;
 let { data } = await axios.get(url);
@@ -523,33 +558,20 @@ coverUrl: result.dlink.cover
 }
 
 async function terabox(url) {
-return new Promise(async(resolve, reject) => {
-await axios.post('https://teradl-api.dapuntaratya.com/generate_file', {
-mode: 1,
-url: url
-}).then(async(a) => {
-const array = []
-for (let x of a.data.list) {
-let dl = await axios.post('https://teradl-api.dapuntaratya.com/generate_link', {
-js_token: a.data.js_token,
-cookie: a.data.cookie,
-sign: a.data.sign,
-timestamp: a.data.timestamp,
-shareid: a.data.shareid,
-uk: a.data.uk,
-fs_id: x.fs_id
-}).then(i => i.data).catch(e => e.response.data)
-;
-if (!dl.download_link) return
-array.push({
-fileName: x.name,
-type: x.type,
-thumb: x.image,
-...dl.download_link
- });
-}
-resolve(array);
-})})
+const getdm = await axios.get(`https://ins.neastooid.xyz/api/Tools/getins?url=https://www.terabox.app/wap/share/filelist?surl=${encodeURIComponent(url)}`)
+const { jsToken, bdstoken } = getdm.data
+const getrsd = await axios.get(`https://ins.neastooid.xyz/api/downloader/Metaterdltes?url=${encodeURIComponent(url)}`)
+const { shareId, userKey, sign, timestamp, files } = getrsd.data.metadata
+const traboxdlxins = await axios.post('https://ins.neastooid.xyz/api/downloader/terade', {
+shareId,
+userKey,
+sign,
+timestamp,
+jsToken,
+bdstoken,
+files
+})
+return traboxdlxins.data
 }
 
 async function threads(link) {
@@ -765,4 +787,4 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, apkpure, spotifys, bingS, bingI, bingV, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe }
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, apkpure, spotifys, bingS, bingI, bingV, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe }
