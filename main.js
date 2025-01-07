@@ -346,8 +346,10 @@ app.get("/api/txt2imgv3", async (req, res) => {
   try {
     const { text2img } = require('./search/functions')
     const imageResponse = await text2img(q)
+    const imageUrl = imageResponse.results[0]
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' })
     res.setHeader("Content-Type", "image/png")
-    res.send(Buffer.from(imageResponse.results[0], "base64"))
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
