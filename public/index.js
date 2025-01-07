@@ -139,7 +139,7 @@ const categories = [{
         title: "text2image v3",
         service: "txt2imgv3",
         q: "q=beautiful%20girl",
-        description: "Generate cute-anime image"
+        description: "Generate image with imgsys"
       },
       {
         title: "ai-baby",
