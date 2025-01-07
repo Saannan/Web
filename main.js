@@ -338,6 +338,21 @@ app.get("/api/txt2imgv2", async (req, res) => {
   }
 })
 
+app.get("/api/txt2imgv3", async (req, res) => {
+  const { q } = req.query
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" })
+  }
+  try {
+    const { text2img } = require('./search/functions')
+    const imageResponse = await text2img(q)
+    res.setHeader("Content-Type", "image/png")
+    res.send(Buffer.from(imageResponse.data, "base64"))
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.get("/api/aibaby", async (req, res) => {
   const { ayah, ibu, gender } = req.query
   if (!ayah || !ibu) {
