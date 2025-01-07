@@ -347,7 +347,7 @@ app.get("/api/txt2imgv3", async (req, res) => {
     const { text2img } = require('./search/functions')
     const imageResponse = await text2img(q)
     res.setHeader("Content-Type", "image/png")
-    res.send(Buffer.from(imageResponse.data, "base64"))
+    res.send(Buffer.from(imageResponse.results[0], "base64"))
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
