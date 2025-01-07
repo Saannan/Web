@@ -1393,7 +1393,7 @@ app.get("/api/ig-stalk", async (req, res) => {
     return res.status(400).json({ status: false, error: "Username is required" })
   }
   try {
-    const response = await axios.get(`https://api.tioo.eu.org/download/igstalk?username=${username}`)
+    const response = await axios.get(`https://api.tioo.eu.org/download/igstalkfull?username=${username}`)
     res.status(200).json({
     status: true,
     data: response.data.result,
