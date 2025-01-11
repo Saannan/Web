@@ -229,6 +229,37 @@ console.error('Error:', e)
 throw e
 }}
 
+async function google(query) {
+const encodedQuery = encodeURIComponent(query)
+const url = `https://www.google.com/search?q=${encodedQuery}`
+const { data } = await axios.get(url, {
+headers: {
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+}})
+const $ = cheerio.load(data)
+const results = []
+$('div.tF2Cxc').each((index, element) => {
+const title = $(element).find('h3').text()
+const link = $(element).find('a').attr('href')
+const snippet = $(element).find('.VwiC3b').text()
+if (title && link) {
+results.push({ title, link, snippet })
+}})
+return results
+}
+
+async function gimage(query) {
+const { data } = await axios.get(`https://unsplash.com/s/photos/${encodeURIComponent(query)}`, { headers: { 'User-Agent': 'Mozilla/5.0' } })
+const $ = cheerio.load(data)
+const images = []
+$('img').each((_, el) => {
+const hdSrc = $(el).attr('srcset')?.split(' ')[0] || $(el).attr('src')
+if (hdSrc && hdSrc.startsWith('http')) {
+images.push(hdSrc)
+}})
+return images
+}
+
 async function apkpure(text) {
 let url = `https://apkpure.net/id/search?q=${text}`;
 let { data } = await axios.get(url);
@@ -262,6 +293,16 @@ image: ft.image_url
 }));
 return results
 }
+
+async function spotifydl(url) {
+const hai = await axios.get(`https://api.fabdl.com/spotify/get?url=${encodeURIComponent(url)}`)
+const hao = await axios.get(`https://api.fabdl.com/spotify/mp3-convert-task/${hai.data.result.gid}/${hai.data.result.id}`)
+return {
+title: hai.data.result.name,
+download: `https://api.fabdl.com${hao.data.result.download_url}`,
+image: hai.data.result.image,
+duration_ms: hai.data.result.duration_ms
+}}
 
 async function bingS(query) {
 const response = await axios.get(`https://www.bing.com/search?q=${query}`);
@@ -318,6 +359,27 @@ link: `https://www.bing.com${link}`
 });
 });
 return videoDetails;
+}
+
+async function pinterest(query) {
+const options = {
+query,
+scope: "pins",
+redux_normalize_feed: true,
+page_size: 50
+}
+const response = await axios.get(`https://www.pinterest.com/resource/BaseSearchResource/get/?source_url=/search/pins/?q=${encodeURIComponent(query)}&data=${encodeURIComponent(JSON.stringify({ options, context: {}
+}))}&_=${Date.now()}`, { headers: {
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+'X-Requested-With': 'XMLHttpRequest' }})
+const data = response.data.resource_response?.data?.results || []
+const results = data.map(item => ({
+src: item.images.orig?.url || item.images['564x']?.url || '',
+title: item.rich_metadata?.title || item.grid_title || '',
+link: `https://www.pinterest.com/pin/${item.id}`,
+source: item.rich_metadata?.site_name || item.domain || ''
+})).filter(item => item.src)
+return results
 }
 
 async function srcLyrics(song) {
@@ -787,4 +849,22 @@ config
 return respons.data
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, apkpure, spotifys, bingS, bingI, bingV, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe }
+async function shortUrlv1(url) {
+const response = await axios.get('https://v.gd/create.php', {
+params: {
+format: 'simple',
+url: url
+}})
+return response.data
+}
+
+async function shortUrlv2(url) {
+const response = await axios.get('https://is.gd/create.php', {
+params: {
+format: 'simple',
+url: url
+}})
+return response.data
+}
+
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, google, gimage, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2 }
