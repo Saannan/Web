@@ -500,8 +500,7 @@ app.get("/api/yts", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`h
-    https://api.ryzendesu.vip/api/search/yt?query=${Enc(q)}`)
+    const response = await axios.get(`https://api.ryzendesu.vip/api/search/yt?query=${Enc(q)}`)
     res.status(200).json({
     status: true,
     data: response.data.videos,
