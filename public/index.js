@@ -158,10 +158,16 @@ const categories = [{
   {
     name: "Search",
     apis: [{
-        title: "google",
-        service: "google",
+        title: "google v1",
+        service: "googlev1",
         q: "q=ronaldo",
-        description: "Search with google"
+        description: "Search with google v1"
+      },
+      {
+        title: "google v2",
+        service: "googlev2",
+        q: "q=ronaldo",
+        description: "Search with google v2"
       },
       {
         title: "gimage",
@@ -338,7 +344,7 @@ const categories = [{
       {
         title: "mediafire",
         service: "mfdl",
-        q: "url=https://www.mediafire.com/folder/4zhvcue3l75xa/Delirius+Test",
+        q: "url=https://www.mediafire.com/file/5nt8ybeyd3jhnhg/𝐀𝐠𝐥𝐞𝐫+𝐅𝐨𝐫𝐠𝐞𝐫+𝐯𝟏𝟒.𝟐+@AndraZyy.zip/file",
         description: "Mediafire downloader"
       },
       {
@@ -494,7 +500,7 @@ const categories = [{
       {
         title: "audio2text",
         service: "audio2txt",
-        q: "url=https://pomf2.lain.la/f/21axy7kx.mp3",
+        q: "url=https://files.catbox.moe/xa34uk.mp3",
         description: "Voice to text"
       },
       {
