@@ -82,10 +82,10 @@ app.get("/api/gemini", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/ia/gemini?query=${Enc(q)}`)
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/blackbox?chat=${Enc(q)}&options=gemini`)
     res.status(200).json({
     status: true,
-    result: response.data.message
+    result: response.data.response
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -98,10 +98,10 @@ app.get("/api/blackbox", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.tioo.eu.org/blackbox?text=${Enc(q)}`)
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/blackbox?chat=${Enc(q)}&options=blackboxai`)
     res.status(200).json({
     status: true,
-    result: response.data.result
+    result: response.data
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -114,10 +114,10 @@ app.get("/api/simi", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.tioo.eu.org/simi?text=${Enc(q)}`)
+    const response = await axios.get(`https://api.agatz.xyz/api/simsimi?message=${Enc(q)}`)
     res.status(200).json({
     status: true,
-    result: response.data.result
+    result: response.data.data
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -131,7 +131,7 @@ app.get("/api/gpt4o", async (req, res) => {
   }
   try {
     const prompt = "Your name is GPT-4o"
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/ia/gptprompt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/chatgpt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
     res.status(200).json({
     status: true,
     result: response.data.data
@@ -148,7 +148,7 @@ app.get("/api/gpt4omini", async (req, res) => {
   }
   try {
     const prompt = "Your name is GPT-4o Mini"
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/ia/gptprompt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/chatgpt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
     res.status(200).json({
     status: true,
     result: response.data.data
@@ -165,7 +165,7 @@ app.get("/api/turbov1", async (req, res) => {
   }
   try {
     const prompt = "Your name is GPT Turbo"
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/ia/gptprompt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/chatgpt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
     res.status(200).json({
     status: true,
     result: response.data.data
@@ -182,7 +182,7 @@ app.get("/api/turbov2", async (req, res) => {
   }
   try {
     const prompt = "Your name is GPT Turbo Large"
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/ia/gptprompt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/chatgpt?text=${Enc(q)}&prompt=${Enc(prompt)}`)
     res.status(200).json({
     status: true,
     result: response.data.data
@@ -345,8 +345,8 @@ app.get("/api/txt2imgv3", async (req, res) => {
   }
   try {
     const { text2img } = require('./search/functions')
-    const imageResponse = await text2img(q)
-    const imageUrl = imageResponse.results[0]
+    const resimg = await text2img(q)
+    const imageUrl = resimg.results[0]
     const response = await axios.get(imageUrl, { responseType: 'arraybuffer' })
     res.setHeader("Content-Type", "image/png")
     res.send(response.data)
@@ -387,7 +387,7 @@ app.get("/api/softanime", async (req, res) => {
 
 // ===== SEARCH
 
-app.get("/api/google", async (req, res) => {
+app.get("/api/googlev1", async (req, res) => {
   const { q } = req.query
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" })
@@ -408,15 +408,38 @@ app.get("/api/google", async (req, res) => {
   }
 })
 
+app.get("/api/googlev2", async (req, res) => {
+  const { q } = req.query
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" })
+  }
+  try {
+    const { google } = require('./search/functions')
+    const response = await google(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.get("/api/gimage", async (req, res) => {
   const { q } = req.query
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.tioo.eu.org/gimage?query=${Enc(q)}`, { responseType: 'arraybuffer' })
-    res.setHeader('Content-Type', 'image/png')
-    res.send(response.data)
+    const { gimage } = require('./search/functions')
+    const images = await gimage(q)
+    if (images.length === 0) {
+      return res.status(404).json({ status: false, error: "No images found" })
+    }
+    const randomImage = images[Math.floor(Math.random() * images.length)]
+    const { data } = await axios.get(randomImage, { responseType: 'arraybuffer' })
+    res.setHeader("Content-Type", "image/jpeg")
+    res.send(data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
@@ -477,10 +500,11 @@ app.get("/api/yts", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/search/ytsearch?q=${Enc(q)}`)
+    const response = await axios.get(`h
+    https://api.ryzendesu.vip/api/search/yt?query=${Enc(q)}`)
     res.status(200).json({
     status: true,
-    data: response.data.data,
+    data: response.data.videos,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -561,10 +585,11 @@ app.get("/api/pinterest", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/search/pinterest?text=${Enc(q)}`)
+    const { pinterest } = require('./search/functions')
+    const response = await pinterest(`${Enc(q)}`)
     res.status(200).json({
     status: true,
-    data: response.data.result,
+    data: response,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -780,10 +805,11 @@ app.get("/api/spotify", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/download/spotifydl?url=${url}`)
+    const { spotifydl } = require('./search/functions')
+    const response = await spotifydl(url)
     res.status(200).json({
     status: true,
-    data: response.data.data,
+    data: response,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -878,13 +904,14 @@ app.get("/api/mfdl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/download/mediafire?url=${url}`)
+    const response = await axios.get(`https://api.ryzendesu.vip/api/downloader/mediafire?url=${url}`)
+    const { cookie, ...rest } = response.data
     res.status(200).json({
-    status: true,
-    data: response.data.data,
+      status: true,
+      data: rest,
     })
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
+    res.status(500).json({ status: false, error: error.message });
   }
 })
 
@@ -1279,10 +1306,11 @@ app.get("/api/tovurl", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/shorten/vurl?url=${url}`)
+    const { shortUrlv1 } = require('./search/functions')
+    const response = await shortUrlv1(url)
     res.status(200).json({
     status: true,
-    result: response.data.data,
+    result: response,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -1295,10 +1323,11 @@ app.get("/api/toisgd", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const response = await axios.get(`https://deliriussapi-oficial.vercel.app/shorten/shorten?url=${url}`)
+    const { shortUrlv2 } = require('./search/functions')
+    const response = await shortUrlv2(url)
     res.status(200).json({
     status: true,
-    result: response.data.data,
+    result: response,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
