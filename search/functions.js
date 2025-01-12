@@ -862,4 +862,41 @@ const response = await axios.post('https://api-ssl.bitly.com/v4/shorten',
 return response.data.link
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, google, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2, shortUrlv3 }
+async function cekip(query) {
+    const results = []
+
+    try {
+        const response = await axios.get(`https://ipinfo.io/${query}/json`);
+        results.push({ name: 'ipinfo.io', data: response.data });
+    } catch (error) {
+        results.push({ name: 'ipinfo.io', error: error.message });
+    }
+
+    try {
+        const response = await axios.get(`http://ip-api.com/json/${query}`);
+        results.push({ name: 'ip-api.com', data: response.data });
+    } catch (error) {
+        results.push({ name: 'ip-api.com', error: error.message });
+    }
+
+    try {
+        const response = await axios.get(`https://ipwhois.app/json/${query}`);
+        results.push({ name: 'ipwhois.app', data: response.data });
+    } catch (error) {
+        results.push({ name: 'ipwhois.app', error: error.message });
+    }
+
+    try {
+        const response = await axios.get(`https://ipapi.co/${query}/json/`);
+        if (response.data.error) {
+            throw new Error(response.data.reason || 'IP tidak valid');
+        }
+        results.push({ name: 'ipapi.co', data: response.data });
+    } catch (error) {
+        results.push({ name: 'ipapi.co', error: error.message });
+    }
+
+    return results;
+}
+
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, google, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2, shortUrlv3, cekip }
