@@ -52,6 +52,12 @@ const categories = [{
         description: "Get repons from blackbox"
       },
       {
+        title: "claude",
+        service: "claude",
+        q: "q=hai",
+        description: "Get repons from claude"
+      },
+      {
         title: "simisimi",
         service: "simi",
         q: "q=hai",
