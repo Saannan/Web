@@ -176,12 +176,6 @@ const categories = [{
         description: "Search with google v2"
       },
       {
-        title: "coccoc",
-        service: "coccoc",
-        q: "q=audio%202%20text",
-        description: "Search with coccoc"
-      },
-      {
         title: "gimage",
         service: "gimage",
         q: "q=ronaldo",
