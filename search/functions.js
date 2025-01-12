@@ -248,28 +248,6 @@ results.push({ title, link, snippet })
 return results
 }
 
-async function coccoc(query) {
-const { data } = await axios.get(`https://coccoc.com/search?query=${encodeURIComponent(query)}`)
-const $ = cheerio.load(data)
-const results = []
-$("script[type='text/javascript']").each((_, script) => {
-const scriptContent = $(script).html()
-if (scriptContent.includes("window.composerResponse")) {
-const jsonStart = scriptContent.indexOf("{")
-const jsonEnd = scriptContent.lastIndexOf("}")
-const jsonData = JSON.parse(scriptContent.slice(jsonStart, jsonEnd + 1))
-jsonData.search.search_results.forEach((result) => {
-results.push({
-title: result.title.replace(/<b>|<\/b>/g, ""),
-url: result.url,
-desc: result.content.replace(/<b>|<\/b>/g, ""),
-position: result.position,
-score: result.total_score,
-})})
-}})
-return results
-}
-
 async function apkpure(text) {
 let url = `https://apkpure.net/id/search?q=${text}`;
 let { data } = await axios.get(url);
@@ -884,4 +862,4 @@ const response = await axios.post('https://api-ssl.bitly.com/v4/shorten',
 return response.data.link
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, google, coccoc, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2, shortUrlv3 }
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, google, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2, shortUrlv3 }
