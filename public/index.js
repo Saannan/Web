@@ -176,6 +176,12 @@ const categories = [{
         description: "Search with google v2"
       },
       {
+        title: "coccoc",
+        service: "coccoc",
+        q: "q=audio%202%20text",
+        description: "Search with coccoc"
+      },
+      {
         title: "gimage",
         service: "gimage",
         q: "q=ronaldo",
@@ -469,6 +475,12 @@ const categories = [{
         q: "ip=8.8.8.8",
         description: "Check your ip location v2"
       },
+      {
+        title: "iplocation full",
+        service: "cekipfull",
+        q: "ip=8.8.8.8",
+        description: "Check your ip location full"
+      },
     ],
   },
   {
@@ -520,6 +532,12 @@ const categories = [{
         service: "toisgd",
         q: "url=https://pomf2.lain.la/f/21axy7kx.mp3",
         description: "Convert any url to isgd"
+      },
+      {
+        title: "to bitly",
+        service: "tobitly",
+        q: "url=https://pomf2.lain.la/f/21axy7kx.mp3",
+        description: "Convert any url to bitly"
       },
     ],
   },
