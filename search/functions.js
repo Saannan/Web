@@ -248,16 +248,26 @@ results.push({ title, link, snippet })
 return results
 }
 
-async function gimage(query) {
-const { data } = await axios.get(`https://unsplash.com/s/photos/${encodeURIComponent(query)}`, { headers: { 'User-Agent': 'Mozilla/5.0' } })
+async function coccoc(query) {
+const { data } = await axios.get(`https://coccoc.com/search?query=${encodeURIComponent(query)}`)
 const $ = cheerio.load(data)
-const images = []
-$('img').each((_, el) => {
-const hdSrc = $(el).attr('srcset')?.split(' ')[0] || $(el).attr('src')
-if (hdSrc && hdSrc.startsWith('http')) {
-images.push(hdSrc)
+const results = []
+$("script[type='text/javascript']").each((_, script) => {
+const scriptContent = $(script).html()
+if (scriptContent.includes("window.composerResponse")) {
+const jsonStart = scriptContent.indexOf("{")
+const jsonEnd = scriptContent.lastIndexOf("}")
+const jsonData = JSON.parse(scriptContent.slice(jsonStart, jsonEnd + 1))
+jsonData.search.search_results.forEach((result) => {
+results.push({
+title: result.title.replace(/<b>|<\/b>/g, ""),
+url: result.url,
+desc: result.content.replace(/<b>|<\/b>/g, ""),
+position: result.position,
+score: result.total_score,
+})})
 }})
-return images
+return results
 }
 
 async function apkpure(text) {
@@ -867,4 +877,11 @@ url: url
 return response.data
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, google, gimage, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2 }
+async function shortUrlv3(url) {
+const response = await axios.post('https://api-ssl.bitly.com/v4/shorten', 
+{ "long_url": url }, { headers: { 'Authorization': `Bearer aa06f5a7a15bcedccf174f63d5e4fb88675bbfe5`,
+'Content-Type': 'application/json' }})
+return response.data.link
+}
+
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, google, coccoc, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2, shortUrlv3 }
