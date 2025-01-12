@@ -82,7 +82,7 @@ app.get("/api/gemini", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/blackbox?chat=${Enc(q)}&options=gemini`)
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/blackbox?chat=${Enc(q)}&options=gemini-pro`)
     res.status(200).json({
     status: true,
     result: response.data.response
@@ -102,6 +102,22 @@ app.get("/api/blackbox", async (req, res) => {
     res.status(200).json({
     status: true,
     result: response.data
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/claude", async (req, res) => {
+  const { q } = req.query
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" })
+  }
+  try {
+    const response = await axios.get(`https://api.ryzendesu.vip/api/ai/blackbox?chat=${Enc(q)}&options=claude-3.5-sonnet`)
+    res.status(200).json({
+    status: true,
+    result: response.data.response
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -432,14 +448,11 @@ app.get("/api/gimage", async (req, res) => {
   }
   try {
     const { gimage } = require('./search/functions')
-    const images = await gimage(q)
-    if (images.length === 0) {
-      return res.status(404).json({ status: false, error: "No images found" })
-    }
-    const randomImage = images[Math.floor(Math.random() * images.length)]
-    const { data } = await axios.get(randomImage, { responseType: 'arraybuffer' })
-    res.setHeader("Content-Type", "image/jpeg")
-    res.send(data)
+    const response = await gimage(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
