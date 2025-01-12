@@ -441,17 +441,33 @@ app.get("/api/googlev2", async (req, res) => {
   }
 })
 
+app.get("/api/coccoc", async (req, res) => {
+  const { q } = req.query
+  if (!q) {
+    return res.status(400).json({ status: false, error: "Query is required" })
+  }
+  try {
+    const { coccoc } = require('./search/functions')
+    const response = await coccoc(`${Enc(q)}`)
+    res.status(200).json({
+    status: true,
+    data: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 app.get("/api/gimage", async (req, res) => {
   const { q } = req.query
   if (!q) {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const { gimage } = require('./search/functions')
-    const response = await gimage(`${Enc(q)}`)
+    const response = await axios.get(`https://api.siputzx.my.id/api/images?query=${Enc(q)}`)
     res.status(200).json({
     status: true,
-    data: response,
+    data: response.data.data,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
@@ -1337,6 +1353,23 @@ app.get("/api/toisgd", async (req, res) => {
   try {
     const { shortUrlv2 } = require('./search/functions')
     const response = await shortUrlv2(url)
+    res.status(200).json({
+    status: true,
+    result: response,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/tobitly", async (req, res) => {
+  const { url } = req.query
+  if (!url) {
+    return res.status(400).json({ status: false, error: "URL is required" })
+  }
+  try {
+    const { shortUrlv3 } = require('./search/functions')
+    const response = await shortUrlv3(url)
     res.status(200).json({
     status: true,
     result: response,
