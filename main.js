@@ -441,23 +441,6 @@ app.get("/api/googlev2", async (req, res) => {
   }
 })
 
-app.get("/api/coccoc", async (req, res) => {
-  const { q } = req.query
-  if (!q) {
-    return res.status(400).json({ status: false, error: "Query is required" })
-  }
-  try {
-    const { coccoc } = require('./search/functions')
-    const response = await coccoc(`${Enc(q)}`)
-    res.status(200).json({
-    status: true,
-    data: response,
-    })
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
-})
-
 app.get("/api/gimage", async (req, res) => {
   const { q } = req.query
   if (!q) {
@@ -1219,6 +1202,23 @@ app.get("/api/cekipv2", async (req, res) => {
     res.status(200).json({
     status: true,
     data: response.data.ipInfo,
+    })
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+app.get("/api/cekipfull", async (req, res) => {
+  const { ip } = req.query
+  if (!ip) {
+    return res.status(400).json({ status: false, error: "IP is required" })
+  }
+  try {
+    const { cekip } = require('./search/functions')
+    const response = await cekip(ip)
+    res.status(200).json({
+    status: true,
+    data: response,
     })
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
