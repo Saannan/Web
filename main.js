@@ -1169,10 +1169,9 @@ app.get("/api/ssweb", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const { ssweb } = require('./search/functions')
-    const screenshot = await ssweb(url)
+    const response = await axios.get(`https://api.screenshotmachine.com/?key=f4fd50&url=${Enc(url)}&device=phone&dimension=480x800&format=jpg&cacheLimit=0&delay=200`, { responseType: 'arraybuffer' })
     res.setHeader('Content-Type', 'image/png')
-    res.send(screenshot)
+    res.send(response.data)
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }
