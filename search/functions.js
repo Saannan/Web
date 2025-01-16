@@ -1,6 +1,7 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
 const FormData = require('form-data')
+const ytSearch = require('yt-search')
 
 async function ChatGPT(question, model) {
 const validModels = ["openai", "llama", "mistral", "mistral-large"];
@@ -407,6 +408,34 @@ id: 'https://sfile.mobi/'+file.id
 console.error('Error: '+e)
 return null
 }}
+
+async function ytsearch(query) {
+try {
+const searchResults = await ytSearch(query);
+const videos = searchResults.videos.map(video => ({
+title: video.title,
+description: video.description,
+url: video.url,
+videoId: video.videoId,
+timestamp: video.timestamp,
+duration: video.duration,
+ago: video.ago,
+views: video.views,
+author: {
+name: video.author.name,
+url: video.author.url,
+verified: video.author.verified
+},
+image: video.image,
+thumbnail: video.thumbnail
+}));
+
+return videos;
+} catch (error) {
+console.error("Error during YouTube search:", error);
+return [];
+}
+}
 
 async function ytdl(link, qualityIndex, typeIndex) {
 const qualities = {
@@ -863,40 +892,40 @@ return response.data.link
 }
 
 async function cekip(query) {
-    const results = []
+const results = []
 
-    try {
-        const response = await axios.get(`https://ipinfo.io/${query}/json`);
-        results.push({ name: 'ipinfo.io', data: response.data });
-    } catch (error) {
-        results.push({ name: 'ipinfo.io', error: error.message });
-    }
-
-    try {
-        const response = await axios.get(`http://ip-api.com/json/${query}`);
-        results.push({ name: 'ip-api.com', data: response.data });
-    } catch (error) {
-        results.push({ name: 'ip-api.com', error: error.message });
-    }
-
-    try {
-        const response = await axios.get(`https://ipwhois.app/json/${query}`);
-        results.push({ name: 'ipwhois.app', data: response.data });
-    } catch (error) {
-        results.push({ name: 'ipwhois.app', error: error.message });
-    }
-
-    try {
-        const response = await axios.get(`https://ipapi.co/${query}/json/`);
-        if (response.data.error) {
-            throw new Error(response.data.reason || 'IP tidak valid');
-        }
-        results.push({ name: 'ipapi.co', data: response.data });
-    } catch (error) {
-        results.push({ name: 'ipapi.co', error: error.message });
-    }
-
-    return results;
+try {
+const response = await axios.get(`https://ipinfo.io/${query}/json`);
+results.push({ name: 'ipinfo.io', data: response.data });
+} catch (error) {
+results.push({ name: 'ipinfo.io', error: error.message });
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, google, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2, shortUrlv3, cekip }
+try {
+const response = await axios.get(`http://ip-api.com/json/${query}`);
+results.push({ name: 'ip-api.com', data: response.data });
+} catch (error) {
+results.push({ name: 'ip-api.com', error: error.message });
+}
+
+try {
+const response = await axios.get(`https://ipwhois.app/json/${query}`);
+results.push({ name: 'ipwhois.app', data: response.data });
+} catch (error) {
+results.push({ name: 'ipwhois.app', error: error.message });
+}
+
+try {
+const response = await axios.get(`https://ipapi.co/${query}/json/`);
+if (response.data.error) {
+throw new Error(response.data.reason || 'IP tidak valid');
+}
+results.push({ name: 'ipapi.co', data: response.data });
+} catch (error) {
+results.push({ name: 'ipapi.co', error: error.message });
+}
+
+return results;
+}
+
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, google, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytsearch, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2, shortUrlv3, cekip }
