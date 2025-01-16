@@ -1,7 +1,6 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
 const FormData = require('form-data')
-const puppeteer = require('puppeteer')
 const ytSearch = require('yt-search')
 
 async function ChatGPT(question, model) {
