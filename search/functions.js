@@ -411,7 +411,7 @@ return null
 
 async function ytsearch(query) {
 try {
-const searchResults = await ytSearch.search(`${encodeURIComponent(query)}`)
+const searchResults = await ytSearch.search(query)
 const videos = searchResults.videos.map(video => ({
 title: video.title,
 description: video.description,
