@@ -1,7 +1,8 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
 const FormData = require('form-data')
-const ytSearch = require('yt-search')
+const puppeteer = require('puppeteer')
+const { search } = require('yt-search')
 
 async function ChatGPT(question, model) {
 const validModels = ["openai", "llama", "mistral", "mistral-large"];
@@ -411,7 +412,7 @@ return null
 
 async function ytsearch(query) {
 try {
-const searchResults = await ytSearch(query);
+const searchResults = await search(`${encodeURIComponent(query)}`)
 const videos = searchResults.videos.map(video => ({
 title: video.title,
 description: video.description,
@@ -428,12 +429,12 @@ verified: video.author.verified
 },
 image: video.image,
 thumbnail: video.thumbnail
-}));
+}))
 
-return videos;
+return videos
 } catch (error) {
-console.error("Error during YouTube search:", error);
-return [];
+console.error("Error during YouTube search:", error)
+return []
 }
 }
 
