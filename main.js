@@ -7,6 +7,10 @@ function Enc(type) {
   return encodeURIComponent(type)
 }
 
+function Dec(type) {
+  return decodeURIComponent(type)
+}
+
 // ===== AI
 
 app.get("/api/openai", async (req, res) => {
@@ -513,7 +517,7 @@ app.get("/api/yts", async (req, res) => {
   }
   try {
     const { ytsearch } = require('./search/functions')
-    const videos = await ytsearch(`${Enc(q)}`)
+    const videos = await ytsearch(`${Dec(q)}`)
     res.status(200).json({
       status: true,
       data: videos
