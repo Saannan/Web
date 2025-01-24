@@ -1,7 +1,6 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
 const FormData = require('form-data')
-const puppeteer = require('puppeteer')
 const ytSearch = require('yt-search')
 
 async function ChatGPT(question, model) {
@@ -412,7 +411,7 @@ return null
 
 async function ytsearch(query) {
 try {
-const searchResults = await ytSearch(`${encodeURIComponent(query)}`)
+const searchResults = await ytSearch.search(`${encodeURIComponent(query)}`)
 const videos = searchResults.videos.map(video => ({
 title: video.title,
 description: video.description,
