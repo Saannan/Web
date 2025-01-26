@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>V-APIs - Docs</title>
   <meta name="description" content="V-APIs: Layanan API cepat, mudah dan sederhana untuk digunakan.">
-  <meta name="keywords" content="API, developer, layanan API, dokumentasi API, API cepat">
+  <meta name="keywords" content="API, developer, layanan API, dokumentasi API, API cepat, Vioo API, VAPIs">
   <meta name="author" content="V-APIs">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="V-APIs - Docs">
@@ -13,18 +12,21 @@
   <meta property="og:image" content="https://pomf2.lain.la/f/7udnlgb.jpg">
   <meta property="og:url" content="https://vapis.my.id">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
   <style>
     :root {
-      --yellow-light: #facc15;
-      --gray-light: #d1d5db;
+      --yellow-light: #eab308;
+      --gray-light: #9ca3af;
+      --gray-dark: #1f2937;
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
+    .bg-gray-dark { background-color: var(--gray-dark); }
+    .text-gray-light { color: var(--gray-light); }
     .hidden { display: none; }
     .card:not(:last-child) { border-bottom: 1px solid var(--gray-light); }
     .gradient-text {
-      background: #ff7e5f;
+      background: linear-gradient(to right, #facc15, #fbbf24);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -37,41 +39,24 @@
       animation: blink 0.5s step-end infinite alternate;
     }
   </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "V-APIs",
-    "url": "https://vapis.my.id",
-    "description": "V-APIs adalah layanan API cepat dan mudah untuk digunakan.",
-    "applicationCategory": "Web API",
-    "operatingSystem": "All",
-    "author": {
-      "@type": "Organization",
-      "name": "V-APIs"
-    }
-  }
-  </script>
 </head>
-<body class="bg-white text-gray-800 min-h-screen flex flex-col">
-  <header class="p-6 bg-yellow-light text-center shadow-lg relative">
-    <a href="https://vapisz.web.app" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl">
-      <i class="fas fa-home"></i>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col font-sans">
+  <header class="p-6 bg-gray-800 text-center shadow-lg relative">
+    <a href="https://vapisz.web.app" class="absolute left-[6%] top-1/2 transform -translate-y-1/2 text-white text-2xl hover:text-yellow-light transition-all">
+      <i class="fas fa-sign-out-alt"></i>
     </a>
-    <h1 class="text-5xl font-extrabold text-white tracking-wide">
+    <h1 class="text-5xl font-extrabold text-yellow-light tracking-wide">
       V-<span class="gradient-text">API</span>s
     </h1>
     <p class="text-lg text-white font-medium mt-2 italic">
       <span id="typing-text"></span><span class="cursor"></span>
     </p>
   </header>
-  <main class="flex-1 p-6 bg-gray-50">
+  <main class="flex-1 p-6 bg-gray-800">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
-  <footer class="p-4 bg-yellow-light text-center text-white">
-    <p class="text-sm font-medium tracking-wide">
-      <i class="fas fa-code"></i> 2024 V-APIs - All Rights Reserved
-    </p>
+  <footer class="p-6 bg-gray-800 text-center text-gray-300 font-semibold tracking-wide text-lg shadow-inner">
+    <p><i class="fas fa-code text-yellow-light"></i> 2025 <span class="text-yellow-light">V-APIs</span> - All Rights Reserved</p>
   </footer>
   <script src="index.js"></script>
 </body>

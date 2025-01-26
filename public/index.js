@@ -1,16 +1,16 @@
-const textElement = document.getElementById("typing-text");
-const textToType = "Fast, Easy, and Simple APIs";
-let index = 0;
+const textElement = document.getElementById("typing-text")
+const textToType = "Fast, Easy, and Simple APIs"
+let index = 0
 
 function typeText() {
   if (index < textToType.length) {
-    textElement.textContent += textToType[index];
-    index++;
-    setTimeout(typeText, 100);
+    textElement.textContent += textToType[index]
+    index++
+    setTimeout(typeText, 100)
   }
 }
 
-document.addEventListener("DOMContentLoaded", typeText);
+document.addEventListener("DOMContentLoaded", typeText)
 
 const categories = [{
     name: "AI",
@@ -666,89 +666,87 @@ const categories = [{
 ]
 
 function renderCards() {
-  const container = document.getElementById("api-container");
-  container.innerHTML = "";
+  const container = document.getElementById("api-container")
+  container.innerHTML = ""
+  
   categories.forEach((category) => {
-    const section = document.createElement("div");
-    section.classList.add("p-4", "bg-white", "rounded-lg", "border", "shadow-sm");
-    const categoryTitle = document.createElement("div");
+    const section = document.createElement("div")
+    section.classList.add("p-4", "bg-gray-800", "rounded-lg", "shadow-sm")
+
+    const categoryTitle = document.createElement("div")
     categoryTitle.classList.add(
-      "flex",
-      "justify-between",
-      "items-center",
-      "text-xl",
-      "font-bold",
-      "bg-yellow-light",
-      "text-white",
-      "p-3",
-      "rounded-lg",
-      "shadow-md",
-      "mb-4"
-    );
-    const categoryName = document.createElement("span");
-    categoryName.innerText = category.name;
-    const totalEndpoints = document.createElement("span");
-    totalEndpoints.classList.add("text-sm", "font-medium");
-    totalEndpoints.innerText = `Total: ${category.apis.length}`;
-    categoryTitle.appendChild(categoryName);
-    categoryTitle.appendChild(totalEndpoints);
-    section.appendChild(categoryTitle);
+      "flex", "justify-between", "items-center", "text-xl", 
+      "font-bold", "bg-yellow-light", "text-white", 
+      "p-3", "rounded-lg", "shadow-md", "mb-4"
+    )
+    
+    const categoryName = document.createElement("span")
+    categoryName.innerText = category.name
+    
+    const totalEndpoints = document.createElement("span")
+    totalEndpoints.classList.add("text-sm", "font-medium")
+    totalEndpoints.innerText = `Total: ${category.apis.length}`
+
+    categoryTitle.appendChild(categoryName)
+    categoryTitle.appendChild(totalEndpoints)
+    section.appendChild(categoryTitle)
+
     category.apis.forEach((api, index) => {
-      const card = document.createElement("div");
+      const card = document.createElement("div")
       card.classList.add(
-        "card",
-        "flex",
-        "flex-col",
-        "items-start",
-        "p-4",
-        "bg-white",
-        "cursor-pointer",
-        "rounded-md"
-      );
-      const topSection = document.createElement("div");
-      topSection.classList.add("flex", "items-center", "justify-between", "w-full");
-      const leftSection = document.createElement("div");
-      leftSection.classList.add("flex", "items-center", "space-x-3");
-      const getBadge = document.createElement("span");
+        "card", "flex", "flex-col", "items-start", "p-4", 
+        "bg-gray-800", "cursor-pointer", "rounded-md"
+      )
+
+      const topSection = document.createElement("div")
+      topSection.classList.add("flex", "items-center", "justify-between", "w-full")
+
+      const leftSection = document.createElement("div")
+      leftSection.classList.add("flex", "items-center", "space-x-3")
+
+      const getBadge = document.createElement("span")
       getBadge.classList.add(
-        "bg-yellow-light",
-        "text-white",
-        "px-3",
-        "py-1",
-        "rounded-full",
-        "text-xs",
-        "font-bold",
-        "shadow"
-      );
-      getBadge.innerText = "GET";
-      const apiTitle = document.createElement("span");
-      apiTitle.classList.add("text-gray-800", "font-semibold", "text-lg");
-      apiTitle.innerText = api.title;
-      leftSection.appendChild(getBadge);
-      leftSection.appendChild(apiTitle);
-      const tryButton = document.createElement("a");
-      tryButton.classList.add("text-yellow-light", "text-2xl");
-      tryButton.innerHTML = `<i class="fas fa-arrow-right"></i>`;
-      tryButton.href = `https://vapis.my.id/api/${api.service}?${api.q}`;
-      tryButton.target = "_blank";
-      topSection.appendChild(leftSection);
-      topSection.appendChild(tryButton);
-      card.appendChild(topSection);
-      const description = document.createElement("p");
-      description.classList.add("hidden", "text-gray-600", "mt-3", "italic", "text-sm");
-      description.innerText = api.description;
-      card.appendChild(description);
+        "bg-yellow-light", "text-white", "px-3", "py-1", 
+        "rounded-full", "text-xs", "font-bold", "shadow"
+      )
+      getBadge.innerText = "GET"
+
+      const apiTitle = document.createElement("span")
+      apiTitle.classList.add("text-white", "font-semibold", "text-lg")
+      apiTitle.innerText = api.title
+
+      leftSection.appendChild(getBadge)
+      leftSection.appendChild(apiTitle)
+
+      const tryButton = document.createElement("a")
+      tryButton.classList.add("text-yellow-light", "text-2xl")
+      tryButton.innerHTML = `<i class="fas fa-arrow-right"></i>`
+      tryButton.href = `https://vapis.my.id/api/${api.service}?${api.q}`
+      tryButton.target = "_blank"
+
+      topSection.appendChild(leftSection)
+      topSection.appendChild(tryButton)
+      card.appendChild(topSection)
+
+      const description = document.createElement("p")
+      description.classList.add("hidden", "text-white", "mt-3", "italic", "text-sm")
+      description.innerText = api.description
+      card.appendChild(description)
+
       card.addEventListener("click", () => {
         document.querySelectorAll("#api-container p").forEach((desc) => {
           if (desc !== description) {
-            desc.classList.add("hidden");
+            desc.classList.add("hidden")
           }
-        });
-        description.classList.toggle("hidden");
-      });
-      section.appendChild(card);
-    });
-    container.appendChild(section);
-  });
+        })
+        description.classList.toggle("hidden")
+      })
+
+      section.appendChild(card)
+    })
+
+    container.appendChild(section)
+  })
 }
-renderCards();
+
+renderCards()
