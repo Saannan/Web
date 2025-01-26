@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +18,7 @@
     :root {
       --yellow-light: #eab308;
       --gray-light: #9ca3af;
-      --gray-dark: #1f2937;
+      --gray-dark: #111827;
     }
     .bg-yellow-light { background-color: var(--yellow-light); }
     .text-yellow-light { color: var(--yellow-light); }
@@ -40,9 +41,9 @@
     }
   </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col font-sans">
-  <header class="p-6 bg-gray-800 text-center shadow-lg relative">
-    <a href="https://vapisz.web.app" class="absolute left-[6%] top-1/2 transform -translate-y-1/2 text-white text-2xl hover:text-yellow-light transition-all">
+<body class="bg-gray-dark text-gray-light min-h-screen flex flex-col font-sans">
+  <header class="p-6 bg-gray-dark text-center shadow-lg relative">
+    <a href="https://vapisz.web.app" class="absolute left-[6%] top-1/2 transform -translate-y-1/2 text-gray-light text-2xl hover:text-yellow-light transition-all">
       <i class="fas fa-sign-out-alt"></i>
     </a>
     <h1 class="text-5xl font-extrabold text-yellow-light tracking-wide">
@@ -52,10 +53,10 @@
       <span id="typing-text"></span><span class="cursor"></span>
     </p>
   </header>
-  <main class="flex-1 p-6 bg-gray-800">
+  <main class="flex-1 p-6 bg-gray-dark">
     <div id="api-container" class="space-y-8 max-w-4xl mx-auto"></div>
   </main>
-  <footer class="p-6 bg-gray-800 text-center text-gray-300 font-semibold tracking-wide text-lg shadow-inner">
+  <footer class="p-6 bg-gray-dark text-center text-white font-semibold tracking-wide text-sm shadow-inner">
     <p><i class="fas fa-code text-yellow-light"></i> 2025 <span class="text-yellow-light">V-APIs</span> - All Rights Reserved</p>
   </footer>
   <script src="index.js"></script>
