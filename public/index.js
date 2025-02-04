@@ -133,13 +133,13 @@ const categories = [{
         title: "text2image v1",
         service: "txt2imgv1",
         q: "q=beautiful%20girl",
-        description: "Generate anime image"
+        description: "Generate image with dalle"
       },
       {
         title: "text2image v2",
         service: "txt2imgv2",
         q: "q=beautiful%20girl",
-        description: "Generate cute-anime image"
+        description: "Generate image with haiper"
       },
       {
         title: "text2image v3",
@@ -154,10 +154,10 @@ const categories = [{
         description: "Generate baby face image with ai"
       },
       {
-        title: "soft anime",
-        service: "softanime",
+        title: "dystopia",
+        service: "dystopia",
         q: "q=beautiful%20girl",
-        description: "Generate soft-anime image"
+        description: "Generate image with dystopia"
       },
     ],
   },
@@ -458,16 +458,16 @@ const categories = [{
         description: "Screenshot website target"
       },
       {
-        title: "iplocation v1",
-        service: "cekipv1",
-        q: "ip=8.8.8.8",
-        description: "Check your ip location v1"
+        title: "iplookup",
+        service: "iplookup",
+        q: "domain=google.com",
+        description: "Check ip with domain"
       },
       {
-        title: "iplocation v2",
-        service: "cekipv2",
+        title: "checkip",
+        service: "checkip",
         q: "ip=8.8.8.8",
-        description: "Check your ip location v2"
+        description: "Check your ip location"
       },
       {
         title: "iplocation full",
@@ -526,12 +526,6 @@ const categories = [{
         service: "toisgd",
         q: "url=https://pomf2.lain.la/f/21axy7kx.mp3",
         description: "Convert any url to isgd"
-      },
-      {
-        title: "to bitly",
-        service: "tobitly",
-        q: "url=https://pomf2.lain.la/f/21axy7kx.mp3",
-        description: "Convert any url to bitly"
       },
     ],
   },
