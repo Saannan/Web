@@ -86,7 +86,7 @@ app.get("/api/gemini", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const { gemini } = require('./search/function')
+    const { gemini } = require('./search/functions')
     const response = await gemini(`${Enc(q)}`)
     res.status(200).json({
     status: true,
@@ -103,7 +103,7 @@ app.get("/api/blackbox", async (req, res) => {
     return res.status(400).json({ status: false, error: "Query is required" })
   }
   try {
-    const { blackbox } = require('./search/function')
+    const { blackbox } = require('./search/functions')
     const response = await blackbox(`${Enc(q)}`)
     res.status(200).json({
     status: true,
@@ -707,7 +707,7 @@ app.get("/api/ytmp4", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const { Ytmp4 } = require('./search/function')
+    const { Ytmp4 } = require('./search/functions')
     const response = await Ytmp4(url)
     res.status(200).json({
     status: true,
@@ -724,7 +724,7 @@ app.get("/api/ytmp3", async (req, res) => {
     return res.status(400).json({ status: false, error: "URL is required" })
   }
   try {
-    const { Ytmp3 } = require('./search/function')
+    const { Ytmp3 } = require('./search/functions')
     const response = await Ytmp3(url)
     res.status(200).json({
     status: true,
