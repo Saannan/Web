@@ -4,11 +4,11 @@ const FormData = require('form-data')
 const ytSearch = require('yt-search')
 
 async function ChatGPT(question, model) {
-const validModels = ["openai", "llama", "mistral", "mistral-large"];
+const validModels = ["openai", "llama", "mistral", "mistral-large"]
 const data = JSON.stringify({
 messages: [question],
 character: model
-});
+})
 const config = {
 method: 'POST',
 url: 'https://chatsandbox.com/api/chat',
@@ -27,9 +27,9 @@ headers: {
 'Cookie': '_ga_V22YK5WBFD=GS1.1.1734654982.3.0.1734654982.0.0.0; _ga=GA1.1.803874982.1734528677'
 },
 data: data
-};
-const response = await axios.request(config);
-return response.data;
+}
+const response = await axios.request(config)
+return response.data
 }
 
 async function feloask(query) {
@@ -83,7 +83,7 @@ const data = JSON.stringify({
 "semanticRatio": 0.5
 },
 "rankingScoreThreshold": 0.3
-}]});
+}]})
 const config = {
 method: 'POST',
 url: 'https://edge.meilisearch.com/multi-search',
@@ -100,19 +100,19 @@ headers: {
 'sec-fetch-site': 'same-site',
 'priority': 'u=4',
 'te': 'trailers'
-}, data: data };
-const response = await axios.request(config);
+}, data: data }
+const response = await axios.request(config)
 return response.data
 }
 
 async function islamai(question) {
-const url = 'https://vercel-server-psi-ten.vercel.app/chat';
+const url = 'https://vercel-server-psi-ten.vercel.app/chat'
 const data = {
 text: question,
 array: [
 { content: "Assalamualaikum", role: "user" },
 { content: "Waalaikumsalam", role: "assistant" }
-]};
+]}
 const response = await axios.post(url, data, {
 headers: {
 'Content-Type': 'application/json',
@@ -230,6 +230,23 @@ console.error('Error:', e)
 throw e
 }}
 
+async function gemini(query) {
+try {
+const res = await axios.post("https://fastrestapis.fasturl.cloud/aillm/gemini/chat", { ask: query }, { headers: { accept: "application/json", "Content-Type": "application/json" }})
+return res.data.result
+} catch (err) {
+console.error(err.message)
+}}
+
+async function blackbox(content) {
+try {
+const response = await axios.post('https://luminai.my.id/', { content, cName: "Vioo", cID: "Vioo0Uf9A72" })
+return response.data
+} catch (error) {
+console.error(error)
+throw error
+}}
+
 async function google(query) {
 const encodedQuery = encodeURIComponent(query)
 const url = `https://www.google.com/search?q=${encodedQuery}`
@@ -250,15 +267,15 @@ return results
 }
 
 async function apkpure(text) {
-let url = `https://apkpure.net/id/search?q=${text}`;
-let { data } = await axios.get(url);
-let $ = cheerio.load(data);
-let results = [];
+let url = `https://apkpure.net/id/search?q=${text}`
+let { data } = await axios.get(url)
+let $ = cheerio.load(data)
+let results = []
 $('a.apk-item').each((_, el) => {
-let title = $(el).find('div.title').text().trim();
-let dev = $(el).find('div.dev').text().trim();
-let rating = $(el).find('span.stars').text().trim();
-let link = 'https://apkpure.net' + $(el).attr('href');
+let title = $(el).find('div.title').text().trim()
+let dev = $(el).find('div.dev').text().trim()
+let rating = $(el).find('span.stars').text().trim()
+let link = 'https://apkpure.net' + $(el).attr('href')
 if (title && dev && rating && link) {
 results.push({
 title,
@@ -266,8 +283,8 @@ developer: dev,
 rating,
 link
 })}
-});
-return results;
+})
+return results
 }
 
 async function spotifys(query) {
@@ -437,52 +454,17 @@ return []
 }
 }
 
-async function ytdl(link, qualityIndex, typeIndex) {
-const qualities = {
-audio: { 1: '32', 2: '64', 3: '128', 4: '192' },
-video: { 1: '144', 2: '240', 3: '360', 4: '480', 5: '720', 6: '1080', 7: '1440', 8: '2160' }
-};
-const headers = {
-accept: '*/*',
-referer: 'https://ytshorts.savetube.me/',
-origin: 'https://ytshorts.savetube.me/',
-'user-agent': 'Postify/1.0.0',
-'Content-Type': 'application/json'
-};
-const cdn = () => Math.floor(Math.random() * 11) + 51;
-const type = typeIndex === 1 ? 'audio' : 'video';
-const quality = qualities[type][qualityIndex];
-const cdnNumber = cdn();
-const cdnUrl = `cdn${cdnNumber}.savetube.su`;
-const videoInfoResponse = await axios.post(
-`https://${cdnUrl}/info`, { url: link }, { headers: { ...headers, authority: `cdn${cdnNumber}.savetube.su` } });
-const videoInfo = videoInfoResponse.data.data;
-const body = {
-downloadType: type,
-quality,
-key: videoInfo.key
-};
-const downloadResponse = await axios.post(
-`https://${cdnUrl}/download`,
-body,
-{ headers: { ...headers, authority: `cdn${cdnNumber}.savetube.su` } }
-);
-const downloadData = downloadResponse.data.data;
+async function ytdl(link) {
+try {
+const result = await axios.get(`https://ytdl.vreden.web.id/metadata?url=${link}`)
 return {
-link: downloadData.downloadUrl,
-duration: videoInfo.duration,
-durationLabel: videoInfo.durationLabel,
-fromCache: videoInfo.fromCache,
-id: videoInfo.id,
-key: videoInfo.key,
-thumbnail: videoInfo.thumbnail,
-thumbnail_formats: videoInfo.thumbnail_formats,
-title: videoInfo.title,
-titleSlug: videoInfo.titleSlug,
-videoUrl: videoInfo.url,
-quality,
-type
-}}
+status: true,
+...result.data
+}} catch (error) {
+return {
+status: false,
+message: error.message
+}}}
 
 const formatAudio = ['mp3', 'm4a', 'webm', 'acc', 'flac', 'opus', 'ogg', 'wav'];
 const formatVideo = ['360', '480', '720', '1080', '1440', '4k'];
@@ -523,6 +505,52 @@ title: title,
 downloadUrl: downloadUrl
 }} else {
 throw new Error('Failed to fetch video details.');
+}}
+
+async function Ytmp4(url) {
+const response = await axios.get(`https://ytdl-api.caliphdev.com/download/video?url=${encodeURIComponent(url)}`)
+const data = response.data
+const dUrl = data.downloadUrl
+const rUrl = await axios.get('https://v.gd/create.php', {
+params: {
+format: 'simple',
+url: dUrl
+}})
+return {
+status: data.status,
+title: data.videoDetails.title,
+description: data.videoDetails.description,
+duration: data.videoDetails.lengthSeconds,
+views: data.videoDetails.viewCount,
+author: data.videoDetails.author.name,
+channel: data.videoDetails.author.channel_url,
+uploaded: data.videoDetails.uploadDate,
+videoUrl: data.videoDetails.video_url,
+thumbnail: data.videoDetails.cover,
+url: rUrl
+}}
+
+async function Ytmp3(url) {
+const response = await axios.get(`https://ytdl-api.caliphdev.com/download/audio?url=${encodeURIComponent(url)}`)
+const data = response.data
+const dUrl = data.downloadUrl
+const rUrl = await axios.get('https://v.gd/create.php', {
+params: {
+format: 'simple',
+url: dUrl
+}})
+return {
+status: data.status,
+title: data.videoDetails.title,
+description: data.videoDetails.description,
+duration: data.videoDetails.lengthSeconds,
+views: data.videoDetails.viewCount,
+author: data.videoDetails.author.name,
+channel: data.videoDetails.author.channel_url,
+uploaded: data.videoDetails.uploadDate,
+videoUrl: data.videoDetails.video_url,
+thumbnail: data.videoDetails.cover,
+url: rUrl
 }}
 
 async function igfbdl(link) {
@@ -637,20 +665,8 @@ coverUrl: result.dlink.cover
 }
 
 async function terabox(url) {
-const getdm = await axios.get(`https://ins.neastooid.xyz/api/Tools/getins?url=https://www.terabox.app/wap/share/filelist?surl=${encodeURIComponent(url)}`)
-const { jsToken, bdstoken } = getdm.data
-const getrsd = await axios.get(`https://ins.neastooid.xyz/api/downloader/Metaterdltes?url=${encodeURIComponent(url)}`)
-const { shareId, userKey, sign, timestamp, files } = getrsd.data.metadata
-const traboxdlxins = await axios.post('https://ins.neastooid.xyz/api/downloader/terade', {
-shareId,
-userKey,
-sign,
-timestamp,
-jsToken,
-bdstoken,
-files
-})
-return traboxdlxins.data
+const response = await axios.get(`https://fastrestapis.fasturl.cloud/downup/teraboxdown?url=${encodeURIComponent(url)}`)
+return response.data.result
 }
 
 async function threads(link) {
@@ -884,13 +900,6 @@ url: url
 return response.data
 }
 
-async function shortUrlv3(url) {
-const response = await axios.post('https://api-ssl.bitly.com/v4/shorten', 
-{ "long_url": url }, { headers: { 'Authorization': `Bearer aa06f5a7a15bcedccf174f63d5e4fb88675bbfe5`,
-'Content-Type': 'application/json' }})
-return response.data.link
-}
-
 async function cekip(query) {
 const results = []
 
@@ -928,4 +937,4 @@ results.push({ name: 'ipapi.co', error: error.message });
 return results;
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, google, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytsearch, ytdl, ytdlv2, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2, shortUrlv3, cekip }
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, gemini, blackbox, google, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytsearch, ytdl, ytdlv2, Ytmp4, Ytmp3, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2, cekip }
