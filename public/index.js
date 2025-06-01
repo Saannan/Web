@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const docLinkInformation = document.getElementById('docLinkInformation');
     const sidebarThemeSwitcher = document.getElementById('sidebarThemeSwitcherSelect');
     const prismThemeLink = document.getElementById('prismTheme');
+    const sidebarApiUrlSwitcherSelect = document.getElementById('sidebarApiUrlSwitcherSelect');
 
     const API_NAME = "Vioo-APIs"
     const whatsappChannel = "https://whatsapp.com/channel/0029VabNTKm35fLp0YzUmH03"
@@ -24,8 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeObjectUrls = [];
     let allApisForCurrentCategory = [];
     let currentApiAbortController = null;
+    let selectedApiBaseUrl = '';
 
     const REQUEST_TIMEOUT = 15000;
+
+    const apiBaseUrls = [
+        { name: "vapis.my.id", url: "https://vapis.my.id" },
+        { name: "localhost:3000", url: "http://localhost:3000" }
+    ];
 
     const categories = [
       {
@@ -37,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "OpenAI",
             service: "openai",
             description: "Get a reponse from OpenAI.",
-            endpoint: "https://vapis.my.id/api/openai",
+            endpointPath: "/api/openai",
             method: "GET",
             parameters: [
               { name: "q", type: "string", description: "Ask to openai.", required: true, defaultValue: "Hello, how are you?" }
@@ -54,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "Claude",
             service: "claude",
             description: "Get a reponse from Claude.",
-            endpoint: "https://vapis.my.id/api/claude",
+            endpointPath: "/api/claude",
             method: "GET",
             parameters: [
               { name: "q", type: "string", description: "Ask to claude.", required: true, defaultValue: "Hello, how are you?" }
@@ -77,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "Glitch Text",
             service: "glitchtext",
             description: "Logo with model Glitch Text.",
-            endpoint: "https://vapis.my.id/api/glitchtext",
+            endpointPath: "/api/glitchtext",
             method: "GET",
             parameters: [
               { name: "q", type: "string", description: "Send to glitchtext.", required: true, defaultValue: "John Doe" }
@@ -94,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "Write Text",
             service: "writetext",
             description: "Logo with model Write Text.",
-            endpoint: "https://vapis.my.id/api/writetext",
+            endpointPath: "/api/writetext",
             method: "GET",
             parameters: [
               { name: "q", type: "string", description: "Send to writetext.", required: true, defaultValue: "John Doe" }
@@ -117,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "All Input Types",
             service: "all-input-types",
             description: "This endpoint for example",
-            endpoint: "https://vapis.my.id/api",
+            endpointPath: "/api",
             method: "POST",
             parameters: [
               { 
@@ -235,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const effectiveBodyClass = bodyClassMapping[theme] || 'light-blue';
         if (effectiveBodyClass.startsWith('dark')) {
-            document.body.classList.add('dark'); 
+            document.body.classList.add('dark');
         } else {
             document.body.classList.add('light');
         }
@@ -247,18 +254,37 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prismThemeLink.href !== prismThemeMapping[theme]) {
             prismThemeLink.href = prismThemeMapping[theme];
         }
-        
+
         localStorage.setItem('selectedTheme', theme);
         if (sidebarThemeSwitcher.value !== theme) {
             sidebarThemeSwitcher.value = theme;
         }
-        
+
         setTimeout(() => {
             if (typeof Prism !== 'undefined') {
                  Prism.highlightAll();
             }
         }, 50);
     }
+
+    function applyApiUrl(baseUrl) {
+        selectedApiBaseUrl = baseUrl;
+        localStorage.setItem('selectedApiBaseUrl', baseUrl);
+        if (sidebarApiUrlSwitcherSelect.value !== baseUrl) {
+            sidebarApiUrlSwitcherSelect.value = baseUrl;
+        }
+    }
+
+    apiBaseUrls.forEach(apiOpt => {
+        const option = document.createElement('option');
+        option.value = apiOpt.url;
+        option.textContent = apiOpt.name;
+        sidebarApiUrlSwitcherSelect.appendChild(option);
+    });
+
+    const savedApiBaseUrl = localStorage.getItem('selectedApiBaseUrl') || apiBaseUrls[0].url;
+    applyApiUrl(savedApiBaseUrl);
+    sidebarApiUrlSwitcherSelect.addEventListener('change', (e) => applyApiUrl(e.target.value));
 
     sidebarThemeSwitcher.addEventListener('change', (e) => applyTheme(e.target.value));
     const savedTheme = localStorage.getItem('selectedTheme') || 'light-default';
@@ -298,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         document.querySelectorAll('.sidebar .api-list a.active-endpoint').forEach(link => link.classList.remove('active-endpoint'));
     }
-    
+
     function showContent(type) {
         welcomeMessageContainer.style.display = 'none';
         informationPageContainer.style.display = 'none';
@@ -335,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
+
     function displayInformationPage() {
         closeCurrentlyOpenApiDetails();
         showContent('information');
@@ -466,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         setActiveDocLink(docLinkMainPage);
     }
-    
+
     function revokeActiveObjectUrls() {
         activeObjectUrls.forEach(url => URL.revokeObjectURL(url));
         activeObjectUrls = [];
@@ -559,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
             headerMainInfo.appendChild(topLine);
             const urlSpan = document.createElement('span');
             urlSpan.classList.add('endpoint-url');
-            urlSpan.textContent = "/api/" + api.service;
+            urlSpan.textContent = (api.endpointPath.startsWith('/') ? '' : '/') + "api/" + api.service;
             headerMainInfo.appendChild(urlSpan);
             const arrowSpan = createArrowSpan();
             header.appendChild(headerMainInfo);
@@ -675,8 +701,8 @@ document.addEventListener('DOMContentLoaded', () => {
         formHeader.textContent = 'Try it out';
         container.appendChild(formHeader);
         const form = document.createElement('form');
-        form.dataset.apiId = api.id; 
-        
+        form.dataset.apiId = api.id;
+
         const controlsDiv = document.createElement('div');
         controlsDiv.classList.add('try-it-out-controls');
 
@@ -702,10 +728,10 @@ document.addEventListener('DOMContentLoaded', () => {
         clearButton.textContent = 'Clear';
         clearButton.style.display = 'none';
         controlsDiv.appendChild(clearButton);
-        
-        form.addEventListener('submit', (e) => { 
-            e.preventDefault(); 
-            executeApiCall(api, form, container, executeButton, cancelButton, clearButton); 
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            executeApiCall(api, form, container, executeButton, cancelButton, clearButton);
         });
 
         cancelButton.addEventListener('click', () => {
@@ -762,7 +788,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const chkContainer = document.createElement('div'); chkContainer.classList.add('checkbox-group'); const chkLabel = document.createElement('label'); const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.id = `param-${api.id}-${param.name}`; checkbox.name = param.name; checkbox.checked = param.defaultValue === true;
                     chkLabel.appendChild(checkbox); chkLabel.append(param.description || param.name); chkContainer.appendChild(chkLabel); group.appendChild(chkContainer); group.replaceChild(chkContainer, label);
                 } else {
-                    const input = document.createElement('input'); input.type = param.type === 'integer' || param.type === 'float' ? 'number' : 'text'; if(param.type === 'float') input.step = 'any'; input.id = `param-${api.id}-${param.name}`; input.name = param.name; input.placeholder = param.description; if (param.defaultValue !== undefined) input.value = param.defaultValue; if (param.required) input.required = true;
+                    const input = document.createElement('input'); input.type = param.type === 'integer' || param.type === 'float' ? 'number' : (param.type === 'url' ? 'url' : 'text'); if(param.type === 'float') input.step = 'any'; input.id = `param-${api.id}-${param.name}`; input.name = param.name; input.placeholder = param.description; if (param.defaultValue !== undefined) input.value = param.defaultValue; if (param.required) input.required = true;
                     group.appendChild(input);
                 } form.appendChild(group);
             });
@@ -772,7 +798,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const textarea = document.createElement('textarea'); textarea.id = `body-${api.id}`; textarea.name = 'requestBody'; textarea.rows = 8; textarea.value = api.requestBodyExample.example; group.appendChild(textarea);
             form.appendChild(group);
         }
-        form.appendChild(controlsDiv); 
+        form.appendChild(controlsDiv);
         container.appendChild(form);
         const liveResponseContainer = document.createElement('div'); liveResponseContainer.id = `live-response-${api.id}`; liveResponseContainer.classList.add('response-section'); container.appendChild(liveResponseContainer);
     }
@@ -810,8 +836,8 @@ document.addEventListener('DOMContentLoaded', () => {
         revokeActiveObjectUrls();
         const liveResponseContainer = tryItOutContainer.querySelector(`#live-response-${api.id}`);
         const buttonText = executeButton.querySelector('.btn-text');
-        const originalButtonText = 'Execute'; 
-        
+        const originalButtonText = 'Execute';
+
         buttonText.textContent = 'Loading...';
         executeButton.disabled = true;
         cancelButton.style.display = 'inline-flex';
@@ -824,19 +850,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }, REQUEST_TIMEOUT);
 
         const formData = new FormData(form);
-        let targetUrl = api.endpoint;
+        let targetUrl = selectedApiBaseUrl + api.endpointPath;
         let requestPayload = { method: api.method, headers: {}, data: null };
 
         if (api.method === 'GET' || api.method === 'DELETE') {
-            const queryParams = new URLSearchParams();
+            let queryParts = [];
             requestPayload.headers['Accept'] = 'application/json, text/plain, */*';
             api.parameters.forEach(param => {
                 let paramValue = param.type === 'checkbox' ? form.querySelector(`input[name="${param.name}"]`).checked : formData.get(param.name);
                 if (paramValue !== undefined && paramValue !== null && (String(paramValue).length > 0 || param.type === 'checkbox')) {
-                     queryParams.append(param.name, paramValue);
+                     queryParts.push(`${encodeURIComponent(param.name)}=${encodeURIComponent(String(paramValue))}`);
                 }
             });
-            if (queryParams.toString()) targetUrl += `?${queryParams.toString()}`;
+            if (queryParts.length > 0) {
+                targetUrl += `?${queryParts.join('&')}`;
+            }
         } else if (api.method === 'POST' || api.method === 'PUT' || api.method === 'PATCH') {
             const contentType = (api.requestBodyExample && api.requestBodyExample.contentType) || 'application/json';
             requestPayload.headers['Content-Type'] = contentType;
@@ -865,13 +893,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const urlEncodedParams = new URLSearchParams();
                 api.parameters.forEach(param => {
                      if (formData.has(param.name) || param.type === 'checkbox') {
-                        urlEncodedParams.append(param.name, param.type === 'checkbox' ? form.querySelector(`input[name="${param.name}"]`).checked.toString() : formData.get(param.name));
+                        urlEncodedParams.append(param.name, param.type === 'checkbox' ? form.querySelector(`input[name="${p.name}"]`).checked.toString() : formData.get(param.name));
                     }
                 });
                 requestPayload.data = urlEncodedParams.toString();
             }
         }
-        
+
         let responseWrapper;
         const apiDeclaredContentType = String(api.response.headers['Content-Type'] || '').toLowerCase();
         const isApiMediaRequest = (apiDeclaredContentType.startsWith('image/') || apiDeclaredContentType.startsWith('audio/') || apiDeclaredContentType.startsWith('video/')) && !apiDeclaredContentType.startsWith('image/svg+xml');
@@ -908,7 +936,7 @@ document.addEventListener('DOMContentLoaded', () => {
             copyUrlButton.classList.add('btn', 'btn-secondary', 'btn-copy-url');
             copyUrlButton.style.marginLeft = '10px';
             copyUrlButton.style.flexShrink = '0';
-            copyUrlButton.style.padding = '3px 6px'; 
+            copyUrlButton.style.padding = '3px 6px';
             copyUrlButton.style.fontSize = '0.85em';
             copyUrlButton.addEventListener('click', () => {
                 navigator.clipboard.writeText(targetUrl).then(() => {
@@ -923,7 +951,7 @@ document.addEventListener('DOMContentLoaded', () => {
             requestUrlPre.appendChild(copyUrlButton);
             requestUrlDiv.appendChild(requestUrlPre);
             liveResponseContainer.appendChild(requestUrlDiv);
-            
+
             const statusP = document.createElement('p'); statusP.classList.add('response-status');
             let isAppLevelError = false; let appErrorMessage = 'Failed';
             if (!isApiMediaRequest && typeof responseWrapper.data === 'object' && responseWrapper.data !== null) {
@@ -935,11 +963,11 @@ document.addEventListener('DOMContentLoaded', () => {
             liveResponseContainer.appendChild(statusP);
             const headersTitle = document.createElement('h5'); headersTitle.textContent = 'Headers:'; liveResponseContainer.appendChild(headersTitle);
             const headersPre = document.createElement('pre'); const codeHeaders = document.createElement('code'); codeHeaders.className = 'language-json'; codeHeaders.textContent = JSON.stringify(responseWrapper.headers, null, 2); headersPre.appendChild(codeHeaders); liveResponseContainer.appendChild(headersPre);
-            
-            const bodyTitleElement = document.createElement('h5'); 
+
+            const bodyTitleElement = document.createElement('h5');
             bodyTitleElement.textContent = 'Body:';
             liveResponseContainer.appendChild(bodyTitleElement);
-            
+
             let bodyContentToCopy = '';
             const actualContentType = String(responseWrapper.originalContentType || '').toLowerCase();
             let isMediaRenderedAndNotSvg = false;
@@ -952,14 +980,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (typeof responseWrapper.data === 'string') {
                     const svgContentDiv = document.createElement('div');
-                    svgContentDiv.innerHTML = responseWrapper.data; 
-                    if (svgContentDiv.firstChild) { 
+                    svgContentDiv.innerHTML = responseWrapper.data;
+                    if (svgContentDiv.firstChild) {
                         svgContentDiv.firstChild.classList.add('response-media');
                         svgDisplayContainer.appendChild(svgContentDiv.firstChild);
-                    } else { 
+                    } else {
                         svgDisplayContainer.appendChild(document.createTextNode("Received SVG data, but could not parse it."));
                     }
-                } else { 
+                } else {
                     svgDisplayContainer.appendChild(document.createTextNode("Received SVG data, but it's not in string format."));
                 }
                 liveResponseContainer.appendChild(svgDisplayContainer);
@@ -970,10 +998,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (actualContentType.startsWith('image/')) { mediaElement = document.createElement('img'); mediaElement.alt = 'API Response Image'; }
                 else if (actualContentType.startsWith('audio/')) { mediaElement = document.createElement('audio'); mediaElement.controls = true; }
                 else if (actualContentType.startsWith('video/')) { mediaElement = document.createElement('video'); mediaElement.controls = true; }
-                if (mediaElement) { 
-                    mediaElement.src = objectURL; 
-                    mediaElement.classList.add('response-media'); 
-                    liveResponseContainer.appendChild(mediaElement); 
+                if (mediaElement) {
+                    mediaElement.src = objectURL;
+                    mediaElement.classList.add('response-media');
+                    liveResponseContainer.appendChild(mediaElement);
                 }
                 isMediaRenderedAndNotSvg = true;
             }
@@ -981,7 +1009,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!actualContentType.startsWith('image/svg+xml') && !isMediaRenderedAndNotSvg) {
                 const bodyPre = document.createElement('pre');
                 bodyPre.style.marginTop = '5px';
-                
+
                 const codeBody = document.createElement('code');
                 if (typeof responseWrapper.data === 'object' && responseWrapper.data !== null) {
                     codeBody.className = 'language-json';
@@ -998,29 +1026,29 @@ document.addEventListener('DOMContentLoaded', () => {
                             bodyContentToCopy = JSON.stringify(parsedJson, null, 2);
                             codeBody.textContent = bodyContentToCopy;
                             codeBody.className = 'language-json';
-                        } catch (e) { 
+                        } catch (e) {
                             codeBody.className = actualContentType.includes('html') || actualContentType.includes('xml') ? 'language-markup' : 'language-text';
                         }
-                    } else { 
+                    } else {
                         codeBody.className = actualContentType.includes('html') || actualContentType.includes('xml') ? 'language-markup' : 'language-text';
                     }
                 } else if (responseWrapper.data !== undefined && responseWrapper.data !== null) {
                     bodyContentToCopy = String(responseWrapper.data);
                     codeBody.textContent = bodyContentToCopy; codeBody.className = 'language-text';
-                } else { 
+                } else {
                     bodyContentToCopy = '(Empty Response Body)';
-                    codeBody.textContent = bodyContentToCopy; codeBody.className = 'language-text'; 
+                    codeBody.textContent = bodyContentToCopy; codeBody.className = 'language-text';
                 }
                 bodyPre.appendChild(codeBody);
                 liveResponseContainer.appendChild(bodyPre);
             }
-            
+
             if (typeof Prism !== 'undefined') Prism.highlightAllUnder(liveResponseContainer);
 
         } catch (error) {
             clearTimeout(timeoutId);
             liveResponseContainer.innerHTML = '';
-            
+
             const requestUrlDiv = document.createElement('div');
             requestUrlDiv.classList.add('request-url-section');
             requestUrlDiv.style.marginBottom = '10px';
@@ -1069,19 +1097,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const errorP = document.createElement('p'); errorP.classList.add('response-status');
                 let statusClass = `status-${error.status || 'error'}`;
                 let errorMsg = error.message || error.statusText || 'Unknown request error';
-                if (error.status === 0) errorMsg = error.message; 
+                if (error.status === 0) errorMsg = error.message;
 
                 errorP.innerHTML = `<span class="${statusClass}">${errorMsg} (Status: ${error.status !== undefined ? error.status : 'N/A'})</span>`;
                 liveResponseContainer.appendChild(errorP);
-                
+
                 if(error.headers && Object.keys(error.headers).length > 0){ const hTitle = document.createElement('h5'); hTitle.textContent = 'Response Headers:'; liveResponseContainer.appendChild(hTitle); const hPre = document.createElement('pre'); const cHead = document.createElement('code'); cHead.className = 'language-json'; cHead.textContent = JSON.stringify(error.headers, null, 2); hPre.appendChild(cHead); liveResponseContainer.appendChild(hPre); }
-                let errorBodyData = error.response || error.data; 
+                let errorBodyData = error.response || error.data;
                 if (errorBodyData) { const bTitle = document.createElement('h5'); bTitle.textContent = 'Response Body:'; liveResponseContainer.appendChild(bTitle); const bPre = document.createElement('pre'); const cBody = document.createElement('code');
                     if (typeof errorBodyData === 'object' && !(errorBodyData instanceof Blob)) { cBody.className = 'language-json'; cBody.textContent = JSON.stringify(errorBodyData, null, 2); }
                     else if (typeof errorBodyData === 'string') { cBody.className = 'language-markup'; cBody.textContent = errorBodyData; }
                     else { cBody.className = 'language-text'; cBody.textContent = '[Non-textual error response]';}
                     bPre.appendChild(cBody); liveResponseContainer.appendChild(bPre); }
-                
+
                 if (typeof Prism !== 'undefined') Prism.highlightAllUnder(liveResponseContainer);
                 const addInfo = document.createElement('p'); addInfo.style.marginTop = '10px'; addInfo.innerHTML = `This request was made directly to the API. If the error persists, the target API might be down, the endpoint is incorrect, or there's a network issue. The API server must have correct CORS headers (e.g., <code>Access-Control-Allow-Origin: *</code> or this site's origin) to allow requests from this web page.`;
                 liveResponseContainer.appendChild(addInfo);
@@ -1089,13 +1117,13 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             clearTimeout(timeoutId);
             currentApiAbortController = null;
-            buttonText.textContent = originalButtonText; 
+            buttonText.textContent = originalButtonText;
             executeButton.disabled = false;
             cancelButton.style.display = 'none';
             clearButton.style.display = 'inline-flex';
         }
     }
-    
+
     contentSearchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         const filteredApis = allApisForCurrentCategory.filter(api => {
@@ -1116,7 +1144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     window.addEventListener('resize', () => {
-        const isCurrentlyDesktop = isDesktopView(); 
+        const isCurrentlyDesktop = isDesktopView();
         mainContent.classList.remove('table-view');
         document.querySelectorAll('.api-endpoint-container .endpoint-header').forEach(header => {
             const mainInfo = header.querySelector('.endpoint-header-main-info'); const urlSpan = mainInfo.querySelector('.endpoint-url'); const topLine = mainInfo.querySelector('.endpoint-header-top-line');
@@ -1126,7 +1154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (isDesktopView() && sidebar.classList.contains('open')) { sidebar.classList.remove('open'); }
     });
-    
+
     renderCategories();
     displayWelcomeMessage();
 });
