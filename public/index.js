@@ -1032,7 +1032,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             if (hasTextualBodyForCopy && bodyContentHostElement) {
-                localCopyBodyButton.style.position = 'sticky';
+                localCopyBodyButton.style.position = 'absolute';
                 localCopyBodyButton.style.top = '5px'; 
                 localCopyBodyButton.style.right = '5px';
                 localCopyBodyButton.style.zIndex = '10'; 
