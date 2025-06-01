@@ -584,7 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
             headerMainInfo.appendChild(topLine);
             const urlSpan = document.createElement('span');
             urlSpan.classList.add('endpoint-url');
-            urlSpan.textContent = (api.endpointPath.startsWith('/') ? '' : '/') + "api/" + api.service;
+            urlSpan.textContent = api.endpointPath
             headerMainInfo.appendChild(urlSpan);
             const arrowSpan = createArrowSpan();
             header.appendChild(headerMainInfo);
