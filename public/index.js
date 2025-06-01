@@ -865,7 +865,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const urlEncodedParams = new URLSearchParams();
                 api.parameters.forEach(param => {
                      if (formData.has(param.name) || param.type === 'checkbox') {
-                        urlEncodedParams.append(param.name, param.type === 'checkbox' ? form.querySelector(`input[name="${p.name}"]`).checked.toString() : formData.get(param.name));
+                        urlEncodedParams.append(param.name, param.type === 'checkbox' ? form.querySelector(`input[name="${param.name}"]`).checked.toString() : formData.get(param.name));
                     }
                 });
                 requestPayload.data = urlEncodedParams.toString();
@@ -950,13 +950,12 @@ document.addEventListener('DOMContentLoaded', () => {
             let hasTextualBodyForCopy = false;
             let bodyContentHostElement = null;
 
-
             if (actualContentType.startsWith('image/svg+xml')) {
                 const svgDisplayContainer = document.createElement('div');
-                svgDisplayContainer.style.position = 'relative';
                 svgDisplayContainer.style.border = '1px solid var(--border-color, #e0e0e0)';
                 svgDisplayContainer.style.padding = '10px';
                 svgDisplayContainer.style.marginTop = '5px';
+                svgDisplayContainer.style.overflow = 'auto';
                 bodyContentHostElement = svgDisplayContainer;
 
                 if (typeof responseWrapper.data === 'string') {
@@ -991,7 +990,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!actualContentType.startsWith('image/svg+xml') && !isMediaRenderedAndNotSvg) {
                 const bodyPre = document.createElement('pre');
-                bodyPre.style.position = 'relative';
                 bodyPre.style.marginTop = '5px';
                 bodyContentHostElement = bodyPre;
                 
@@ -1032,7 +1030,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             if (hasTextualBodyForCopy && bodyContentHostElement) {
-                localCopyBodyButton.style.position = 'absolute';
+                localCopyBodyButton.style.position = 'sticky'; 
                 localCopyBodyButton.style.top = '5px'; 
                 localCopyBodyButton.style.right = '5px';
                 localCopyBodyButton.style.zIndex = '10'; 
