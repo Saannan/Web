@@ -892,17 +892,24 @@ document.addEventListener('DOMContentLoaded', () => {
             requestUrlPre.style.display = 'flex';
             requestUrlPre.style.alignItems = 'center';
             requestUrlPre.style.justifyContent = 'space-between';
+            requestUrlPre.style.paddingTop = '4px';
+            requestUrlPre.style.paddingBottom = '4px';
             const requestUrlCode = document.createElement('code');
             requestUrlCode.className = 'language-text';
             requestUrlCode.textContent = targetUrl;
-            requestUrlCode.style.whiteSpace = 'pre-wrap';
-            requestUrlCode.style.wordBreak = 'break-all';
+            requestUrlCode.style.whiteSpace = 'nowrap';
+            requestUrlCode.style.overflowX = 'auto';
+            requestUrlCode.style.display = 'block';
+            requestUrlCode.style.flexGrow = '1';
+            requestUrlCode.style.minWidth = '0';
             requestUrlPre.appendChild(requestUrlCode);
             const copyUrlButton = document.createElement('button');
             copyUrlButton.textContent = 'Copy URL';
             copyUrlButton.classList.add('btn', 'btn-secondary', 'btn-copy-url');
             copyUrlButton.style.marginLeft = '10px';
             copyUrlButton.style.flexShrink = '0';
+            copyUrlButton.style.padding = '2px 6px'; 
+            copyUrlButton.style.fontSize = '0.85em';
             copyUrlButton.addEventListener('click', () => {
                 navigator.clipboard.writeText(targetUrl).then(() => {
                     const originalCopyBtnText = copyUrlButton.textContent;
@@ -929,35 +936,41 @@ document.addEventListener('DOMContentLoaded', () => {
             const headersTitle = document.createElement('h5'); headersTitle.textContent = 'Headers:'; liveResponseContainer.appendChild(headersTitle);
             const headersPre = document.createElement('pre'); const codeHeaders = document.createElement('code'); codeHeaders.className = 'language-json'; codeHeaders.textContent = JSON.stringify(responseWrapper.headers, null, 2); headersPre.appendChild(codeHeaders); liveResponseContainer.appendChild(headersPre);
             
-            const bodyTitle = document.createElement('h5'); bodyTitle.textContent = 'Body:';
-            const copyBodyButton = document.createElement('button');
-            copyBodyButton.textContent = 'Copy Body';
-            copyBodyButton.classList.add('btn', 'btn-secondary', 'btn-copy-body');
-            copyBodyButton.style.marginLeft = '10px';
-            copyBodyButton.style.verticalAlign = 'middle';
-            copyBodyButton.style.display = 'none';
+            const bodyTitleElement = document.createElement('h5'); 
+            bodyTitleElement.textContent = 'Body:';
+            liveResponseContainer.appendChild(bodyTitleElement);
 
-            const bodyHeaderDiv = document.createElement('div');
-            bodyHeaderDiv.style.display = 'flex';
-            bodyHeaderDiv.style.alignItems = 'center';
-            bodyHeaderDiv.style.marginBottom = '5px';
-            bodyHeaderDiv.appendChild(bodyTitle);
-            liveResponseContainer.appendChild(bodyHeaderDiv);
+            const localCopyBodyButton = document.createElement('button');
+            localCopyBodyButton.textContent = 'Copy Body';
+            localCopyBodyButton.classList.add('btn', 'btn-secondary', 'btn-copy-body');
             
             let bodyContentToCopy = '';
             const actualContentType = String(responseWrapper.originalContentType || '').toLowerCase();
             let isMediaRenderedAndNotSvg = false;
+            let hasTextualBodyForCopy = false;
+
+            const bodyContentPresentationDiv = document.createElement('div');
+            bodyContentPresentationDiv.style.position = 'relative';
+            bodyContentPresentationDiv.style.border = '1px solid var(--border-color, #e0e0e0)';
+            bodyContentPresentationDiv.style.padding = '10px';
+            bodyContentPresentationDiv.style.marginTop = '5px';
 
             if (actualContentType.startsWith('image/svg+xml')) {
                 if (typeof responseWrapper.data === 'string') {
                     const svgContainer = document.createElement('div');
-                    svgContainer.innerHTML = responseWrapper.data;
-                    if (svgContainer.firstChild) { svgContainer.firstChild.classList.add('response-media'); liveResponseContainer.appendChild(svgContainer.firstChild); }
-                    else { liveResponseContainer.appendChild(document.createTextNode("Received SVG data, but could not parse it.")); }
+                    svgContainer.innerHTML = responseWrapper.data; 
+                    if (svgContainer.firstChild) { 
+                        svgContainer.firstChild.classList.add('response-media');
+                        bodyContentPresentationDiv.appendChild(svgContainer.firstChild);
+                    } else { 
+                        bodyContentPresentationDiv.appendChild(document.createTextNode("Received SVG data, but could not parse it."));
+                    }
                     bodyContentToCopy = responseWrapper.data;
-                    copyBodyButton.style.display = 'inline-block';
-                    bodyHeaderDiv.appendChild(copyBodyButton);
-                } else { liveResponseContainer.appendChild(document.createTextNode("Received SVG data, but it's not in string format.")); }
+                    hasTextualBodyForCopy = true;
+                } else { 
+                    bodyContentPresentationDiv.appendChild(document.createTextNode("Received SVG data, but it's not in string format."));
+                }
+                liveResponseContainer.appendChild(bodyContentPresentationDiv);
             } else if (isApiMediaRequest && responseWrapper.data instanceof Blob) {
                 const objectURL = URL.createObjectURL(responseWrapper.data);
                 activeObjectUrls.push(objectURL);
@@ -965,12 +978,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (actualContentType.startsWith('image/')) { mediaElement = document.createElement('img'); mediaElement.alt = 'API Response Image'; }
                 else if (actualContentType.startsWith('audio/')) { mediaElement = document.createElement('audio'); mediaElement.controls = true; }
                 else if (actualContentType.startsWith('video/')) { mediaElement = document.createElement('video'); mediaElement.controls = true; }
-                if (mediaElement) { mediaElement.src = objectURL; mediaElement.classList.add('response-media'); liveResponseContainer.appendChild(mediaElement); }
+                if (mediaElement) { 
+                    mediaElement.src = objectURL; 
+                    mediaElement.classList.add('response-media'); 
+                    liveResponseContainer.appendChild(mediaElement); 
+                }
                 isMediaRenderedAndNotSvg = true;
             }
 
             if (!actualContentType.startsWith('image/svg+xml') && !isMediaRenderedAndNotSvg) {
-                const bodyPre = document.createElement('pre'); const codeBody = document.createElement('code');
+                const bodyPre = document.createElement('pre');
+                bodyPre.style.margin = '0';
+                const codeBody = document.createElement('code');
                 if (typeof responseWrapper.data === 'object' && responseWrapper.data !== null) {
                     codeBody.className = 'language-json';
                     bodyContentToCopy = JSON.stringify(responseWrapper.data, null, 2);
@@ -999,28 +1018,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     bodyContentToCopy = '(Empty Response Body)';
                     codeBody.textContent = bodyContentToCopy; codeBody.className = 'language-text'; 
                 }
-                bodyPre.appendChild(codeBody); liveResponseContainer.appendChild(bodyPre);
+                bodyPre.appendChild(codeBody);
+                bodyContentPresentationDiv.appendChild(bodyPre);
+                liveResponseContainer.appendChild(bodyContentPresentationDiv);
                 if (bodyContentToCopy && bodyContentToCopy !== '(Empty Response Body)') {
-                    copyBodyButton.style.display = 'inline-block';
-                    bodyHeaderDiv.appendChild(copyBodyButton);
+                    hasTextualBodyForCopy = true;
                 }
             }
             
-            copyBodyButton.addEventListener('click', () => {
-                if (bodyContentToCopy && bodyContentToCopy !== '(Empty Response Body)') {
-                    navigator.clipboard.writeText(bodyContentToCopy).then(() => {
-                        const originalCopyBtnText = copyBodyButton.textContent;
-                        copyBodyButton.textContent = 'Copied!';
-                        setTimeout(() => { copyBodyButton.textContent = originalCopyBtnText; }, 2000);
-                    }).catch(err => {
-                        console.error('Failed to copy body: ', err);
-                        alert('Failed to copy body.');
-                    });
-                } else {
-                    alert('No body content to copy.');
-                }
-            });
+            if (hasTextualBodyForCopy) {
+                localCopyBodyButton.style.position = 'absolute';
+                localCopyBodyButton.style.top = '5px'; 
+                localCopyBodyButton.style.right = '5px';
+                localCopyBodyButton.style.zIndex = '10'; 
+                bodyContentPresentationDiv.appendChild(localCopyBodyButton);
 
+                localCopyBodyButton.addEventListener('click', () => {
+                    if (bodyContentToCopy) {
+                        navigator.clipboard.writeText(bodyContentToCopy).then(() => {
+                            const originalCopyBtnText = localCopyBodyButton.textContent;
+                            localCopyBodyButton.textContent = 'Copied!';
+                            setTimeout(() => { localCopyBodyButton.textContent = originalCopyBtnText; }, 2000);
+                        }).catch(err => {
+                            console.error('Failed to copy body: ', err);
+                            alert('Failed to copy body.');
+                        });
+                    }
+                });
+            }
+            
             if (typeof Prism !== 'undefined') Prism.highlightAllUnder(liveResponseContainer);
 
         } catch (error) {
@@ -1037,17 +1063,24 @@ document.addEventListener('DOMContentLoaded', () => {
             requestUrlPre.style.display = 'flex';
             requestUrlPre.style.alignItems = 'center';
             requestUrlPre.style.justifyContent = 'space-between';
+            requestUrlPre.style.paddingTop = '4px';
+            requestUrlPre.style.paddingBottom = '4px';
             const requestUrlCode = document.createElement('code');
             requestUrlCode.className = 'language-text';
             requestUrlCode.textContent = targetUrl;
-            requestUrlCode.style.whiteSpace = 'pre-wrap';
-            requestUrlCode.style.wordBreak = 'break-all';
+            requestUrlCode.style.whiteSpace = 'nowrap';
+            requestUrlCode.style.overflowX = 'auto';
+            requestUrlCode.style.display = 'block';
+            requestUrlCode.style.flexGrow = '1';
+            requestUrlCode.style.minWidth = '0';
             requestUrlPre.appendChild(requestUrlCode);
             const copyUrlButton = document.createElement('button');
             copyUrlButton.textContent = 'Copy URL';
             copyUrlButton.classList.add('btn', 'btn-secondary', 'btn-copy-url');
             copyUrlButton.style.marginLeft = '10px';
             copyUrlButton.style.flexShrink = '0';
+            copyUrlButton.style.padding = '2px 6px';
+            copyUrlButton.style.fontSize = '0.85em';
             copyUrlButton.addEventListener('click', () => {
                 navigator.clipboard.writeText(targetUrl).then(() => {
                     const originalCopyBtnText = copyUrlButton.textContent;
