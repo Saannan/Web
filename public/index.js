@@ -30,8 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const REQUEST_TIMEOUT = 15000;
 
     const apiBaseUrls = [
-        { name: "vapis.my.id", url: "https://vapis.my.id" },
-        { name: "localhost:3000", url: "http://localhost:3000" }
+        { name: "vapis.my.id", url: "https://vapis.my.id" }
     ];
 
     const categories = [
