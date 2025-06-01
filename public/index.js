@@ -2,8 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiCategoriesList = document.getElementById('apiCategoriesList');
     const apiEndpointsContainer = document.getElementById('apiEndpointsContainer');
     const mainContent = document.getElementById('mainContent');
-    const welcomeMessageContainer = document.getElementById('welcomeMessage');
-    const searchInput = document.getElementById('searchInput');
+    const welcomeMessageContainer = document.getElementById('welcomeMessageContainer');
+    const informationPageContainer = document.getElementById('informationPageContainer');
+    const contentSearchContainer = document.getElementById('contentSearchContainer');
+    const contentSearchInput = document.getElementById('contentSearchInput');
     const hamburgerMenu = document.getElementById('hamburgerMenu');
     const sidebar = document.getElementById('sidebar');
     const docLinkMainPage = document.getElementById('docLinkMainPage');
@@ -11,10 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebarThemeSwitcher = document.getElementById('sidebarThemeSwitcherSelect');
     const prismThemeLink = document.getElementById('prismTheme');
 
+    // Arrange according to your wishes
+    const API_NAME = "Vioo-APIs"
+    const whatsappChannel = "https://whatsapp.com/channel/0029VabNTKm35fLp0YzUmH03"
+    const githubURL = "https://github.com/Saannan"
+    const googleEmail = "viooai.sn@gmail.com"
+
     let currentOpenCategoryElement = null;
     let userOpenedApiDetailId = null;
     let currentOpenHeaderArrowSpan = null;
     let activeObjectUrls = [];
+    let allApisForCurrentCategory = [];
+    let currentApiAbortController = null;
 
     const REQUEST_TIMEOUT = 15000;
 
@@ -98,7 +108,109 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
         ]
-      }
+      },
+      /* { --- Example of a complete form input type
+        name: "Full Example",
+        icon: "fas fa-file-alt",
+        apis: [
+          {
+            id: "example",
+            title: "All Input Types",
+            service: "all-input-types",
+            description: "This endpoint for example",
+            endpoint: "https://vapis.my.id/api",
+            method: "POST",
+            parameters: [
+              { 
+                name: "inputText", 
+                type: "string", 
+                description: "Enter text.", 
+                required: true, 
+                defaultValue: "Hello World" 
+              },
+              { 
+                name: "inputNumber", 
+                type: "integer", 
+                description: "Enter a whole number.", 
+                required: false, 
+                defaultValue: 123 
+              },
+              { 
+                name: "inputDecimal", 
+                type: "float", 
+                description: "Enter a decimal number.", 
+                required: false, 
+                defaultValue: 10.5 
+              },
+              { 
+                name: "dropdownOptions", 
+                type: "select", 
+                description: "Select one of the options.", 
+                required: true, 
+                defaultValue: "opsi1",
+                options: [
+                  { value: "opsi1", text: "First Option" },
+                  { value: "opsi2", text: "Second Option" },
+                  { value: "opsi3", text: "Third Option" }
+                ]
+              },
+              {
+                name: "radioOptions",
+                type: "radio",
+                description: "Select a radio.",
+                required: true,
+                defaultValue: "A",
+                options: [
+                  { value: "A", text: "Choice A" },
+                  { value: "B", text: "Choice B" },
+                  { value: "C", text: "Choice C" }
+                ]
+              },
+              {
+                name: "inputCheckbox",
+                type: "checkbox",
+                description: "Check if you agree.",
+                required: false,
+                defaultValue: true 
+              },
+              {
+                name: "inputUrl",
+                type: "url",
+                description: "Enter URL.",
+                required: false,
+                defaultValue: "https://example.com"
+              }
+            ],
+            requestBodyExample: {
+                contentType: "application/json",
+                example: JSON.stringify({
+                    inputTeks: "Body Example",
+                    inputAngka: 456,
+                    pilihanDropdown: "opsi1",
+                    pilihanRadio: "A",
+                    inputCheckbox: false
+                }, null, 2)
+            },
+            response: {
+              statusCode: 200,
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ 
+                status: true, 
+                message: "Data successfully processed",
+                receivedParameters: {
+                    inputTeks: "Hello World",
+                    inputAngka: 123,
+                    inputDesimal: 10.5,
+                    pilihanDropdown: "opsi1",
+                    pilihanRadio: "A",
+                    inputCheckbox: true,
+                    inputUrl: "https://example.com"
+                }
+              }, null, 2)
+            }
+          }
+        ]
+      } */
     ];
 
     function applyTheme(theme) {
@@ -121,21 +233,19 @@ document.addEventListener('DOMContentLoaded', () => {
             'dark-okaidia': 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css',
             'dark-tomorrow': 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css'
         };
-        
+
         const effectiveBodyClass = bodyClassMapping[theme] || 'light-blue';
         if (effectiveBodyClass.startsWith('dark')) {
             document.body.classList.add('dark'); 
-            document.body.classList.add(effectiveBodyClass);
         } else {
             document.body.classList.add('light');
-             if (effectiveBodyClass !== 'light-blue') {
-                document.body.classList.add(effectiveBodyClass);
-             }
         }
+        document.body.classList.add(effectiveBodyClass);
+
 
         document.documentElement.style.setProperty('--accent-color', accentColorMapping[theme]);
         document.documentElement.style.setProperty('--button-text-color', buttonTextColorMapping[theme]);
-        
+
         if (prismThemeLink.href !== prismThemeMapping[theme]) {
             prismThemeLink.href = prismThemeMapping[theme];
         }
@@ -191,6 +301,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         document.querySelectorAll('.sidebar .api-list a.active-endpoint').forEach(link => link.classList.remove('active-endpoint'));
     }
+    
+    function showContent(type) {
+        welcomeMessageContainer.style.display = 'none';
+        informationPageContainer.style.display = 'none';
+        apiEndpointsContainer.innerHTML = '';
+        contentSearchContainer.style.display = 'none';
+        allApisForCurrentCategory = [];
+
+
+        if (type === 'welcome') {
+            welcomeMessageContainer.style.display = 'block';
+        } else if (type === 'information') {
+            informationPageContainer.style.display = 'block';
+        } else if (type === 'apiCategory') {
+            contentSearchContainer.style.display = 'block';
+            contentSearchInput.value = '';
+        }
+    }
+
 
     if (docLinkMainPage) {
         docLinkMainPage.addEventListener('click', (e) => {
@@ -212,32 +341,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    function displayCustomStaticContent(title, htmlContentCallback) {
-        closeCurrentlyOpenApiDetails();
-        welcomeMessageContainer.style.display = 'none';
-        apiEndpointsContainer.innerHTML = `<div class="static-content-wrapper"><h2>${title}</h2>${htmlContentCallback()}</div>`;
-        userOpenedApiDetailId = null;
-    }
-
     function displayInformationPage() {
-        displayCustomStaticContent("API Information", () => `
-            <p>Welcome to <strong>Vioo-APIs</strong>, your central hub for a diverse collection of useful APIs designed to empower your projects. Our mission is to provide reliable and easy-to-use APIs for developers and hobbyists alike.</p>
-            <h3>About This Documentation</h3>
-            <p>This interactive documentation site was built with modern web technologies to provide a seamless experience:</p>
-            <ul>
-                <li><strong>Core:</strong> HTML5, CSS3, JavaScript (ES6+)</li>
-                <li><strong>API Calls:</strong> Fetch API with AbortController</li>
-                <li><strong>Syntax Highlighting:</strong> Prism.js</li>
-                <li><strong>Icons:</strong> Font Awesome</li>
-            </ul>
-            <p>We strive to keep this documentation up-to-date with the latest API changes and features.</p>
-            <h3>Contact & Support</h3>
-            <p>For any inquiries, support requests, or feedback, please reach out to us through our official channels (details to be provided).</p>
-            <ul>
-                <li><strong>Version:</strong> 1.0.7</li>
-                <li><strong>Last Updated:</strong> ${new Date().toLocaleDateString()}</li>
-            </ul>
-        `);
+        closeCurrentlyOpenApiDetails();
+        showContent('information');
+        informationPageContainer.innerHTML = `
+            <div class="page-content-wrapper">
+                <div class="page-hero">
+                    <h1>About ${API_NAME}</h1>
+                    <p>Your central hub for a diverse collection of useful APIs designed to empower your projects.</p>
+                </div>
+                <div class="page-section">
+                    <h3>Get in Touch</h3>
+                    <p>Connect with us through the following channels:</p>
+                    <ul class="contact-list">
+                        <li><i class="fab fa-whatsapp"></i> <a href="${whatsappChannel}" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+                        <li><i class="fab fa-github"></i> <a href="${githubURL}" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:${googleEmail}">${googleEmail}</a></li>
+                    </ul>
+                     <p style="margin-top:15px;"><strong>Version:</strong> 1.0.0</p>
+                </div>
+            </div>`;
         setActiveDocLink(docLinkInformation);
     }
 
@@ -272,6 +395,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 apiLink.addEventListener('click', (e) => {
                     e.preventDefault();
                     setActiveDocLink(null);
+                    showContent('apiCategory');
+                    allApisForCurrentCategory = category.apis;
+                    contentSearchInput.value = '';
                     closeCurrentlyOpenApiDetails();
                     displayApiEndpoints([api], category.name, api.id);
                     document.querySelectorAll('.sidebar .api-list a').forEach(link => link.classList.remove('active-endpoint'));
@@ -311,6 +437,9 @@ document.addEventListener('DOMContentLoaded', () => {
             categoryNameDiv.classList.add('active');
             currentOpenCategoryElement = categoryNameDiv;
             closeCurrentlyOpenApiDetails();
+            showContent('apiCategory');
+            allApisForCurrentCategory = category.apis;
+            contentSearchInput.value = '';
             displayApiEndpoints(category.apis, category.name, null);
         } else {
             apiListElement.classList.remove('expanded');
@@ -323,11 +452,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayWelcomeMessage() {
         closeCurrentlyOpenApiDetails();
-        welcomeMessageContainer.style.display = 'block';
-        apiEndpointsContainer.innerHTML = '';
+        showContent('welcome');
         welcomeMessageContainer.innerHTML = `
-            <h2>Welcome to Vioo-APIs</h2>
-            <h1>Select an item from the sidebar to explore.</h1>`;
+            <div class="page-content-wrapper">
+                <div class="page-hero">
+                    <h1>${API_NAME}</h1>
+                    <p>Your gateway to a powerful and versatile suite of APIs. Start building something amazing today!</p>
+                </div>
+                <div class="page-section">
+                    <h3>Why ${API_NAME}?</h3>
+                    <p>We provide a robust platform with a focus on:</p>
+                    <ul>
+                        <li><i class="fas fa-bolt"></i> <strong>Performance:</strong> FAST and responsive APIs</li>
+                        <li><i class="fas fa-shield-alt"></i> <strong>Reliability:</strong> Safe and trusted by many people</li>
+                        <li><i class="fas fa-gift"></i> <strong>Free service:</strong> Completely FREE service and NO API key</li>
+                    </ul>
+                </div>
+            </div>`;
         setActiveDocLink(docLinkMainPage);
     }
     
@@ -338,6 +479,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function closeCurrentlyOpenApiDetails() {
         revokeActiveObjectUrls();
+        if (currentApiAbortController) {
+            currentApiAbortController.abort();
+            currentApiAbortController = null;
+        }
         if (userOpenedApiDetailId) {
             const currentlyOpenContainer = document.querySelector(`.api-endpoint-container[data-api-id="${userOpenedApiDetailId}"]`);
             if (currentlyOpenContainer) {
@@ -348,9 +493,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentlyOpenContainer.classList.remove('details-open');
                 if (currentOpenHeaderArrowSpan) {
                      updateArrow(currentOpenHeaderArrowSpan, false);
-                }
-                if (isDesktopView()) {
-                    currentlyOpenContainer.classList.remove('expanded-row');
                 }
             }
         }
@@ -372,7 +514,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 userOpenedApiDetailId = apiId;
                 currentOpenHeaderArrowSpan = headerArrowSpan;
                 updateArrow(headerArrowSpan, true);
-                if (isDesktopView()) containerElement.classList.add('expanded-row');
                 if (typeof Prism !== 'undefined') Prism.highlightAllUnder(detailContentDiv);
             }
         } else {
@@ -388,23 +529,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 userOpenedApiDetailId = apiId;
                 currentOpenHeaderArrowSpan = headerArrowSpan;
                 updateArrow(headerArrowSpan, true);
-                if (isDesktopView()) containerElement.classList.add('expanded-row');
                 if (typeof Prism !== 'undefined') Prism.highlightAllUnder(detailContentDiv);
             }
         }
     }
 
     function displayApiEndpoints(apisToDisplay, categoryName, singleApiIdToOpen = null) {
-        welcomeMessageContainer.style.display = 'none';
         apiEndpointsContainer.innerHTML = '';
-        const isTableViewActive = window.innerWidth > 768;
-        mainContent.classList.toggle('table-view', isTableViewActive);
+        mainContent.classList.remove('table-view');
+
+        if (apisToDisplay.length === 0 && contentSearchInput.value !== '') {
+            apiEndpointsContainer.innerHTML = '<p style="text-align:center; padding:20px;">No APIs found matching your search criteria in this category.</p>';
+            return;
+        }
+
 
         apisToDisplay.forEach(api => {
             const endpointContainer = document.createElement('div');
             endpointContainer.classList.add('api-endpoint-container');
             endpointContainer.dataset.apiId = api.id;
-            if (isTableViewActive) endpointContainer.classList.add('view-table');
             const header = document.createElement('div');
             header.classList.add('endpoint-header');
             const headerMainInfo = document.createElement('div');
@@ -443,8 +586,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (apisToDisplay.length > 0 && singleApiIdToOpen) {
             userOpenedApiDetailId = singleApiIdToOpen;
-        } else if (apisToDisplay.length === 0) {
-            userOpenedApiDetailId = null;
+        } else if (apisToDisplay.length === 0 && !contentSearchInput.value) {
+             apiEndpointsContainer.innerHTML = '<p style="text-align:center; padding:20px;">No APIs available in this category yet.</p>';
         }
     }
 
@@ -538,6 +681,11 @@ document.addEventListener('DOMContentLoaded', () => {
         formHeader.textContent = 'Try it out';
         container.appendChild(formHeader);
         const form = document.createElement('form');
+        form.dataset.apiId = api.id; 
+        
+        const controlsDiv = document.createElement('div');
+        controlsDiv.classList.add('try-it-out-controls');
+
         const executeButton = document.createElement('button');
         executeButton.type = 'submit';
         executeButton.classList.add('btn', 'btn-execute');
@@ -545,13 +693,67 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonText.classList.add('btn-text');
         buttonText.textContent = 'Execute';
         executeButton.appendChild(buttonText);
-        form.addEventListener('submit', (e) => { e.preventDefault(); executeApiCall(api, form, container, executeButton); });
+        controlsDiv.appendChild(executeButton);
+
+        const cancelButton = document.createElement('button');
+        cancelButton.type = 'button';
+        cancelButton.classList.add('btn', 'btn-secondary', 'btn-cancel');
+        cancelButton.textContent = 'Cancel';
+        cancelButton.style.display = 'none';
+        controlsDiv.appendChild(cancelButton);
+
+        const clearButton = document.createElement('button');
+        clearButton.type = 'button';
+        clearButton.classList.add('btn', 'btn-secondary', 'btn-clear');
+        clearButton.textContent = 'Clear';
+        clearButton.style.display = 'none';
+        controlsDiv.appendChild(clearButton);
+        
+        form.addEventListener('submit', (e) => { 
+            e.preventDefault(); 
+            executeApiCall(api, form, container, executeButton, cancelButton, clearButton); 
+        });
+
+        cancelButton.addEventListener('click', () => {
+            if (currentApiAbortController) {
+                currentApiAbortController.abort();
+            }
+            buttonText.textContent = 'Execute';
+            executeButton.disabled = false;
+            cancelButton.style.display = 'none';
+            const liveResponseContainer = container.querySelector(`#live-response-${api.id}`);
+            if(liveResponseContainer) liveResponseContainer.innerHTML = '<p>Request cancelled by user.</p>';
+        });
+
+        clearButton.addEventListener('click', () => {
+            form.reset();
+            api.parameters.forEach(param => {
+                const inputElement = form.elements[param.name];
+                if (inputElement && param.defaultValue !== undefined) {
+                    if (inputElement.type === 'checkbox') inputElement.checked = param.defaultValue;
+                    else inputElement.value = param.defaultValue;
+                } else if (inputElement && inputElement.type === 'checkbox') {
+                     inputElement.checked = false;
+                }
+            });
+            const bodyTextarea = form.querySelector('textarea[name="requestBody"]');
+            if (bodyTextarea && api.requestBodyExample) {
+                bodyTextarea.value = api.requestBodyExample.example;
+            }
+            const liveResponseContainer = container.querySelector(`#live-response-${api.id}`);
+            if(liveResponseContainer) liveResponseContainer.innerHTML = '';
+            clearButton.style.display = 'none';
+            cancelButton.style.display = 'none';
+            executeButton.disabled = false;
+            buttonText.textContent = 'Execute';
+        });
+
+
         if (api.parameters && api.parameters.length > 0) {
             api.parameters.forEach(param => {
                 const group = document.createElement('div'); group.classList.add('form-group');
-                const label = document.createElement('label'); label.setAttribute('for', `param-${api.id}-${param.name}`); label.textContent = `${param.name} (${param.type})`;
-                if (param.required) { const reqSpan = document.createElement('span'); reqSpan.textContent = ' *required'; reqSpan.style.color = '#c0392b'; label.appendChild(reqSpan); }
-                const descSpan = document.createElement('span'); descSpan.classList.add('param-description'); descSpan.textContent = `- ${param.description}`; label.appendChild(descSpan);
+                const label = document.createElement('label'); label.setAttribute('for', `param-${api.id}-${param.name}`); label.textContent = `${param.name}`;
+                if (param.required) { const reqSpan = document.createElement('span'); reqSpan.textContent = 'ㅤ*required'; reqSpan.style.color = '#c0392b'; label.appendChild(reqSpan); }
                 group.appendChild(label);
                 if (param.type === 'select') {
                     const select = document.createElement('select'); select.id = `param-${api.id}-${param.name}`; select.name = param.name;
@@ -577,63 +779,58 @@ document.addEventListener('DOMContentLoaded', () => {
             const textarea = document.createElement('textarea'); textarea.id = `body-${api.id}`; textarea.name = 'requestBody'; textarea.rows = 8; textarea.value = api.requestBodyExample.example; group.appendChild(textarea);
             form.appendChild(group);
         }
-        form.appendChild(executeButton); container.appendChild(form);
+        form.appendChild(controlsDiv); 
+        container.appendChild(form);
         const liveResponseContainer = document.createElement('div'); liveResponseContainer.id = `live-response-${api.id}`; liveResponseContainer.classList.add('response-section'); container.appendChild(liveResponseContainer);
     }
 
-    async function makeRequestWithFetchTimeout(method, url, headers, data, responseProcessType, timeoutDuration) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), timeoutDuration);
-
-        const options = { method: method, headers: headers || {}, signal: controller.signal, credentials: 'include' };
+    async function makeRequestWithFetchTimeout(method, url, headers, data, responseProcessType, timeoutDuration, signal) {
+        const options = { method: method, headers: headers || {}, signal: signal, credentials: 'include' };
         if (data && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
             options.body = data;
         }
 
-        try {
-            const fetchResponse = await fetch(url, options);
-            clearTimeout(timeoutId);
+        const fetchResponse = await fetch(url, options);
+        const responseHeaders = {};
+        fetchResponse.headers.forEach((value, key) => { responseHeaders[key.toLowerCase()] = value; });
+        const originalContentType = responseHeaders['content-type'] || '';
+        let responseData;
 
-            const responseHeaders = {};
-            fetchResponse.headers.forEach((value, key) => { responseHeaders[key.toLowerCase()] = value; });
-            const originalContentType = responseHeaders['content-type'] || '';
-
-            let responseData;
-            if (responseProcessType === 'blob') {
-                responseData = await fetchResponse.blob();
+        if (responseProcessType === 'blob') {
+            responseData = await fetchResponse.blob();
+        } else {
+            const text = await fetchResponse.text();
+            if (responseProcessType === 'json' || originalContentType.includes('application/json')) {
+                try { responseData = JSON.parse(text); } catch (e) { responseData = text; }
             } else {
-                const text = await fetchResponse.text();
-                if (responseProcessType === 'json' || originalContentType.includes('application/json')) {
-                    try { responseData = JSON.parse(text); } catch (e) { responseData = text; }
-                } else {
-                    responseData = text;
-                }
+                responseData = text;
             }
-
-            if (!fetchResponse.ok) {
-                throw { status: fetchResponse.status, statusText: fetchResponse.statusText, response: responseData, headers: responseHeaders, message: `Request failed with status ${fetchResponse.status}` };
-            }
-            return { data: responseData, status: fetchResponse.status, statusText: fetchResponse.statusText, headers: responseHeaders, originalContentType: originalContentType };
-        } catch (error) {
-            clearTimeout(timeoutId);
-            if (error.name === 'AbortError') {
-                throw { status: 0, statusText: 'Request Timeout (Fetch)', response: null, message: 'Request Timeout. The server did not respond in time.' };
-            }
-            if (error.status !== undefined) throw error;
-            throw { status: 0, statusText: 'Network Error or CORS issue (Fetch)', response: null, message: error.message || 'Network Error or CORS issue. The API server may not be configured for Cross-Origin Requests from this origin, or there is a network connectivity problem.' };
         }
+
+        if (!fetchResponse.ok) {
+            throw { status: fetchResponse.status, statusText: fetchResponse.statusText, response: responseData, headers: responseHeaders, message: `Request to API failed with status ${fetchResponse.status}` };
+        }
+        return { data: responseData, status: fetchResponse.status, statusText: fetchResponse.statusText, headers: responseHeaders, originalContentType: originalContentType };
     }
 
 
-    async function executeApiCall(api, form, tryItOutContainer, buttonElement) {
+    async function executeApiCall(api, form, tryItOutContainer, executeButton, cancelButton, clearButton) {
         revokeActiveObjectUrls();
         const liveResponseContainer = tryItOutContainer.querySelector(`#live-response-${api.id}`);
-        const buttonTextElement = buttonElement.querySelector('.btn-text');
-        const originalButtonText = buttonTextElement.textContent;
+        const buttonText = executeButton.querySelector('.btn-text');
+        const originalButtonText = 'Execute'; 
         
-        buttonTextElement.textContent = 'Loading...';
-        buttonElement.disabled = true;
+        buttonText.textContent = 'Loading...';
+        executeButton.disabled = true;
+        cancelButton.style.display = 'inline-flex';
+        clearButton.style.display = 'none';
         liveResponseContainer.innerHTML = '<div class="response-loader"></div>';
+
+        currentApiAbortController = new AbortController();
+        const timeoutId = setTimeout(() => {
+            if (currentApiAbortController) currentApiAbortController.abort();
+        }, REQUEST_TIMEOUT);
+
 
         const formData = new FormData(form);
         let targetUrl = api.endpoint;
@@ -671,7 +868,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try { JSON.parse(rawBody); requestPayload.data = rawBody; }
                 catch (e) {
                     liveResponseContainer.innerHTML = `<p class="response-status status-400">Error: Invalid JSON in request body.</p>`;
-                    buttonTextElement.textContent = originalButtonText; buttonElement.disabled = false; return;
+                    buttonText.textContent = originalButtonText; executeButton.disabled = false; cancelButton.style.display = 'none'; clearButton.style.display = 'inline-flex'; clearTimeout(timeoutId); return;
                 }
             } else {
                 const urlEncodedParams = new URLSearchParams();
@@ -690,8 +887,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let responseProcessType = isMediaRequest ? 'blob' : (apiDeclaredContentType.includes('json') ? 'json' : 'text');
 
         try {
-            responseWrapper = await makeRequestWithFetchTimeout(requestPayload.method, targetUrl, requestPayload.headers, requestPayload.data, responseProcessType, REQUEST_TIMEOUT);
-
+            responseWrapper = await makeRequestWithFetchTimeout(requestPayload.method, targetUrl, requestPayload.headers, requestPayload.data, responseProcessType, REQUEST_TIMEOUT, currentApiAbortController.signal);
+            clearTimeout(timeoutId);
             liveResponseContainer.innerHTML = '';
             const statusP = document.createElement('p'); statusP.classList.add('response-status');
             let isAppLevelError = false; let appErrorMessage = 'Failed';
@@ -745,69 +942,53 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof Prism !== 'undefined') Prism.highlightAllUnder(liveResponseContainer);
 
         } catch (error) {
-            liveResponseContainer.innerHTML = ''; const errorP = document.createElement('p'); errorP.classList.add('response-status');
-            let statusClass = `status-${error.status || 'error'}`;
-            let errorMsg = error.message || error.statusText || 'Unknown request error';
-            if (error.status === 0) errorMsg = error.message; 
+            clearTimeout(timeoutId);
+            if (error.name === 'AbortError' || (error.message && error.message.includes('aborted'))) {
+                 liveResponseContainer.innerHTML = '<p>Request cancelled by user or timed out.</p>';
+            } else {
+                liveResponseContainer.innerHTML = ''; const errorP = document.createElement('p'); errorP.classList.add('response-status');
+                let statusClass = `status-${error.status || 'error'}`;
+                let errorMsg = error.message || error.statusText || 'Unknown request error';
+                if (error.status === 0) errorMsg = error.message; 
 
-            errorP.innerHTML = `<span class="${statusClass}">${errorMsg} (Status: ${error.status !== undefined ? error.status : 'N/A'})</span>`;
-            liveResponseContainer.appendChild(errorP);
-            
-            if(error.headers && Object.keys(error.headers).length > 0){ const hTitle = document.createElement('h5'); hTitle.textContent = 'Response Headers:'; liveResponseContainer.appendChild(hTitle); const hPre = document.createElement('pre'); const cHead = document.createElement('code'); cHead.className = 'language-json'; cHead.textContent = JSON.stringify(error.headers, null, 2); hPre.appendChild(cHead); liveResponseContainer.appendChild(hPre); }
-            let errorBodyData = error.response || error.data; // error.response is where fetch !ok body is stored
-            if (errorBodyData) { const bTitle = document.createElement('h5'); bTitle.textContent = 'Response Body:'; liveResponseContainer.appendChild(bTitle); const bPre = document.createElement('pre'); const cBody = document.createElement('code');
-                if (typeof errorBodyData === 'object' && !(errorBodyData instanceof Blob)) { cBody.className = 'language-json'; cBody.textContent = JSON.stringify(errorBodyData, null, 2); }
-                else if (typeof errorBodyData === 'string') { cBody.className = 'language-markup'; cBody.textContent = errorBodyData; }
-                else { cBody.className = 'language-text'; cBody.textContent = '[Non-textual error response]';}
-                bPre.appendChild(cBody); liveResponseContainer.appendChild(bPre); }
-            
-            if (typeof Prism !== 'undefined') Prism.highlightAllUnder(liveResponseContainer);
-            const addInfo = document.createElement('p'); addInfo.style.marginTop = '10px'; addInfo.innerHTML = `This request was made directly to the API. If the error persists, the target API might be down, the endpoint is incorrect, or there's a network issue. The API server must have correct CORS headers (e.g., <code>Access-Control-Allow-Origin: *</code> or this site's origin) to allow requests from this web page.`;
-            liveResponseContainer.appendChild(addInfo);
-        } finally {
-            buttonTextElement.textContent = originalButtonText; buttonElement.disabled = false;
-        }
-    }
-
-    function filterAPIs(searchTerm) {
-        const lowerSearchTerm = searchTerm.toLowerCase();
-        closeCurrentlyOpenApiDetails();
-        if (!lowerSearchTerm) {
-            if (currentOpenCategoryElement) {
-                 const categoryName = currentOpenCategoryElement.querySelector('.category-text-content').textContent.trim();
-                 const category = categories.find(cat => cat.name === categoryName);
-                 if (category) displayApiEndpoints(category.apis, category.name, null);
-            } else if (docLinkMainPage.classList.contains('active')) { displayWelcomeMessage(); }
-            else if (docLinkInformation.classList.contains('active')) { displayInformationPage(); }
-            else { displayWelcomeMessage(); }
-            return;
-        }
-        const filteredApis = [];
-        categories.forEach(category => {
-            category.apis.forEach(api => {
-                const titleMatch = api.title.toLowerCase().includes(lowerSearchTerm);
-                const descriptionMatch = api.description.toLowerCase().includes(lowerSearchTerm);
-                const serviceMatch = api.service && api.service.toLowerCase().includes(lowerSearchTerm);
-                let parameterMatch = api.parameters ? api.parameters.some(param => param.name.toLowerCase().includes(lowerSearchTerm)) : false;
-                if (titleMatch || descriptionMatch || serviceMatch || parameterMatch) {
-                    if (!filteredApis.find(existingApi => existingApi.id === api.id)) { filteredApis.push({...api, categoryName: category.name}); }
-                }
-            });
-        });
-        if (filteredApis.length > 0) {
-            welcomeMessageContainer.style.display = 'none'; apiEndpointsContainer.innerHTML = ''; setActiveDocLink(null);
-            if (currentOpenCategoryElement) {
-                currentOpenCategoryElement.classList.remove('active'); const list = currentOpenCategoryElement.nextElementSibling; if (list) list.classList.remove('expanded');
-                updateArrow(currentOpenCategoryElement.querySelector('.arrow'), false); currentOpenCategoryElement = null;
+                errorP.innerHTML = `<span class="${statusClass}">${errorMsg} (Status: ${error.status !== undefined ? error.status : 'N/A'})</span>`;
+                liveResponseContainer.appendChild(errorP);
+                
+                if(error.headers && Object.keys(error.headers).length > 0){ const hTitle = document.createElement('h5'); hTitle.textContent = 'Response Headers:'; liveResponseContainer.appendChild(hTitle); const hPre = document.createElement('pre'); const cHead = document.createElement('code'); cHead.className = 'language-json'; cHead.textContent = JSON.stringify(error.headers, null, 2); hPre.appendChild(cHead); liveResponseContainer.appendChild(hPre); }
+                let errorBodyData = error.response || error.data; 
+                if (errorBodyData) { const bTitle = document.createElement('h5'); bTitle.textContent = 'Response Body:'; liveResponseContainer.appendChild(bTitle); const bPre = document.createElement('pre'); const cBody = document.createElement('code');
+                    if (typeof errorBodyData === 'object' && !(errorBodyData instanceof Blob)) { cBody.className = 'language-json'; cBody.textContent = JSON.stringify(errorBodyData, null, 2); }
+                    else if (typeof errorBodyData === 'string') { cBody.className = 'language-markup'; cBody.textContent = errorBodyData; }
+                    else { cBody.className = 'language-text'; cBody.textContent = '[Non-textual error response]';}
+                    bPre.appendChild(cBody); liveResponseContainer.appendChild(bPre); }
+                
+                if (typeof Prism !== 'undefined') Prism.highlightAllUnder(liveResponseContainer);
+                const addInfo = document.createElement('p'); addInfo.style.marginTop = '10px'; addInfo.innerHTML = `This request was made directly to the API. If the error persists, the target API might be down, the endpoint is incorrect, or there's a network issue. The API server must have correct CORS headers (e.g., <code>Access-Control-Allow-Origin: *</code> or this site's origin) to allow requests from this web page.`;
+                liveResponseContainer.appendChild(addInfo);
             }
-            document.querySelectorAll('.sidebar .api-list a.active-endpoint').forEach(link => link.classList.remove('active-endpoint'));
-            displayApiEndpoints(filteredApis, "Search Results", null);
-        } else {
-            welcomeMessageContainer.style.display = 'none'; apiEndpointsContainer.innerHTML = '<p style="text-align:center; padding:20px;">No APIs found matching your search criteria.</p>'; setActiveDocLink(null);
+        } finally {
+            clearTimeout(timeoutId);
+            currentApiAbortController = null;
+            buttonText.textContent = originalButtonText; 
+            executeButton.disabled = false;
+            cancelButton.style.display = 'none';
+            clearButton.style.display = 'inline-flex';
         }
     }
+    
+    contentSearchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredApis = allApisForCurrentCategory.filter(api => {
+            const titleMatch = api.title.toLowerCase().includes(searchTerm);
+            const descriptionMatch = api.description.toLowerCase().includes(searchTerm);
+            const serviceMatch = api.service && api.service.toLowerCase().includes(searchTerm);
+            let parameterMatch = api.parameters ? api.parameters.some(param => param.name.toLowerCase().includes(searchTerm)) : false;
+            return titleMatch || descriptionMatch || serviceMatch || parameterMatch;
+        });
+        closeCurrentlyOpenApiDetails();
+        displayApiEndpoints(filteredApis, '', null);
+    });
 
-    searchInput.addEventListener('input', (e) => filterAPIs(e.target.value));
     hamburgerMenu.addEventListener('click', () => { sidebar.classList.toggle('open'); });
     mainContent.addEventListener('click', (e) => {
         if (window.innerWidth <= 768 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== hamburgerMenu && !hamburgerMenu.contains(e.target)) {
@@ -815,12 +996,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     window.addEventListener('resize', () => {
-        const isCurrentlyDesktop = isDesktopView(); mainContent.classList.toggle('table-view', isCurrentlyDesktop);
+        const isCurrentlyDesktop = isDesktopView(); 
+        mainContent.classList.remove('table-view');
         document.querySelectorAll('.api-endpoint-container .endpoint-header').forEach(header => {
             const mainInfo = header.querySelector('.endpoint-header-main-info'); const urlSpan = mainInfo.querySelector('.endpoint-url'); const topLine = mainInfo.querySelector('.endpoint-header-top-line');
-            if (urlSpan && topLine) {
-                if (isDesktopView() && !topLine.contains(urlSpan)) { topLine.appendChild(urlSpan); urlSpan.style.marginTop = '0'; urlSpan.style.width = 'auto'; urlSpan.style.display = 'inline-block'; }
-                else if (!isDesktopView() && topLine.contains(urlSpan)) { mainInfo.appendChild(urlSpan); urlSpan.style.marginTop = '5px'; urlSpan.style.width = '100%'; urlSpan.style.display = 'block'; }
+            if (urlSpan && topLine && mainInfo.contains(urlSpan) && !topLine.contains(urlSpan)) {
+                 mainInfo.insertBefore(urlSpan, topLine.nextSibling);
             }
         });
         if (isDesktopView() && sidebar.classList.contains('open')) { sidebar.classList.remove('open'); }

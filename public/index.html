@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vioo-APIs Documentation</title>
+    <title>Vioo-APIs</title>
     <link id="prismTheme" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+
         :root {
             --primary-color: #FFFFFF;
             --secondary-background-color: #f9f9f9;
@@ -15,7 +16,7 @@
             --text-color: #333333;
             --accent-color: #3498db;
             --border-color: #dddddd;
-            --pre-border-color: #ccc;
+            --pre-border-color: #ddd;
             --header-height-desktop: 70px;
             --header-height-mobile: 60px;
             --sidebar-width-desktop: 280px;
@@ -26,17 +27,14 @@
             --input-text-color: #333333;
             --input-border-color: #dddddd;
             --button-text-color: #FFFFFF;
-            --welcome-h1-color: #777;
-            --welcome-h2-color: var(--text-color);
             --box-shadow-light: rgba(0,0,0,0.05);
             --box-shadow-medium: rgba(0,0,0,0.1);
+            --pre-background-color: var(--secondary-background-color);
         }
-
         body.light-yellow {
             --accent-color: #ffc300;
             --button-text-color: #333333;
         }
-
         body.dark, body.dark-blue, body.dark-yellow {
             --primary-color: #1c2128;
             --secondary-background-color: #22272e;
@@ -49,20 +47,17 @@
             --input-bg-color: #22272e;
             --input-text-color: #c9d1d9;
             --input-border-color: #30363d;
-            --welcome-h1-color: #8b949e;
-            --welcome-h2-color: var(--text-color);
+            --button-text-color: #1c2128;
             --box-shadow-light: rgba(0,0,0,0.2);
             --box-shadow-medium: rgba(0,0,0,0.3);
+            --pre-background-color: var(--secondary-background-color);
         }
         body.dark-blue {
             --accent-color: #58a6ff;
-            --button-text-color: #1c2128;
         }
         body.dark-yellow {
             --accent-color: #ffc300;
-            --button-text-color: #1c2128;
         }
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -101,35 +96,13 @@
             color: var(--text-color);
             font-weight: 300;
         }
-        .search-container {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-            margin: 0 15px;
-        }
-        .search-input {
-            padding: 8px 12px;
-            border: 1px solid var(--input-border-color);
-            background-color: var(--input-bg-color);
-            color: var(--input-text-color);
-            border-radius: 4px;
-            font-size: 0.6em;
-            width: 100%;
-            max-width: 300px;
-            transition: width 0.3s ease, max-width 0.3s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-        .search-input:hover,
-        .search-input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent);
-        }
         .hamburger-menu {
             display: none;
             cursor: pointer;
             font-size: 1.4em;
             color: var(--text-color);
             padding: 0 10px;
+            margin-left: auto;
         }
         .main-container {
             display: flex;
@@ -331,13 +304,41 @@
             border-color: var(--accent-color);
             box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent);
         }
-
         .main-content {
             flex-grow: 1;
             padding: 25px;
             overflow-y: auto;
             height: calc(100dvh - var(--header-height-desktop));
             background-color: var(--primary-color);
+        }
+        .content-search-container {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .content-search-container .fa-search {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--input-text-color);
+            opacity: 0.7;
+            font-size: 0.65em;
+        }
+        .content-search-input {
+            width: 100%;
+            padding: 10px 12px 10px 35px;
+            border: 1px solid var(--input-border-color);
+            background-color: var(--input-bg-color);
+            color: var(--input-text-color);
+            border-radius: 4px;
+            font-size: 0.65em;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .content-search-input:hover,
+        .content-search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent);
         }
         .api-endpoint-container {
             margin-bottom: 15px;
@@ -357,8 +358,9 @@
             background-color: var(--secondary-background-color);
             border-bottom: 1px solid var(--border-color);
             display: flex;
-            align-items: center;
-            gap: 10px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
             position: relative;
         }
         .api-endpoint-container.details-open .endpoint-header {
@@ -366,10 +368,11 @@
         }
         .endpoint-header .arrow {
             font-size: 1.2em;
-            margin-left: auto;
-            padding-left: 10px;
             transition: transform 0.3s ease;
-            flex-shrink: 0;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
         }
         .endpoint-method {
             padding: 2px 8px;
@@ -389,10 +392,25 @@
             font-size: 0.85em;
             font-weight: 600;
             color: var(--text-color);
-            margin-left: 10px;
+            margin-left: 0px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+        .endpoint-header-main-info {
+            display: flex;
+            flex-direction: column;
+            width: calc(100% - 30px);
+            overflow: hidden;
+        }
+        .endpoint-header-top-line {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+         .endpoint-header-top-line .endpoint-method {
+            margin-right: 10px;
         }
         .endpoint-url {
             font-family: 'Courier New', Courier, monospace;
@@ -402,20 +420,8 @@
             padding: 2px 5px;
             border-radius: 3px;
             word-break: break-all;
-            margin-top: 10px;
+            margin-top: 0;
             display: block;
-            width: 100%;
-        }
-        .endpoint-header-main-info {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            min-width: 0;
-            overflow: hidden;
-        }
-        .endpoint-header-top-line {
-            display: flex;
-            align-items: center;
             width: 100%;
         }
         .endpoint-details-injected {
@@ -444,12 +450,12 @@
             font-size: 0.6em;
         }
         pre[class*="language-"] {
-            background-color: transparent;
+            background-color: var(--pre-background-color);
             padding: 1em;
             margin: 0.5em 0;
             font-size: 0.6em;
             overflow: auto;
-            border: 1px dotted var(--pre-border-color);
+            border: 1px solid var(--pre-border-color);
             border-radius: 0.5em;
             color: var(--code-text-color);
         }
@@ -487,6 +493,11 @@
         .try-it-out-section h4 {
             margin-top: 0;
         }
+        .try-it-out-controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
         .try-it-out-section .form-group {
             margin-bottom: 12px;
         }
@@ -494,13 +505,7 @@
             display: block;
             font-weight: 600;
             margin-bottom: 5px;
-            font-size: 0.55em;
-        }
-        .try-it-out-section label .param-description {
-            font-weight: normal;
-            font-size: 0.55em;
-            color: color-mix(in srgb, var(--text-color) 70%, transparent);
-            margin-left: 5px;
+            font-size: 0.6em;
         }
         .try-it-out-section input[type="text"],
         .try-it-out-section input[type="number"],
@@ -513,7 +518,7 @@
             background-color: var(--input-bg-color);
             color: var(--input-text-color);
             border-radius: 4px;
-            font-size: 0.55em;
+            font-size: 0.6em;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
         .try-it-out-section input[type="text"]:focus,
@@ -549,6 +554,14 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+        }
+         .btn.btn-secondary {
+            background-color: var(--secondary-background-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+        .btn.btn-secondary:hover {
+            background-color: color-mix(in srgb, var(--border-color) 50%, transparent);
         }
         .btn:hover {
             background-color: color-mix(in srgb, var(--accent-color) 80%, black);
@@ -601,56 +614,66 @@
         .status-403 { color: #c0392b; }
         .status-404 { color: #e74c3c; }
         .status-500 { color: #c0392b; }
-        .welcome-message {
-            text-align: center;
-            padding: 50px 20px;
-        }
-        .welcome-message h1 {
-            font-size: 0.55em;
-            color: var(--welcome-h1-color);
-        }
-        .welcome-message h2 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            color: var(--welcome-h2-color);
-        }
-        .static-content-wrapper {
+        .page-content-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
             padding: 20px;
             background-color: var(--card-background-color);
-            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px var(--box-shadow-light);
+        }
+        .page-hero {
+            background-color: var(--accent-color);
+            color: var(--button-text-color);
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .page-hero h1 { font-size: 1.4em; margin-bottom: 10px; }
+        .page-hero p { font-size: 0.7em; opacity: 0.9; }
+        .page-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--secondary-background-color);
             border-radius: 6px;
         }
-        .static-content-wrapper h2 {
+        .page-section h3 {
+            font-size: 1em;
             color: var(--accent-color);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
             margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
         }
-        .static-content-wrapper h3 {
-            font-size: 1.1em;
-            color: var(--text-color);
-            margin-top: 20px;
+        .page-section p, .page-section ul {
+            font-size: 0.7em;
+            line-height: 1.4;
             margin-bottom: 10px;
         }
-        .static-content-wrapper p, .static-content-wrapper ul li {
-            font-size: 0.9em;
-            margin-bottom: 10px;
+        .page-section ul { list-style: none; padding-left: 0; }
+        .page-section ul li {
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 8px;
         }
-        .static-content-wrapper ul {
-            list-style-position: inside;
-            padding-left: 0;
-        }
-        .static-content-wrapper strong {
+        .page-section ul li i {
+            position: absolute;
+            left: 0;
+            top: 4px;
             color: var(--accent-color);
+            font-size: 1.1em;
         }
+        .contact-list li { display: flex; align-items: center; margin-bottom: 12px !important; }
+        .contact-list li i { font-size: 1.3em; width: 12px; text-align: center; margin-right: 10px; top: 3px !important;}
+        .contact-list li a { color: var(--accent-color); text-decoration: none; }
+        .contact-list li a:hover { text-decoration: underline; }
+
+
         @media (min-width: 769px) {
             .header {
                 height: var(--header-height-desktop);
                 position: fixed;
                 width: 100%;
-            }
-            .search-input {
-                max-width: 400px;
             }
             .main-container {
                 padding-top: var(--header-height-desktop);
@@ -661,9 +684,6 @@
              .main-content {
                  height: calc(100dvh - var(--header-height-desktop));
             }
-             .endpoint-header .endpoint-url {
-                margin-top: 10px;
-             }
             .api-endpoint-container.view-table {
                 display: block;
                 width: 100%;
@@ -675,10 +695,8 @@
             .api-endpoint-container.view-table:hover {
                 background-color: var(--secondary-background-color);
             }
-            .api-endpoint-container.view-table .endpoint-header {
-                display: flex;
+             .api-endpoint-container.view-table .endpoint-header {
                 background-color: transparent;
-                border-bottom: 1px solid var(--border-color);
                 padding: 12px 10px;
             }
             .api-endpoint-container.view-table.details-open .endpoint-header {
@@ -700,14 +718,7 @@
             .header {
                 height: var(--header-height-mobile);
             }
-            .search-container {
-                max-width: calc(100% - 80px);
-                margin: 0 10px 0 15px;
-            }
-            .search-input {
-                 max-width: 100%;
-            }
-            .hamburger-menu {
+             .hamburger-menu {
                 display: block;
                 z-index: 1002;
             }
@@ -733,58 +744,63 @@
                 margin-left: auto;
                 margin-right: auto;
             }
-            .endpoint-header-main-info {
+            .endpoint-header .arrow {
+                top: 15px;
+                transform: none;
+            }
+             .endpoint-header-main-info {
                  width: calc(100% - 30px);
             }
              .endpoint-title {
-                 margin-left: 5px;
+                 margin-left: 0;
              }
-            .endpoint-url {
-                font-size: 0.7em;
-                margin-left: 0;
-                margin-top: 10px;
-                width: 100%;
-            }
+             .endpoint-header-top-line .endpoint-method {
+                 margin-right: 5px;
+             }
         }
     </style>
 </head>
 <body>
+
     <header class="header">
         <div class="header-logo">Vioo<span>-APIs</span></div>
-        <div class="search-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="Search APIs...">
-        </div>
         <div class="hamburger-menu" id="hamburgerMenu">☰</div>
     </header>
+
     <div class="main-container">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-section-header">Documentation</div>
             <ul id="documentationList">
-                <li><a href="#" id="docLinkMainPage" class="doc-main-item">Main page</a></li>
+                <li><a href="#" id="docLinkMainPage" class="doc-main-item">Home Page</a></li>
                 <li><a href="#" id="docLinkInformation" class="doc-main-item">Information</a></li>
             </ul>
-            <div class="sidebar-section-header">API Categories</div>
+            <div class="sidebar-section-header">API Category</div>
             <ul id="apiCategoriesList">
             </ul>
             <div class="sidebar-theme-switcher">
                 <label for="sidebarThemeSwitcherSelect">Theme:</label>
                 <select id="sidebarThemeSwitcherSelect">
-                    <option value="light-default">Light - Default</option>
+                    <option value="light-default">Light - Blue</option>
                     <option value="light-yellow">Light - Yellow</option>
-                    <option value="dark-okaidia">Dark - Okaidia</option>
-                    <option value="dark-tomorrow">Dark - Tomorrow</option>
+                    <option value="dark-okaidia">Dark - Blue</option>
+                    <option value="dark-tomorrow">Dark - Yellow</option>
                 </select>
             </div>
         </aside>
         <main class="main-content" id="mainContent">
-            <div class="welcome-message" id="welcomeMessage">
-                <h2>Welcome to Vioo-APIs</h2>
-                <h1>Select an item from the sidebar to explore.</h1>
+            <div id="contentSearchContainer" class="content-search-container" style="display: none;">
+                <i class="fas fa-search"></i>
+                <input type="text" id="contentSearchInput" class="content-search-input" placeholder="Search Endpoints...">
+            </div>
+            <div id="welcomeMessageContainer" style="display: none;">
+            </div>
+            <div id="informationPageContainer" style="display: none;">
             </div>
             <div id="apiEndpointsContainer">
             </div>
         </main>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="index.js"></script>
