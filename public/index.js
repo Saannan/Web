@@ -865,7 +865,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const urlEncodedParams = new URLSearchParams();
                 api.parameters.forEach(param => {
                      if (formData.has(param.name) || param.type === 'checkbox') {
-                        urlEncodedParams.append(param.name, param.type === 'checkbox' ? form.querySelector(`input[name="${param.name}"]`).checked.toString() : formData.get(param.name));
+                        urlEncodedParams.append(param.name, param.type === 'checkbox' ? form.querySelector(`input[name="${p.name}"]`).checked.toString() : formData.get(param.name));
                     }
                 });
                 requestPayload.data = urlEncodedParams.toString();
@@ -892,8 +892,8 @@ document.addEventListener('DOMContentLoaded', () => {
             requestUrlPre.style.display = 'flex';
             requestUrlPre.style.alignItems = 'center';
             requestUrlPre.style.justifyContent = 'space-between';
-            requestUrlPre.style.paddingTop = '4px';
-            requestUrlPre.style.paddingBottom = '4px';
+            requestUrlPre.style.paddingTop = '6px';
+            requestUrlPre.style.paddingBottom = '6px';
             const requestUrlCode = document.createElement('code');
             requestUrlCode.className = 'language-text';
             requestUrlCode.textContent = targetUrl;
@@ -948,29 +948,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const actualContentType = String(responseWrapper.originalContentType || '').toLowerCase();
             let isMediaRenderedAndNotSvg = false;
             let hasTextualBodyForCopy = false;
+            let bodyContentHostElement = null;
 
-            const bodyContentPresentationDiv = document.createElement('div');
-            bodyContentPresentationDiv.style.position = 'relative';
-            bodyContentPresentationDiv.style.border = '1px solid var(--border-color, #e0e0e0)';
-            bodyContentPresentationDiv.style.padding = '10px';
-            bodyContentPresentationDiv.style.marginTop = '5px';
 
             if (actualContentType.startsWith('image/svg+xml')) {
+                const svgDisplayContainer = document.createElement('div');
+                svgDisplayContainer.style.position = 'relative';
+                svgDisplayContainer.style.border = '1px solid var(--border-color, #e0e0e0)';
+                svgDisplayContainer.style.padding = '10px';
+                svgDisplayContainer.style.marginTop = '5px';
+                bodyContentHostElement = svgDisplayContainer;
+
                 if (typeof responseWrapper.data === 'string') {
-                    const svgContainer = document.createElement('div');
-                    svgContainer.innerHTML = responseWrapper.data; 
-                    if (svgContainer.firstChild) { 
-                        svgContainer.firstChild.classList.add('response-media');
-                        bodyContentPresentationDiv.appendChild(svgContainer.firstChild);
+                    const svgContentDiv = document.createElement('div');
+                    svgContentDiv.innerHTML = responseWrapper.data; 
+                    if (svgContentDiv.firstChild) { 
+                        svgContentDiv.firstChild.classList.add('response-media');
+                        svgDisplayContainer.appendChild(svgContentDiv.firstChild);
                     } else { 
-                        bodyContentPresentationDiv.appendChild(document.createTextNode("Received SVG data, but could not parse it."));
+                        svgDisplayContainer.appendChild(document.createTextNode("Received SVG data, but could not parse it."));
                     }
                     bodyContentToCopy = responseWrapper.data;
                     hasTextualBodyForCopy = true;
                 } else { 
-                    bodyContentPresentationDiv.appendChild(document.createTextNode("Received SVG data, but it's not in string format."));
+                    svgDisplayContainer.appendChild(document.createTextNode("Received SVG data, but it's not in string format."));
                 }
-                liveResponseContainer.appendChild(bodyContentPresentationDiv);
+                liveResponseContainer.appendChild(svgDisplayContainer);
             } else if (isApiMediaRequest && responseWrapper.data instanceof Blob) {
                 const objectURL = URL.createObjectURL(responseWrapper.data);
                 activeObjectUrls.push(objectURL);
@@ -988,7 +991,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!actualContentType.startsWith('image/svg+xml') && !isMediaRenderedAndNotSvg) {
                 const bodyPre = document.createElement('pre');
-                bodyPre.style.margin = '0';
+                bodyPre.style.position = 'relative';
+                bodyPre.style.marginTop = '5px';
+                bodyContentHostElement = bodyPre;
+                
                 const codeBody = document.createElement('code');
                 if (typeof responseWrapper.data === 'object' && responseWrapper.data !== null) {
                     codeBody.className = 'language-json';
@@ -1019,19 +1025,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     codeBody.textContent = bodyContentToCopy; codeBody.className = 'language-text'; 
                 }
                 bodyPre.appendChild(codeBody);
-                bodyContentPresentationDiv.appendChild(bodyPre);
-                liveResponseContainer.appendChild(bodyContentPresentationDiv);
+                liveResponseContainer.appendChild(bodyPre);
                 if (bodyContentToCopy && bodyContentToCopy !== '(Empty Response Body)') {
                     hasTextualBodyForCopy = true;
                 }
             }
             
-            if (hasTextualBodyForCopy) {
+            if (hasTextualBodyForCopy && bodyContentHostElement) {
                 localCopyBodyButton.style.position = 'absolute';
                 localCopyBodyButton.style.top = '5px'; 
                 localCopyBodyButton.style.right = '5px';
                 localCopyBodyButton.style.zIndex = '10'; 
-                bodyContentPresentationDiv.appendChild(localCopyBodyButton);
+                localCopyBodyButton.style.padding = '2px 6px';
+                localCopyBodyButton.style.fontSize = '0.85em';
+                bodyContentHostElement.appendChild(localCopyBodyButton);
 
                 localCopyBodyButton.addEventListener('click', () => {
                     if (bodyContentToCopy) {
@@ -1063,8 +1070,8 @@ document.addEventListener('DOMContentLoaded', () => {
             requestUrlPre.style.display = 'flex';
             requestUrlPre.style.alignItems = 'center';
             requestUrlPre.style.justifyContent = 'space-between';
-            requestUrlPre.style.paddingTop = '4px';
-            requestUrlPre.style.paddingBottom = '4px';
+            requestUrlPre.style.paddingTop = '6px';
+            requestUrlPre.style.paddingBottom = '6px';
             const requestUrlCode = document.createElement('code');
             requestUrlCode.className = 'language-text';
             requestUrlCode.textContent = targetUrl;
@@ -1129,7 +1136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     contentSearchInput.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
+        const searchTerm = e.target.value.toLowerCase().trim();
         const filteredApis = allApisForCurrentCategory.filter(api => {
             const titleMatch = api.title.toLowerCase().includes(searchTerm);
             const descriptionMatch = api.description.toLowerCase().includes(searchTerm);
