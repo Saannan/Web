@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebarThemeSwitcher = document.getElementById('sidebarThemeSwitcherSelect');
     const prismThemeLink = document.getElementById('prismTheme');
 
-    // Arrange according to your wishes
     const API_NAME = "Vioo-APIs"
     const whatsappChannel = "https://whatsapp.com/channel/0029VabNTKm35fLp0YzUmH03"
     const githubURL = "https://github.com/Saannan"
@@ -242,7 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         document.body.classList.add(effectiveBodyClass);
 
-
         document.documentElement.style.setProperty('--accent-color', accentColorMapping[theme]);
         document.documentElement.style.setProperty('--button-text-color', buttonTextColorMapping[theme]);
 
@@ -265,7 +263,6 @@ document.addEventListener('DOMContentLoaded', () => {
     sidebarThemeSwitcher.addEventListener('change', (e) => applyTheme(e.target.value));
     const savedTheme = localStorage.getItem('selectedTheme') || 'light-default';
     applyTheme(savedTheme);
-
 
     function createArrowSpan(isInitiallyOpen = false) {
         const arrowSpan = document.createElement('span');
@@ -309,7 +306,6 @@ document.addEventListener('DOMContentLoaded', () => {
         contentSearchContainer.style.display = 'none';
         allApisForCurrentCategory = [];
 
-
         if (type === 'welcome') {
             welcomeMessageContainer.style.display = 'block';
         } else if (type === 'information') {
@@ -319,7 +315,6 @@ document.addEventListener('DOMContentLoaded', () => {
             contentSearchInput.value = '';
         }
     }
-
 
     if (docLinkMainPage) {
         docLinkMainPage.addEventListener('click', (e) => {
@@ -465,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <ul>
                         <li><i class="fas fa-bolt"></i> <strong>Performance:</strong> FAST and responsive APIs</li>
                         <li><i class="fas fa-shield-alt"></i> <strong>Reliability:</strong> Safe and trusted by many people</li>
-                        <li><i class="fas fa-gift"></i> <strong>Free service:</strong> Completely FREE service and NO API key</li>
+                        <li><i class="fas fa-unlock"></i> <strong>Service:</strong> Completely FREE service and NO API key</li>
                     </ul>
                 </div>
             </div>`;
@@ -542,7 +537,6 @@ document.addEventListener('DOMContentLoaded', () => {
             apiEndpointsContainer.innerHTML = '<p style="text-align:center; padding:20px;">No APIs found matching your search criteria in this category.</p>';
             return;
         }
-
 
         apisToDisplay.forEach(api => {
             const endpointContainer = document.createElement('div');
@@ -748,7 +742,6 @@ document.addEventListener('DOMContentLoaded', () => {
             buttonText.textContent = 'Execute';
         });
 
-
         if (api.parameters && api.parameters.length > 0) {
             api.parameters.forEach(param => {
                 const group = document.createElement('div'); group.classList.add('form-group');
@@ -813,7 +806,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return { data: responseData, status: fetchResponse.status, statusText: fetchResponse.statusText, headers: responseHeaders, originalContentType: originalContentType };
     }
 
-
     async function executeApiCall(api, form, tryItOutContainer, executeButton, cancelButton, clearButton) {
         revokeActiveObjectUrls();
         const liveResponseContainer = tryItOutContainer.querySelector(`#live-response-${api.id}`);
@@ -830,7 +822,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeoutId = setTimeout(() => {
             if (currentApiAbortController) currentApiAbortController.abort();
         }, REQUEST_TIMEOUT);
-
 
         const formData = new FormData(form);
         let targetUrl = api.endpoint;
@@ -883,16 +874,52 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let responseWrapper;
         const apiDeclaredContentType = String(api.response.headers['Content-Type'] || '').toLowerCase();
-        const isMediaRequest = (apiDeclaredContentType.startsWith('image/') || apiDeclaredContentType.startsWith('audio/') || apiDeclaredContentType.startsWith('video/')) && !apiDeclaredContentType.startsWith('image/svg+xml');
-        let responseProcessType = isMediaRequest ? 'blob' : (apiDeclaredContentType.includes('json') ? 'json' : 'text');
+        const isApiMediaRequest = (apiDeclaredContentType.startsWith('image/') || apiDeclaredContentType.startsWith('audio/') || apiDeclaredContentType.startsWith('video/')) && !apiDeclaredContentType.startsWith('image/svg+xml');
+        let responseProcessType = isApiMediaRequest ? 'blob' : (apiDeclaredContentType.includes('json') ? 'json' : 'text');
 
         try {
             responseWrapper = await makeRequestWithFetchTimeout(requestPayload.method, targetUrl, requestPayload.headers, requestPayload.data, responseProcessType, REQUEST_TIMEOUT, currentApiAbortController.signal);
             clearTimeout(timeoutId);
             liveResponseContainer.innerHTML = '';
+
+            const requestUrlDiv = document.createElement('div');
+            requestUrlDiv.classList.add('request-url-section');
+            requestUrlDiv.style.marginBottom = '10px';
+            const requestUrlTitle = document.createElement('h5');
+            requestUrlTitle.textContent = 'Request URL:';
+            requestUrlDiv.appendChild(requestUrlTitle);
+            const requestUrlPre = document.createElement('pre');
+            requestUrlPre.style.display = 'flex';
+            requestUrlPre.style.alignItems = 'center';
+            requestUrlPre.style.justifyContent = 'space-between';
+            const requestUrlCode = document.createElement('code');
+            requestUrlCode.className = 'language-text';
+            requestUrlCode.textContent = targetUrl;
+            requestUrlCode.style.whiteSpace = 'pre-wrap';
+            requestUrlCode.style.wordBreak = 'break-all';
+            requestUrlPre.appendChild(requestUrlCode);
+            const copyUrlButton = document.createElement('button');
+            copyUrlButton.textContent = 'Copy URL';
+            copyUrlButton.classList.add('btn', 'btn-secondary', 'btn-copy-url');
+            copyUrlButton.style.marginLeft = '10px';
+            copyUrlButton.style.flexShrink = '0';
+            copyUrlButton.addEventListener('click', () => {
+                navigator.clipboard.writeText(targetUrl).then(() => {
+                    const originalCopyBtnText = copyUrlButton.textContent;
+                    copyUrlButton.textContent = 'Copied!';
+                    setTimeout(() => { copyUrlButton.textContent = originalCopyBtnText; }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy URL: ', err);
+                    alert('Failed to copy URL.');
+                });
+            });
+            requestUrlPre.appendChild(copyUrlButton);
+            requestUrlDiv.appendChild(requestUrlPre);
+            liveResponseContainer.appendChild(requestUrlDiv);
+            
             const statusP = document.createElement('p'); statusP.classList.add('response-status');
             let isAppLevelError = false; let appErrorMessage = 'Failed';
-            if (!isMediaRequest && typeof responseWrapper.data === 'object' && responseWrapper.data !== null) {
+            if (!isApiMediaRequest && typeof responseWrapper.data === 'object' && responseWrapper.data !== null) {
                 if (responseWrapper.data.status === false) { isAppLevelError = true; appErrorMessage = responseWrapper.data.message || responseWrapper.data.result || responseWrapper.data.error || 'Application error'; }
                 else if (responseWrapper.data.success === false) { isAppLevelError = true; appErrorMessage = responseWrapper.data.message || responseWrapper.data.reason || 'Application error'; }
             }
@@ -901,19 +928,37 @@ document.addEventListener('DOMContentLoaded', () => {
             liveResponseContainer.appendChild(statusP);
             const headersTitle = document.createElement('h5'); headersTitle.textContent = 'Headers:'; liveResponseContainer.appendChild(headersTitle);
             const headersPre = document.createElement('pre'); const codeHeaders = document.createElement('code'); codeHeaders.className = 'language-json'; codeHeaders.textContent = JSON.stringify(responseWrapper.headers, null, 2); headersPre.appendChild(codeHeaders); liveResponseContainer.appendChild(headersPre);
-            const bodyTitle = document.createElement('h5'); bodyTitle.textContent = 'Body:'; liveResponseContainer.appendChild(bodyTitle);
             
+            const bodyTitle = document.createElement('h5'); bodyTitle.textContent = 'Body:';
+            const copyBodyButton = document.createElement('button');
+            copyBodyButton.textContent = 'Copy Body';
+            copyBodyButton.classList.add('btn', 'btn-secondary', 'btn-copy-body');
+            copyBodyButton.style.marginLeft = '10px';
+            copyBodyButton.style.verticalAlign = 'middle';
+            copyBodyButton.style.display = 'none';
+
+            const bodyHeaderDiv = document.createElement('div');
+            bodyHeaderDiv.style.display = 'flex';
+            bodyHeaderDiv.style.alignItems = 'center';
+            bodyHeaderDiv.style.marginBottom = '5px';
+            bodyHeaderDiv.appendChild(bodyTitle);
+            liveResponseContainer.appendChild(bodyHeaderDiv);
+            
+            let bodyContentToCopy = '';
             const actualContentType = String(responseWrapper.originalContentType || '').toLowerCase();
-            let isMediaRendered = false;
+            let isMediaRenderedAndNotSvg = false;
 
             if (actualContentType.startsWith('image/svg+xml')) {
                 if (typeof responseWrapper.data === 'string') {
-                    const svgContainer = document.createElement('div'); svgContainer.innerHTML = responseWrapper.data;
+                    const svgContainer = document.createElement('div');
+                    svgContainer.innerHTML = responseWrapper.data;
                     if (svgContainer.firstChild) { svgContainer.firstChild.classList.add('response-media'); liveResponseContainer.appendChild(svgContainer.firstChild); }
                     else { liveResponseContainer.appendChild(document.createTextNode("Received SVG data, but could not parse it.")); }
+                    bodyContentToCopy = responseWrapper.data;
+                    copyBodyButton.style.display = 'inline-block';
+                    bodyHeaderDiv.appendChild(copyBodyButton);
                 } else { liveResponseContainer.appendChild(document.createTextNode("Received SVG data, but it's not in string format.")); }
-                isMediaRendered = true;
-            } else if (isMediaRequest && responseWrapper.data instanceof Blob) {
+            } else if (isApiMediaRequest && responseWrapper.data instanceof Blob) {
                 const objectURL = URL.createObjectURL(responseWrapper.data);
                 activeObjectUrls.push(objectURL);
                 let mediaElement;
@@ -921,32 +966,106 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if (actualContentType.startsWith('audio/')) { mediaElement = document.createElement('audio'); mediaElement.controls = true; }
                 else if (actualContentType.startsWith('video/')) { mediaElement = document.createElement('video'); mediaElement.controls = true; }
                 if (mediaElement) { mediaElement.src = objectURL; mediaElement.classList.add('response-media'); liveResponseContainer.appendChild(mediaElement); }
-                isMediaRendered = true;
+                isMediaRenderedAndNotSvg = true;
             }
 
-            if (!isMediaRendered) {
+            if (!actualContentType.startsWith('image/svg+xml') && !isMediaRenderedAndNotSvg) {
                 const bodyPre = document.createElement('pre'); const codeBody = document.createElement('code');
                 if (typeof responseWrapper.data === 'object' && responseWrapper.data !== null) {
-                    codeBody.className = 'language-json'; codeBody.textContent = JSON.stringify(responseWrapper.data, null, 2);
+                    codeBody.className = 'language-json';
+                    bodyContentToCopy = JSON.stringify(responseWrapper.data, null, 2);
+                    codeBody.textContent = bodyContentToCopy;
                 } else if (typeof responseWrapper.data === 'string') {
-                    codeBody.textContent = responseWrapper.data; const trimmedData = responseWrapper.data.trim();
+                    const originalStringData = responseWrapper.data;
+                    bodyContentToCopy = originalStringData;
+                    codeBody.textContent = originalStringData;
+                    const trimmedData = originalStringData.trim();
                     if ((trimmedData.startsWith('{') && trimmedData.endsWith('}')) || (trimmedData.startsWith('[') && trimmedData.endsWith(']'))) {
-                        try { codeBody.textContent = JSON.stringify(JSON.parse(trimmedData), null, 2); codeBody.className = 'language-json'; }
-                        catch (e) { codeBody.className = actualContentType.includes('html') || actualContentType.includes('xml') ? 'language-markup' : 'language-text'; }
-                    } else { codeBody.className = actualContentType.includes('html') || actualContentType.includes('xml') ? 'language-markup' : 'language-text'; }
+                        try {
+                            const parsedJson = JSON.parse(trimmedData);
+                            bodyContentToCopy = JSON.stringify(parsedJson, null, 2);
+                            codeBody.textContent = bodyContentToCopy;
+                            codeBody.className = 'language-json';
+                        } catch (e) { 
+                            codeBody.className = actualContentType.includes('html') || actualContentType.includes('xml') ? 'language-markup' : 'language-text';
+                        }
+                    } else { 
+                        codeBody.className = actualContentType.includes('html') || actualContentType.includes('xml') ? 'language-markup' : 'language-text';
+                    }
                 } else if (responseWrapper.data !== undefined && responseWrapper.data !== null) {
-                    codeBody.textContent = String(responseWrapper.data); codeBody.className = 'language-text';
-                } else { codeBody.textContent = '(Empty Response Body)'; codeBody.className = 'language-text'; }
+                    bodyContentToCopy = String(responseWrapper.data);
+                    codeBody.textContent = bodyContentToCopy; codeBody.className = 'language-text';
+                } else { 
+                    bodyContentToCopy = '(Empty Response Body)';
+                    codeBody.textContent = bodyContentToCopy; codeBody.className = 'language-text'; 
+                }
                 bodyPre.appendChild(codeBody); liveResponseContainer.appendChild(bodyPre);
+                if (bodyContentToCopy && bodyContentToCopy !== '(Empty Response Body)') {
+                    copyBodyButton.style.display = 'inline-block';
+                    bodyHeaderDiv.appendChild(copyBodyButton);
+                }
             }
+            
+            copyBodyButton.addEventListener('click', () => {
+                if (bodyContentToCopy && bodyContentToCopy !== '(Empty Response Body)') {
+                    navigator.clipboard.writeText(bodyContentToCopy).then(() => {
+                        const originalCopyBtnText = copyBodyButton.textContent;
+                        copyBodyButton.textContent = 'Copied!';
+                        setTimeout(() => { copyBodyButton.textContent = originalCopyBtnText; }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy body: ', err);
+                        alert('Failed to copy body.');
+                    });
+                } else {
+                    alert('No body content to copy.');
+                }
+            });
+
             if (typeof Prism !== 'undefined') Prism.highlightAllUnder(liveResponseContainer);
 
         } catch (error) {
             clearTimeout(timeoutId);
+            liveResponseContainer.innerHTML = '';
+            
+            const requestUrlDiv = document.createElement('div');
+            requestUrlDiv.classList.add('request-url-section');
+            requestUrlDiv.style.marginBottom = '10px';
+            const requestUrlTitle = document.createElement('h5');
+            requestUrlTitle.textContent = 'Request URL:';
+            requestUrlDiv.appendChild(requestUrlTitle);
+            const requestUrlPre = document.createElement('pre');
+            requestUrlPre.style.display = 'flex';
+            requestUrlPre.style.alignItems = 'center';
+            requestUrlPre.style.justifyContent = 'space-between';
+            const requestUrlCode = document.createElement('code');
+            requestUrlCode.className = 'language-text';
+            requestUrlCode.textContent = targetUrl;
+            requestUrlCode.style.whiteSpace = 'pre-wrap';
+            requestUrlCode.style.wordBreak = 'break-all';
+            requestUrlPre.appendChild(requestUrlCode);
+            const copyUrlButton = document.createElement('button');
+            copyUrlButton.textContent = 'Copy URL';
+            copyUrlButton.classList.add('btn', 'btn-secondary', 'btn-copy-url');
+            copyUrlButton.style.marginLeft = '10px';
+            copyUrlButton.style.flexShrink = '0';
+            copyUrlButton.addEventListener('click', () => {
+                navigator.clipboard.writeText(targetUrl).then(() => {
+                    const originalCopyBtnText = copyUrlButton.textContent;
+                    copyUrlButton.textContent = 'Copied!';
+                    setTimeout(() => { copyUrlButton.textContent = originalCopyBtnText; }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy URL: ', err);
+                    alert('Failed to copy URL.');
+                });
+            });
+            requestUrlPre.appendChild(copyUrlButton);
+            requestUrlDiv.appendChild(requestUrlPre);
+            liveResponseContainer.appendChild(requestUrlDiv);
+
             if (error.name === 'AbortError' || (error.message && error.message.includes('aborted'))) {
-                 liveResponseContainer.innerHTML = '<p>Request cancelled by user or timed out.</p>';
+                 liveResponseContainer.innerHTML += '<p>Request cancelled by user or timed out.</p>';
             } else {
-                liveResponseContainer.innerHTML = ''; const errorP = document.createElement('p'); errorP.classList.add('response-status');
+                const errorP = document.createElement('p'); errorP.classList.add('response-status');
                 let statusClass = `status-${error.status || 'error'}`;
                 let errorMsg = error.message || error.statusText || 'Unknown request error';
                 if (error.status === 0) errorMsg = error.message; 
