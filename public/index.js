@@ -865,7 +865,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const urlEncodedParams = new URLSearchParams();
                 api.parameters.forEach(param => {
                      if (formData.has(param.name) || param.type === 'checkbox') {
-                        urlEncodedParams.append(param.name, param.type === 'checkbox' ? form.querySelector(`input[name="${p.name}"]`).checked.toString() : formData.get(param.name));
+                        urlEncodedParams.append(param.name, param.type === 'checkbox' ? form.querySelector(`input[name="${param.name}"]`).checked.toString() : formData.get(param.name));
                     }
                 });
                 requestPayload.data = urlEncodedParams.toString();
@@ -948,32 +948,36 @@ document.addEventListener('DOMContentLoaded', () => {
             const actualContentType = String(responseWrapper.originalContentType || '').toLowerCase();
             let isMediaRenderedAndNotSvg = false;
             let hasTextualBodyForCopy = false;
-            let bodyContentHostElement = null;
+            let bodyFrameDiv = null; 
 
             if (actualContentType.startsWith('image/svg+xml')) {
-                const svgDisplayContainer = document.createElement('div');
-                svgDisplayContainer.style.position = 'relative';
-                svgDisplayContainer.style.border = '1px solid var(--border-color, #e0e0e0)';
-                svgDisplayContainer.style.padding = '10px';
-                svgDisplayContainer.style.marginTop = '5px';
-                svgDisplayContainer.style.overflow = 'auto';
-                bodyContentHostElement = svgDisplayContainer;
+                bodyFrameDiv = document.createElement('div');
+                bodyFrameDiv.style.position = 'relative';
+                bodyFrameDiv.style.border = '1px solid var(--border-color, #e0e0e0)';
+                bodyFrameDiv.style.padding = '10px';
+                bodyFrameDiv.style.marginTop = '5px';
+
+                const svgScrollableContentDiv = document.createElement('div');
+                svgScrollableContentDiv.style.overflow = 'auto';
+                svgScrollableContentDiv.style.maxHeight = '400px';
 
                 if (typeof responseWrapper.data === 'string') {
-                    const svgContentDiv = document.createElement('div');
-                    svgContentDiv.innerHTML = responseWrapper.data; 
-                    if (svgContentDiv.firstChild) { 
-                        svgContentDiv.firstChild.classList.add('response-media');
-                        svgDisplayContainer.appendChild(svgContentDiv.firstChild);
+                    const svgContentWrapper = document.createElement('div');
+                    svgContentWrapper.innerHTML = responseWrapper.data; 
+                    if (svgContentWrapper.firstChild) { 
+                        svgContentWrapper.firstChild.classList.add('response-media');
+                        svgScrollableContentDiv.appendChild(svgContentWrapper.firstChild);
                     } else { 
-                        svgDisplayContainer.appendChild(document.createTextNode("Received SVG data, but could not parse it."));
+                        svgScrollableContentDiv.appendChild(document.createTextNode("Received SVG data, but could not parse it."));
                     }
                     bodyContentToCopy = responseWrapper.data;
                     hasTextualBodyForCopy = true;
                 } else { 
-                    svgDisplayContainer.appendChild(document.createTextNode("Received SVG data, but it's not in string format."));
+                    svgScrollableContentDiv.appendChild(document.createTextNode("Received SVG data, but it's not in string format."));
                 }
-                liveResponseContainer.appendChild(svgDisplayContainer);
+                bodyFrameDiv.appendChild(svgScrollableContentDiv);
+                liveResponseContainer.appendChild(bodyFrameDiv);
+
             } else if (isApiMediaRequest && responseWrapper.data instanceof Blob) {
                 const objectURL = URL.createObjectURL(responseWrapper.data);
                 activeObjectUrls.push(objectURL);
@@ -990,10 +994,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (!actualContentType.startsWith('image/svg+xml') && !isMediaRenderedAndNotSvg) {
-                const bodyPre = document.createElement('pre');
-                bodyPre.style.position = 'relative';
-                bodyPre.style.marginTop = '5px';
-                bodyContentHostElement = bodyPre;
+                if (!bodyFrameDiv) {
+                    bodyFrameDiv = document.createElement('div');
+                    bodyFrameDiv.style.position = 'relative';
+                    bodyFrameDiv.style.border = '1px solid var(--border-color, #e0e0e0)';
+                    bodyFrameDiv.style.padding = '10px';
+                    bodyFrameDiv.style.marginTop = '5px';
+                }
+                
+                const bodyPreScrollableContent = document.createElement('pre');
+                bodyPreScrollableContent.style.overflow = 'auto';
+                bodyPreScrollableContent.style.maxHeight = '400px';
+                bodyPreScrollableContent.style.margin = '0';
                 
                 const codeBody = document.createElement('code');
                 if (typeof responseWrapper.data === 'object' && responseWrapper.data !== null) {
@@ -1024,21 +1036,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     bodyContentToCopy = '(Empty Response Body)';
                     codeBody.textContent = bodyContentToCopy; codeBody.className = 'language-text'; 
                 }
-                bodyPre.appendChild(codeBody);
-                liveResponseContainer.appendChild(bodyPre);
+                bodyPreScrollableContent.appendChild(codeBody);
+                bodyFrameDiv.appendChild(bodyPreScrollableContent);
+
+                if (!bodyFrameDiv.parentNode && bodyFrameDiv.hasChildNodes()) {
+                     liveResponseContainer.appendChild(bodyFrameDiv);
+                }
                 if (bodyContentToCopy && bodyContentToCopy !== '(Empty Response Body)') {
                     hasTextualBodyForCopy = true;
                 }
             }
             
-            if (hasTextualBodyForCopy && bodyContentHostElement) {
+            if (hasTextualBodyForCopy && bodyFrameDiv) {
                 localCopyBodyButton.style.position = 'absolute';
                 localCopyBodyButton.style.top = '5px'; 
                 localCopyBodyButton.style.right = '5px';
                 localCopyBodyButton.style.zIndex = '10'; 
                 localCopyBodyButton.style.padding = '2px 6px';
                 localCopyBodyButton.style.fontSize = '0.85em';
-                bodyContentHostElement.appendChild(localCopyBodyButton);
+                bodyFrameDiv.appendChild(localCopyBodyButton);
 
                 localCopyBodyButton.addEventListener('click', () => {
                     if (bodyContentToCopy) {
