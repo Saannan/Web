@@ -1048,51 +1048,51 @@ document.addEventListener('DOMContentLoaded', () => {
             clearTimeout(timeoutId);
             liveResponseContainer.innerHTML = '';
 
-            const requestUrlDiv = document.createElement('div');
-            requestUrlDiv.classList.add('request-url-section');
-            requestUrlDiv.style.marginBottom = '10px';
-            const requestUrlTitle = document.createElement('h5');
-            requestUrlTitle.textContent = 'Request URL:';
-            requestUrlDiv.appendChild(requestUrlTitle);
-            const requestUrlPre = document.createElement('pre');
-            requestUrlPre.style.display = 'flex';
-            requestUrlPre.style.alignItems = 'center';
-            requestUrlPre.style.justifyContent = 'space-between';
-            requestUrlPre.style.paddingTop = '8px';
-            requestUrlPre.style.paddingBottom = '8px';
-            const requestUrlCode = document.createElement('code');
-            requestUrlCode.className = 'language-text';
-            requestUrlCode.textContent = targetUrl;
-            requestUrlCode.style.whiteSpace = 'nowrap';
-            requestUrlCode.style.overflowX = 'auto';
-            requestUrlCode.style.display = 'block';
-            requestUrlCode.style.flexGrow = '1';
-            requestUrlCode.style.minWidth = '0';
-            requestUrlPre.appendChild(requestUrlCode);
-            const copyUrlButton = document.createElement('button');
-            copyUrlButton.textContent = 'Copy URL';
-            copyUrlButton.classList.add('btn', 'btn-secondary', 'btn-copy-url');
-            copyUrlButton.style.marginLeft = '10px';
-            copyUrlButton.style.flexShrink = '0';
-            copyUrlButton.style.padding = '3px 6px';
-            copyUrlButton.style.fontSize = '0.85em';
-            copyUrlButton.addEventListener('click', () => {
-                navigator.clipboard.writeText(targetUrl).then(() => {
-                    const originalCopyBtnText = copyUrlButton.textContent;
-                    copyUrlButton.textContent = 'Copied!';
-                    setTimeout(() => { copyUrlButton.textContent = originalCopyBtnText; }, 2000);
-                }).catch(err => {
-                    console.error('Failed to copy URL: ', err);
-                    alert('Failed to copy URL.');
-                });
-            });
-            requestUrlPre.appendChild(copyUrlButton);
-            requestUrlDiv.appendChild(requestUrlPre);
-            liveResponseContainer.appendChild(requestUrlDiv);
-
             if (error.name === 'AbortError' || (error.message && error.message.includes('aborted'))) {
-                 liveResponseContainer.innerHTML += '<p>Request cancelled by user or timed out.</p>';
+                 liveResponseContainer.innerHTML = '<p>Request cancelled by user or timed out.</p>';
             } else {
+                const requestUrlDiv = document.createElement('div');
+                requestUrlDiv.classList.add('request-url-section');
+                requestUrlDiv.style.marginBottom = '10px';
+                const requestUrlTitle = document.createElement('h5');
+                requestUrlTitle.textContent = 'Request URL:';
+                requestUrlDiv.appendChild(requestUrlTitle);
+                const requestUrlPre = document.createElement('pre');
+                requestUrlPre.style.display = 'flex';
+                requestUrlPre.style.alignItems = 'center';
+                requestUrlPre.style.justifyContent = 'space-between';
+                requestUrlPre.style.paddingTop = '8px';
+                requestUrlPre.style.paddingBottom = '8px';
+                const requestUrlCode = document.createElement('code');
+                requestUrlCode.className = 'language-text';
+                requestUrlCode.textContent = targetUrl;
+                requestUrlCode.style.whiteSpace = 'nowrap';
+                requestUrlCode.style.overflowX = 'auto';
+                requestUrlCode.style.display = 'block';
+                requestUrlCode.style.flexGrow = '1';
+                requestUrlCode.style.minWidth = '0';
+                requestUrlPre.appendChild(requestUrlCode);
+                const copyUrlButton = document.createElement('button');
+                copyUrlButton.textContent = 'Copy URL';
+                copyUrlButton.classList.add('btn', 'btn-secondary', 'btn-copy-url');
+                copyUrlButton.style.marginLeft = '10px';
+                copyUrlButton.style.flexShrink = '0';
+                copyUrlButton.style.padding = '3px 6px';
+                copyUrlButton.style.fontSize = '0.85em';
+                copyUrlButton.addEventListener('click', () => {
+                    navigator.clipboard.writeText(targetUrl).then(() => {
+                        const originalCopyBtnText = copyUrlButton.textContent;
+                        copyUrlButton.textContent = 'Copied!';
+                        setTimeout(() => { copyUrlButton.textContent = originalCopyBtnText; }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy URL: ', err);
+                        alert('Failed to copy URL.');
+                    });
+                });
+                requestUrlPre.appendChild(copyUrlButton);
+                requestUrlDiv.appendChild(requestUrlPre);
+                liveResponseContainer.appendChild(requestUrlDiv);
+
                 const errorP = document.createElement('p'); errorP.classList.add('response-status');
                 let statusClass = `status-${error.status || 'error'}`;
                 let errorMsg = error.message || error.statusText || 'Unknown request error';
