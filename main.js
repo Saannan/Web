@@ -3,6 +3,9 @@ const axios = require("axios")
 const app = express()
 const PORT = 3000
 
+const cors = require("cors")
+app.use(cors())
+
 function Enc(type) {
   return encodeURIComponent(type)
 }
