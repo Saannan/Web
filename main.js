@@ -4,8 +4,6 @@ const app = express()
 const PORT = 3000
 
 const cors = require("cors")
-app.enable("trust proxy")
-app.set("json spaces", 2)
 app.use(cors())
 
 function Enc(type) {
