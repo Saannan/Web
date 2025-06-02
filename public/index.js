@@ -30,8 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const REQUEST_TIMEOUT = 120000;
 
     const apiBaseUrls = [
-        { name: "api.vioo.my.id", url: "https://api.vioo.my.id" },
-        { name: "vapis.my.id", url: "https://vapis.my.id" }
+        { name: "api.vioo.my.id", url: "https://api.vioo.my.id" }
     ];
 
     const categories = [
