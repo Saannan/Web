@@ -466,19 +466,20 @@
             border-radius: 0.5em;
             color: var(--code-text-color);
         }
-        .parameters-table, .headers-table {
+        .parameters-table, .headers-table, .responses-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 15px;
             font-size: 0.6em;
         }
         .parameters-table th, .parameters-table td,
-        .headers-table th, .headers-table td {
+        .headers-table th, .headers-table td,
+        .responses-table th, .responses-table td {
             border: 1px solid var(--border-color);
             padding: 10px;
             text-align: left;
         }
-        .parameters-table th, .headers-table th {
+        .parameters-table th, .headers-table th, .responses-table th {
             background-color: var(--table-header-bg);
             font-weight: 600;
         }
@@ -486,9 +487,11 @@
             color: #c0392b;
             font-weight: bold;
         }
-        .parameters-table td span.param-type {
+        .parameters-table td span.param-type, .parameters-table td span.param-location {
             font-style: italic;
             color: color-mix(in srgb, var(--text-color) 70%, transparent);
+            display: block;
+            font-size: 0.9em;
         }
         .try-it-out-section {
             margin-top: 20px;
@@ -504,6 +507,7 @@
             margin-top: 15px;
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
         .try-it-out-section .form-group {
             margin-bottom: 12px;
@@ -517,6 +521,9 @@
         .try-it-out-section input[type="text"],
         .try-it-out-section input[type="number"],
         .try-it-out-section input[type="url"],
+        .try-it-out-section input[type="date"],
+        .try-it-out-section input[type="password"],
+        .try-it-out-section input[type="file"],
         .try-it-out-section select,
         .try-it-out-section textarea {
             width: 100%;
@@ -531,6 +538,9 @@
         .try-it-out-section input[type="text"]:focus,
         .try-it-out-section input[type="number"]:focus,
         .try-it-out-section input[type="url"]:focus,
+        .try-it-out-section input[type="date"]:focus,
+        .try-it-out-section input[type="password"]:focus,
+        .try-it-out-section input[type="file"]:focus,
         .try-it-out-section select:focus,
         .try-it-out-section textarea:focus {
             outline: none;
@@ -543,10 +553,12 @@
             margin-right: 15px;
             display: inline-flex;
             align-items: center;
+            font-size: 0.6em;
         }
         .try-it-out-section .radio-group input,
         .try-it-out-section .checkbox-group input {
             margin-right: 5px;
+            transform: scale(0.9);
         }
         .btn {
             background-color: var(--accent-color);
@@ -675,6 +687,24 @@
         .contact-list li a { color: var(--accent-color); text-decoration: none; }
         .contact-list li a:hover { text-decoration: underline; }
 
+        .content-type-selector-group {
+            margin-bottom: 15px;
+        }
+        .content-type-selector-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.6em;
+        }
+        .content-type-selector-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--input-border-color);
+            background-color: var(--input-bg-color);
+            color: var(--input-text-color);
+            border-radius: 4px;
+            font-size: 0.6em;
+        }
 
         @media (min-width: 769px) {
             .header {

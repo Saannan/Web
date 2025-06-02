@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const apiCategoriesList = document.getElementById('apiCategoriesList');
     const apiEndpointsContainer = document.getElementById('apiEndpointsContainer');
     const mainContent = document.getElementById('mainContent');
@@ -10,14 +10,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const docLinkMainPage = document.getElementById('docLinkMainPage');
     const docLinkInformation = document.getElementById('docLinkInformation');
-    const sidebarThemeSwitcher = document.getElementById('sidebarThemeSwitcherSelect');
+    const sidebarThemeSwitcherSelect = document.getElementById('sidebarThemeSwitcherSelect');
     const prismThemeLink = document.getElementById('prismTheme');
     const sidebarApiUrlSwitcherSelect = document.getElementById('sidebarApiUrlSwitcherSelect');
+    const headerLogo = document.querySelector('.header-logo');
 
-    const API_NAME = "Vioo-APIs"
-    const whatsappChannel = "https://whatsapp.com/channel/0029VabNTKm35fLp0YzUmH03"
-    const githubURL = "https://github.com/Saannan"
-    const googleEmail = "viooai.sn@gmail.com"
+    let APP_CONFIG = {
+        appName: "Vioo-APIs",
+        appVersion: "1.0.0",
+        defaultTheme: "light-default",
+        apiBaseUrls: [{ name: "Default API", url: "http://localhost:3000" }],
+        defaultApiBaseUrlIndex: 0,
+        contacts: []
+    };
+
+    try {
+        const response = await fetch('settings.json');
+        if (response.ok) {
+            APP_CONFIG = await response.json();
+        } else {
+            console.warn('settings.json not found or unreadable, using default config.');
+        }
+    } catch (error) {
+        console.warn('Error fetching settings.json, using default config:', error);
+    }
+    
+    document.title = APP_CONFIG.appName;
+    if (headerLogo) {
+        const appNameParts = APP_CONFIG.appName.split('-');
+        headerLogo.innerHTML = `${appNameParts[0]}<span>-${appNameParts.slice(1).join('-')}</span>`;
+    }
+
 
     let currentOpenCategoryElement = null;
     let userOpenedApiDetailId = null;
@@ -27,11 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentApiAbortController = null;
     let selectedApiBaseUrl = '';
 
-    const REQUEST_TIMEOUT = 15000;
-
-    const apiBaseUrls = [
-        { name: "vapis.my.id", url: "https://vapis.my.id" }
-    ];
+    const REQUEST_TIMEOUT = 120000;
 
     const categories = [
       {
@@ -42,180 +61,72 @@ document.addEventListener('DOMContentLoaded', () => {
             id: "openai",
             title: "OpenAI",
             service: "openai",
-            description: "Get a reponse from OpenAI.",
+            description: "Get a response from OpenAI.",
             endpointPath: "/api/openai",
             method: "GET",
             parameters: [
-              { name: "q", type: "string", description: "Ask to openai.", required: true, defaultValue: "Hello, how are you?" }
+              { name: "q", in: "query", type: "string", description: "Ask to openai.", required: true, example: "Hello, how are you?" }
             ],
-            requestBodyExample: null,
-            response: {
+            consumes: ["application/json"],
+            produces: ["application/json"],
+            successResponseExample: {
               statusCode: 200,
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ status: true, result: "Hello! I'm doing well, thank you. How can I assist you today?" }, null, 2)
+            },
+            responses: {
+                "200": { description: "Successful response from OpenAI" },
+                "400": { description: "Bad Request, e.g., missing query parameter" }
             }
           },
           {
             id: "claude",
             title: "Claude",
             service: "claude",
-            description: "Get a reponse from Claude.",
+            description: "Get a response from Claude.",
             endpointPath: "/api/claude",
             method: "GET",
             parameters: [
-              { name: "q", type: "string", description: "Ask to claude.", required: true, defaultValue: "Hello, how are you?" }
+              { name: "q", in: "query", type: "string", description: "Ask to claude.", required: true, example: "Explain quantum computing." }
             ],
-            requestBodyExample: null,
-            response: {
+            consumes: ["application/json"],
+            produces: ["application/json"],
+            successResponseExample: {
               statusCode: 200,
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ status: true, result: "Hello! I'm doing well, thank you. How can I assist you today?" }, null, 2)
-            }
-          }
-        ]
-      },
-      {
-        name: "Ephoto Maker",
-        icon: "fas fa-image",
-        apis: [
-          {
-            id: "glitchtext",
-            title: "Glitch Text",
-            service: "glitchtext",
-            description: "Logo with model Glitch Text.",
-            endpointPath: "/api/glitchtext",
-            method: "GET",
-            parameters: [
-              { name: "q", type: "string", description: "Send to glitchtext.", required: true, defaultValue: "John Doe" }
-            ],
-            requestBodyExample: null,
-            response: {
-              statusCode: 200,
-              headers: { "Content-Type": "image/png" },
-              body: "image/png"
+              body: JSON.stringify({ status: true, result: "Quantum computing is..." }, null, 2)
+            },
+            responses: {
+                "200": { description: "Successful response from Claude" }
             }
           },
           {
-            id: "writetext",
-            title: "Write Text",
-            service: "writetext",
-            description: "Logo with model Write Text.",
-            endpointPath: "/api/writetext",
-            method: "GET",
-            parameters: [
-              { name: "q", type: "string", description: "Send to writetext.", required: true, defaultValue: "John Doe" }
-            ],
-            requestBodyExample: null,
-            response: {
-              statusCode: 200,
-              headers: { "Content-Type": "image/png" },
-              body: "image/png"
-            }
-          }
-        ]
-      },
-      /* { --- Example of a complete form input type
-        name: "Full Example",
-        icon: "fas fa-file-alt",
-        apis: [
-          {
-            id: "example",
-            title: "All Input Types",
-            service: "all-input-types",
-            description: "This endpoint for example",
-            endpointPath: "/api",
+            id: "uploadImage",
+            title: "Upload Image",
+            service: "storage",
+            description: "Upload an image file for processing.",
+            endpointPath: "/api/upload/image/{userId}",
             method: "POST",
             parameters: [
-              { 
-                name: "inputText", 
-                type: "string", 
-                description: "Enter text.", 
-                required: true, 
-                defaultValue: "Hello World" 
-              },
-              { 
-                name: "inputNumber", 
-                type: "integer", 
-                description: "Enter a whole number.", 
-                required: false, 
-                defaultValue: 123 
-              },
-              { 
-                name: "inputDecimal", 
-                type: "float", 
-                description: "Enter a decimal number.", 
-                required: false, 
-                defaultValue: 10.5 
-              },
-              { 
-                name: "dropdownOptions", 
-                type: "select", 
-                description: "Select one of the options.", 
-                required: true, 
-                defaultValue: "opsi1",
-                options: [
-                  { value: "opsi1", text: "First Option" },
-                  { value: "opsi2", text: "Second Option" },
-                  { value: "opsi3", text: "Third Option" }
-                ]
-              },
-              {
-                name: "radioOptions",
-                type: "radio",
-                description: "Select a radio.",
-                required: true,
-                defaultValue: "A",
-                options: [
-                  { value: "A", text: "Choice A" },
-                  { value: "B", text: "Choice B" },
-                  { value: "C", text: "Choice C" }
-                ]
-              },
-              {
-                name: "inputCheckbox",
-                type: "checkbox",
-                description: "Check if you agree.",
-                required: false,
-                defaultValue: true 
-              },
-              {
-                name: "inputUrl",
-                type: "url",
-                description: "Enter URL.",
-                required: false,
-                defaultValue: "https://example.com"
-              }
+              { name: "userId", in: "path", type: "string", description: "User ID for association.", required: true, example: "user123" },
+              { name: "imageFile", in: "formData", type: "file", description: "The image file to upload.", required: true, accept: "image/*" },
+              { name: "caption", in: "formData", type: "string", description: "Optional caption for the image.", required: false, example: "My vacation photo" },
+              { name: "isPublic", in: "formData", type: "boolean", description: "Set image public or private.", required: false, defaultValue: false}
             ],
-            requestBodyExample: {
-                contentType: "application/json",
-                example: JSON.stringify({
-                    inputTeks: "Body Example",
-                    inputAngka: 456,
-                    pilihanDropdown: "opsi1",
-                    pilihanRadio: "A",
-                    inputCheckbox: false
-                }, null, 2)
+            consumes: ["multipart/form-data"],
+            produces: ["application/json"],
+            successResponseExample: {
+              statusCode: 201,
+              headers: { "Content-Type": "application/json", "Location": "/images/new_image.jpg" },
+              body: JSON.stringify({ status: true, message: "Image uploaded successfully", fileId: "xyz789", url: "/images/new_image.jpg" }, null, 2)
             },
-            response: {
-              statusCode: 200,
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ 
-                status: true, 
-                message: "Data successfully processed",
-                receivedParameters: {
-                    inputTeks: "Hello World",
-                    inputAngka: 123,
-                    inputDesimal: 10.5,
-                    pilihanDropdown: "opsi1",
-                    pilihanRadio: "A",
-                    inputCheckbox: true,
-                    inputUrl: "https://example.com"
-                }
-              }, null, 2)
+            responses: {
+                "201": { description: "Image uploaded successfully." },
+                "400": { description: "Bad request, e.g., no file or invalid file type." }
             }
           }
         ]
-      } */
+      }
     ];
 
     function applyTheme(theme) {
@@ -255,8 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         localStorage.setItem('selectedTheme', theme);
-        if (sidebarThemeSwitcher.value !== theme) {
-            sidebarThemeSwitcher.value = theme;
+        if (sidebarThemeSwitcherSelect.value !== theme) {
+            sidebarThemeSwitcherSelect.value = theme;
         }
 
         setTimeout(() => {
@@ -273,20 +184,20 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebarApiUrlSwitcherSelect.value = baseUrl;
         }
     }
-
-    apiBaseUrls.forEach(apiOpt => {
+    
+    APP_CONFIG.apiBaseUrls.forEach(apiOpt => {
         const option = document.createElement('option');
         option.value = apiOpt.url;
         option.textContent = apiOpt.name;
         sidebarApiUrlSwitcherSelect.appendChild(option);
     });
 
-    const savedApiBaseUrl = localStorage.getItem('selectedApiBaseUrl') || apiBaseUrls[0].url;
+    const savedApiBaseUrl = localStorage.getItem('selectedApiBaseUrl') || APP_CONFIG.apiBaseUrls[APP_CONFIG.defaultApiBaseUrlIndex]?.url || (APP_CONFIG.apiBaseUrls.length > 0 ? APP_CONFIG.apiBaseUrls[0].url : "");
     applyApiUrl(savedApiBaseUrl);
     sidebarApiUrlSwitcherSelect.addEventListener('change', (e) => applyApiUrl(e.target.value));
 
-    sidebarThemeSwitcher.addEventListener('change', (e) => applyTheme(e.target.value));
-    const savedTheme = localStorage.getItem('selectedTheme') || 'light-default';
+    sidebarThemeSwitcherSelect.addEventListener('change', (e) => applyTheme(e.target.value));
+    const savedTheme = localStorage.getItem('selectedTheme') || APP_CONFIG.defaultTheme;
     applyTheme(savedTheme);
 
     function createArrowSpan(isInitiallyOpen = false) {
@@ -364,21 +275,26 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayInformationPage() {
         closeCurrentlyOpenApiDetails();
         showContent('information');
+        let contactsHTML = '';
+        if (APP_CONFIG.contacts && APP_CONFIG.contacts.length > 0) {
+            contactsHTML = APP_CONFIG.contacts.map(contact => `
+                <li><i class="${contact.icon || 'fas fa-link'}"></i> <a href="${contact.url}" target="_blank" rel="noopener noreferrer">${contact.text || contact.type}</a></li>
+            `).join('');
+        }
+
         informationPageContainer.innerHTML = `
             <div class="page-content-wrapper">
                 <div class="page-hero">
-                    <h1>About ${API_NAME}</h1>
+                    <h1>About ${APP_CONFIG.appName}</h1>
                     <p>Your central hub for a diverse collection of useful APIs designed to empower your projects.</p>
                 </div>
                 <div class="page-section">
                     <h3>Get in Touch</h3>
                     <p>Connect with us through the following channels:</p>
                     <ul class="contact-list">
-                        <li><i class="fab fa-whatsapp"></i> <a href="${whatsappChannel}" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
-                        <li><i class="fab fa-github"></i> <a href="${githubURL}" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-                        <li><i class="fas fa-envelope"></i> <a href="mailto:${googleEmail}">${googleEmail}</a></li>
+                        ${contactsHTML}
                     </ul>
-                     <p style="margin-top:15px;"><strong>Version:</strong> 1.0.0</p>
+                     <p style="margin-top:15px;"><strong>Version:</strong> ${APP_CONFIG.appVersion}</p>
                 </div>
             </div>`;
         setActiveDocLink(docLinkInformation);
@@ -476,11 +392,11 @@ document.addEventListener('DOMContentLoaded', () => {
         welcomeMessageContainer.innerHTML = `
             <div class="page-content-wrapper">
                 <div class="page-hero">
-                    <h1>${API_NAME}</h1>
+                    <h1>${APP_CONFIG.appName}</h1>
                     <p>Your gateway to a powerful and versatile suite of APIs. Start building something amazing today!</p>
                 </div>
                 <div class="page-section">
-                    <h3>Why ${API_NAME}?</h3>
+                    <h3>Why ${APP_CONFIG.appName}?</h3>
                     <p>We provide a robust platform with a focus on:</p>
                     <ul>
                         <li><i class="fas fa-bolt"></i> <strong>Performance:</strong> FAST and responsive APIs</li>
@@ -553,6 +469,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+    
+    function getDisplayPath(api) {
+        let path = api.endpointPath;
+        if (api.parameters) {
+            api.parameters.forEach(param => {
+                if (param.in === 'path') {
+                    path = path.replace(`{${param.name}}`, `<span style="color: var(--accent-color); font-weight: bold;">{${param.name}}</span>`);
+                }
+            });
+        }
+        return path;
+    }
 
     function displayApiEndpoints(apisToDisplay, categoryName, singleApiIdToOpen = null) {
         apiEndpointsContainer.innerHTML = '';
@@ -584,7 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
             headerMainInfo.appendChild(topLine);
             const urlSpan = document.createElement('span');
             urlSpan.classList.add('endpoint-url');
-            urlSpan.textContent = api.endpointPath
+            urlSpan.innerHTML = getDisplayPath(api);
             headerMainInfo.appendChild(urlSpan);
             const arrowSpan = createArrowSpan();
             header.appendChild(headerMainInfo);
@@ -613,13 +541,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function createApiDetailContent(api) {
         const contentWrapper = document.createElement('div');
         const descriptionP = document.createElement('p');
-        descriptionP.innerHTML = `<strong>Description:</strong> ${api.description}`;
+        descriptionP.innerHTML = `<strong>Description:</strong> ${api.description || 'No description available.'}`;
         contentWrapper.appendChild(descriptionP);
         if (api.service) {
             const serviceP = document.createElement('p');
             serviceP.innerHTML = `<strong>Service:</strong> ${api.service}`;
             contentWrapper.appendChild(serviceP);
         }
+
         if (api.parameters && api.parameters.length > 0) {
             const paramsHeader = document.createElement('h4');
             paramsHeader.textContent = 'Parameters';
@@ -627,68 +556,108 @@ document.addEventListener('DOMContentLoaded', () => {
             const paramsTable = document.createElement('table');
             paramsTable.classList.add('parameters-table');
             const paramsThead = document.createElement('thead');
-            paramsThead.innerHTML = `<tr><th>Name</th><th>Type</th><th>Description</th><th>Required</th></tr>`;
+            paramsThead.innerHTML = `<tr><th>Name</th><th>Location</th><th>Type</th><th>Description</th><th>Required</th><th>Example</th></tr>`;
             paramsTable.appendChild(paramsThead);
             const paramsTbody = document.createElement('tbody');
             api.parameters.forEach(param => {
                 const row = paramsTbody.insertRow();
                 row.insertCell().textContent = param.name;
+                row.insertCell().innerHTML = `<span class="param-location">${param.in || 'query'}</span>`;
+                
                 const typeCell = row.insertCell();
                 const typeSpan = document.createElement('span');
                 typeSpan.classList.add('param-type');
-                typeSpan.textContent = param.type;
+                typeSpan.textContent = param.type + (param.format ? ` (${param.format})` : '');
                 typeCell.appendChild(typeSpan);
-                row.insertCell().textContent = param.description;
+
+                row.insertCell().textContent = (param.description || '') + (param.type === 'file' && param.accept ? ` (Accepts: ${param.accept})` : '');
+                
                 const requiredCell = row.insertCell();
                 const requiredSpan = document.createElement('span');
                 if (param.required) { requiredSpan.textContent = 'Yes'; requiredSpan.classList.add('required'); }
                 else { requiredSpan.textContent = 'No'; }
                 requiredCell.appendChild(requiredSpan);
+                row.insertCell().textContent = param.example || (param.defaultValue !== undefined ? param.defaultValue : '');
             });
             paramsTable.appendChild(paramsTbody);
             contentWrapper.appendChild(paramsTable);
         }
+
         const tryItOutSection = document.createElement('div');
         tryItOutSection.classList.add('try-it-out-section');
         tryItOutSection.id = `try-${api.id}`;
         contentWrapper.appendChild(tryItOutSection);
         renderTryItOutForm(tryItOutSection, api);
-        const responseSection = document.createElement('div');
-        responseSection.classList.add('response-section');
-        responseSection.id = `response-${api.id}`;
-        const responseExampleHeader = document.createElement('h4');
-        responseExampleHeader.textContent = 'Example Response';
-        responseSection.appendChild(responseExampleHeader);
-        const exampleStatus = document.createElement('p');
-        exampleStatus.classList.add('response-status');
-        exampleStatus.innerHTML = `Status: <span class="status-${api.response.statusCode}">${api.response.statusCode}</span>`;
-        responseSection.appendChild(exampleStatus);
-        if (api.response.headers) {
-             const exampleHeadersTitle = document.createElement('h5');
-             exampleHeadersTitle.textContent = 'Headers:';
-             responseSection.appendChild(exampleHeadersTitle);
-             const exampleHeadersPre = document.createElement('pre');
-             const codeHeaders = document.createElement('code');
-             codeHeaders.className = 'language-json';
-             codeHeaders.textContent = JSON.stringify(api.response.headers, null, 2);
-             exampleHeadersPre.appendChild(codeHeaders);
-             responseSection.appendChild(exampleHeadersPre);
+
+        const responsesContainer = document.createElement('div');
+        responsesContainer.classList.add('response-section'); 
+        const responsesHeader = document.createElement('h4');
+        responsesHeader.textContent = 'Responses';
+        responsesContainer.appendChild(responsesHeader);
+        
+        if (api.responses && Object.keys(api.responses).length > 0) {
+            const responsesTable = document.createElement('table');
+            responsesTable.classList.add('responses-table');
+            const responsesThead = document.createElement('thead');
+            responsesThead.innerHTML = `<tr><th>Code</th><th>Description</th></tr>`;
+            responsesTable.appendChild(responsesThead);
+            const responsesTbody = document.createElement('tbody');
+            for (const statusCode in api.responses) {
+                const responseDef = api.responses[statusCode];
+                const row = responsesTbody.insertRow();
+                row.insertCell().textContent = statusCode;
+                row.insertCell().textContent = responseDef.description || '';
+            }
+            responsesTable.appendChild(responsesTbody);
+            responsesContainer.appendChild(responsesTable);
+        } else {
+             responsesContainer.innerHTML += '<p>No specific response codes defined.</p>';
         }
-        const exampleBodyTitle = document.createElement('h5');
-        exampleBodyTitle.textContent = 'Body:';
-        responseSection.appendChild(exampleBodyTitle);
-        const exampleBodyPre = document.createElement('pre');
-        const codeBody = document.createElement('code');
-        try {
-            codeBody.textContent = JSON.stringify(JSON.parse(api.response.body), null, 2);
-            codeBody.className = 'language-json';
-        } catch (e) {
-            codeBody.textContent = api.response.body;
-            codeBody.className = (api.response.body && (api.response.body.trim().startsWith('{') || api.response.body.trim().startsWith('['))) ? 'language-json' : 'language-markup';
+        contentWrapper.appendChild(responsesContainer);
+
+
+        if (api.successResponseExample) {
+            const responseExampleSection = document.createElement('div');
+            responseExampleSection.classList.add('response-section');
+            responseExampleSection.id = `response-${api.id}`;
+            const responseExampleHeader = document.createElement('h4');
+            responseExampleHeader.textContent = 'Example Success Response';
+            responseExampleSection.appendChild(responseExampleHeader);
+            
+            const exampleStatus = document.createElement('p');
+            exampleStatus.classList.add('response-status');
+            exampleStatus.innerHTML = `Status: <span class="status-${api.successResponseExample.statusCode}">${api.successResponseExample.statusCode}</span>`;
+            responseExampleSection.appendChild(exampleStatus);
+
+            if (api.successResponseExample.headers) {
+                 const exampleHeadersTitle = document.createElement('h5');
+                 exampleHeadersTitle.textContent = 'Headers:';
+                 responseExampleSection.appendChild(exampleHeadersTitle);
+                 const exampleHeadersPre = document.createElement('pre');
+                 const codeHeaders = document.createElement('code');
+                 codeHeaders.className = 'language-json';
+                 codeHeaders.textContent = JSON.stringify(api.successResponseExample.headers, null, 2);
+                 exampleHeadersPre.appendChild(codeHeaders);
+                 responseExampleSection.appendChild(exampleHeadersPre);
+            }
+            if (api.successResponseExample.body) {
+                const exampleBodyTitle = document.createElement('h5');
+                exampleBodyTitle.textContent = 'Body:';
+                responseExampleSection.appendChild(exampleBodyTitle);
+                const exampleBodyPre = document.createElement('pre');
+                const codeBody = document.createElement('code');
+                try {
+                    codeBody.textContent = JSON.stringify(JSON.parse(api.successResponseExample.body), null, 2);
+                    codeBody.className = 'language-json';
+                } catch (e) {
+                    codeBody.textContent = api.successResponseExample.body;
+                    codeBody.className = (api.successResponseExample.body && (api.successResponseExample.body.trim().startsWith('{') || api.successResponseExample.body.trim().startsWith('['))) ? 'language-json' : 'language-markup';
+                }
+                exampleBodyPre.appendChild(codeBody);
+                responseExampleSection.appendChild(exampleBodyPre);
+            }
+            contentWrapper.appendChild(responseExampleSection);
         }
-        exampleBodyPre.appendChild(codeBody);
-        responseSection.appendChild(exampleBodyPre);
-        contentWrapper.appendChild(responseSection);
         return contentWrapper;
     }
 
@@ -701,6 +670,7 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(formHeader);
         const form = document.createElement('form');
         form.dataset.apiId = api.id;
+        form.enctype = "multipart/form-data"; 
 
         const controlsDiv = document.createElement('div');
         controlsDiv.classList.add('try-it-out-controls');
@@ -712,21 +682,18 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonText.classList.add('btn-text');
         buttonText.textContent = 'Execute';
         executeButton.appendChild(buttonText);
-        controlsDiv.appendChild(executeButton);
-
+        
         const cancelButton = document.createElement('button');
         cancelButton.type = 'button';
         cancelButton.classList.add('btn', 'btn-secondary', 'btn-cancel');
         cancelButton.textContent = 'Cancel';
         cancelButton.style.display = 'none';
-        controlsDiv.appendChild(cancelButton);
-
+        
         const clearButton = document.createElement('button');
         clearButton.type = 'button';
         clearButton.classList.add('btn', 'btn-secondary', 'btn-clear');
         clearButton.textContent = 'Clear';
         clearButton.style.display = 'none';
-        controlsDiv.appendChild(clearButton);
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -746,7 +713,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         clearButton.addEventListener('click', () => {
             form.reset();
-            api.parameters.forEach(param => {
+            api.parameters?.forEach(param => {
                 const inputElement = form.elements[param.name];
                 if (inputElement && param.defaultValue !== undefined) {
                     if (inputElement.type === 'checkbox') inputElement.checked = param.defaultValue;
@@ -756,7 +723,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             const bodyTextarea = form.querySelector('textarea[name="requestBody"]');
-            if (bodyTextarea && api.requestBodyExample) {
+            if (bodyTextarea && api.requestBodyExample?.example) {
                 bodyTextarea.value = api.requestBodyExample.example;
             }
             const liveResponseContainer = container.querySelector(`#live-response-${api.id}`);
@@ -766,41 +733,155 @@ document.addEventListener('DOMContentLoaded', () => {
             executeButton.disabled = false;
             buttonText.textContent = 'Execute';
         });
+        
+        const parameterInputsContainer = document.createElement('div');
+        form.appendChild(parameterInputsContainer);
 
-        if (api.parameters && api.parameters.length > 0) {
-            api.parameters.forEach(param => {
+        if (api.parameters && api.parameters.filter(p => p.in !== 'body').length > 0) {
+            api.parameters.filter(p => p.in !== 'body').forEach(param => {
                 const group = document.createElement('div'); group.classList.add('form-group');
-                const label = document.createElement('label'); label.setAttribute('for', `param-${api.id}-${param.name}`); label.textContent = `${param.name}`;
+                const label = document.createElement('label'); label.setAttribute('for', `param-${api.id}-${param.name}`); label.textContent = `${param.name} (${param.in || 'query'})`;
                 if (param.required) { const reqSpan = document.createElement('span'); reqSpan.textContent = 'ㅤ*required'; reqSpan.style.color = '#c0392b'; label.appendChild(reqSpan); }
                 group.appendChild(label);
-                if (param.type === 'select') {
-                    const select = document.createElement('select'); select.id = `param-${api.id}-${param.name}`; select.name = param.name;
-                    param.options.forEach(opt => { const option = document.createElement('option'); option.value = opt.value; option.textContent = opt.text; if (opt.value === param.defaultValue) option.selected = true; select.appendChild(option); });
-                    group.appendChild(select);
-                } else if (param.type === 'radio') {
-                    const radioGroupDiv = document.createElement('div'); radioGroupDiv.classList.add('radio-group');
-                    param.options.forEach(opt => {
-                        const radioLabel = document.createElement('label'); const radioInput = document.createElement('input'); radioInput.type = 'radio'; radioInput.id = `param-${api.id}-${param.name}-${opt.value}`; radioInput.name = param.name; radioInput.value = opt.value; if (opt.value === param.defaultValue) radioInput.checked = true;
-                        radioLabel.appendChild(radioInput); radioLabel.append(opt.text); radioGroupDiv.appendChild(radioLabel);
-                    }); group.appendChild(radioGroupDiv);
-                } else if (param.type === 'checkbox') {
-                    const chkContainer = document.createElement('div'); chkContainer.classList.add('checkbox-group'); const chkLabel = document.createElement('label'); const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.id = `param-${api.id}-${param.name}`; checkbox.name = param.name; checkbox.checked = param.defaultValue === true;
-                    chkLabel.appendChild(checkbox); chkLabel.append(param.description || param.name); chkContainer.appendChild(chkLabel); group.appendChild(chkContainer); group.replaceChild(chkContainer, label);
-                } else {
-                    const input = document.createElement('input'); input.type = param.type === 'integer' || param.type === 'float' ? 'number' : (param.type === 'url' ? 'url' : 'text'); if(param.type === 'float') input.step = 'any'; input.id = `param-${api.id}-${param.name}`; input.name = param.name; input.placeholder = param.description; if (param.defaultValue !== undefined) input.value = param.defaultValue; if (param.required) input.required = true;
-                    group.appendChild(input);
-                } form.appendChild(group);
+                let input;
+                switch (param.type) {
+                    case 'select':
+                        input = document.createElement('select'); input.id = `param-${api.id}-${param.name}`; input.name = param.name;
+                        param.options?.forEach(opt => { const option = document.createElement('option'); option.value = opt.value; option.textContent = opt.text; if (opt.value === (param.defaultValue || param.example)) option.selected = true; input.appendChild(option); });
+                        break;
+                    case 'radio':
+                        const radioGroupDiv = document.createElement('div'); radioGroupDiv.classList.add('radio-group');
+                        param.options?.forEach(opt => {
+                            const radioLabel = document.createElement('label'); const radioInput = document.createElement('input'); radioInput.type = 'radio'; radioInput.id = `param-${api.id}-${param.name}-${opt.value}`; radioInput.name = param.name; radioInput.value = opt.value; if (opt.value === (param.defaultValue || param.example)) radioInput.checked = true;
+                            radioLabel.appendChild(radioInput); radioLabel.append(opt.text); radioGroupDiv.appendChild(radioLabel);
+                        }); input = radioGroupDiv;
+                        break;
+                    case 'boolean':
+                        const chkContainer = document.createElement('div'); chkContainer.classList.add('checkbox-group'); const chkLabel = document.createElement('label'); input = document.createElement('input'); input.type = 'checkbox'; input.id = `param-${api.id}-${param.name}`; input.name = param.name; input.checked = param.defaultValue === true || param.example === true;
+                        chkLabel.appendChild(input); chkLabel.append(param.description || param.name); chkContainer.appendChild(chkLabel); group.replaceChild(chkContainer, label);
+                        break;
+                    case 'file':
+                        input = document.createElement('input'); input.type = 'file'; input.id = `param-${api.id}-${param.name}`; input.name = param.name;
+                        if (param.accept) {
+                            input.accept = param.accept;
+                        }
+                        break;
+                    default:
+                        input = document.createElement('input');
+                        input.type = param.type === 'integer' || param.type === 'float' || param.type === 'number' ? 'number' : (param.type === 'url' ? 'url' : (param.type === 'date' ? 'date' : (param.type === 'password' ? 'password' : 'text')));
+                        if(param.type === 'float') input.step = 'any';
+                        input.id = `param-${api.id}-${param.name}`; input.name = param.name; input.placeholder = param.description;
+                        if (param.defaultValue !== undefined) input.value = param.defaultValue;
+                        else if (param.example !== undefined) input.value = param.example;
+                        if (param.required) input.required = true;
+                }
+                if(input) group.appendChild(input);
+                parameterInputsContainer.appendChild(group);
             });
         }
-        if ((api.method === 'POST' || api.method === 'PUT' || api.method === 'PATCH') && api.requestBodyExample) {
-            const group = document.createElement('div'); group.classList.add('form-group'); const label = document.createElement('label'); label.setAttribute('for', `body-${api.id}`); label.textContent = `Request Body (${api.requestBodyExample.contentType})`; group.appendChild(label);
-            const textarea = document.createElement('textarea'); textarea.id = `body-${api.id}`; textarea.name = 'requestBody'; textarea.rows = 8; textarea.value = api.requestBodyExample.example; group.appendChild(textarea);
-            form.appendChild(group);
+
+        const consumes = api.consumes || ['application/json'];
+        let selectedContentType = consumes[0];
+
+        if ((api.method === 'POST' || api.method === 'PUT' || api.method === 'PATCH')) {
+            if (consumes.length > 1) {
+                const contentTypeGroup = document.createElement('div');
+                contentTypeGroup.classList.add('form-group', 'content-type-selector-group');
+                const contentTypeLabel = document.createElement('label');
+                contentTypeLabel.textContent = 'Request Content-Type:';
+                contentTypeLabel.setAttribute('for', `content-type-${api.id}`);
+                const contentTypeSelect = document.createElement('select');
+                contentTypeSelect.id = `content-type-${api.id}`;
+                contentTypeSelect.name = 'requestContentType';
+                consumes.forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type;
+                    option.textContent = type;
+                    contentTypeSelect.appendChild(option);
+                });
+                contentTypeGroup.appendChild(contentTypeLabel);
+                contentTypeGroup.appendChild(contentTypeSelect);
+                form.insertBefore(contentTypeGroup, parameterInputsContainer.nextSibling);
+
+                contentTypeSelect.addEventListener('change', (e) => {
+                    selectedContentType = e.target.value;
+                    renderRequestBodyInput(api, form, parameterInputsContainer, selectedContentType);
+                });
+            }
+            renderRequestBodyInput(api, form, parameterInputsContainer, selectedContentType);
         }
+        
+        controlsDiv.appendChild(executeButton);
+        controlsDiv.appendChild(cancelButton);
+        controlsDiv.appendChild(clearButton);
         form.appendChild(controlsDiv);
         container.appendChild(form);
+
         const liveResponseContainer = document.createElement('div'); liveResponseContainer.id = `live-response-${api.id}`; liveResponseContainer.classList.add('response-section'); container.appendChild(liveResponseContainer);
     }
+
+    function renderRequestBodyInput(api, form, parameterInputsContainer, contentType) {
+        let requestBodyContainer = form.querySelector('.request-body-group');
+        if (requestBodyContainer) {
+            requestBodyContainer.remove();
+        }
+        requestBodyContainer = document.createElement('div');
+        requestBodyContainer.classList.add('form-group', 'request-body-group');
+
+        if (contentType === 'application/json' || contentType === 'application/xml' || contentType.startsWith('text/')) {
+            const label = document.createElement('label');
+            label.setAttribute('for', `body-${api.id}`);
+            label.textContent = `Request Body (${contentType})`;
+            requestBodyContainer.appendChild(label);
+            const textarea = document.createElement('textarea');
+            textarea.id = `body-${api.id}`;
+            textarea.name = 'requestBody';
+            textarea.rows = 8;
+            const bodyParam = api.parameters?.find(p => p.in === 'body');
+            if (bodyParam?.example) textarea.value = typeof bodyParam.example === 'string' ? bodyParam.example : JSON.stringify(bodyParam.example, null, 2);
+            else if (api.requestBodyExample?.example) textarea.value = api.requestBodyExample.example;
+            requestBodyContainer.appendChild(textarea);
+        } else if (contentType === 'application/x-www-form-urlencoded' || contentType === 'multipart/form-data') {
+            const bodyParams = api.parameters?.filter(p => p.in === 'formData' || p.in === 'form');
+             if (bodyParams && bodyParams.length > 0) {
+                const label = document.createElement('label');
+                label.textContent = `Form Data (${contentType})`;
+                requestBodyContainer.appendChild(label);
+
+                bodyParams.forEach(param => {
+                    const group = document.createElement('div'); group.classList.add('form-group');
+                    const paramLabel = document.createElement('label'); paramLabel.setAttribute('for', `param-${api.id}-${param.name}`); paramLabel.textContent = `${param.name}`;
+                    if (param.required) { const reqSpan = document.createElement('span'); reqSpan.textContent = 'ㅤ*required'; reqSpan.style.color = '#c0392b'; paramLabel.appendChild(reqSpan); }
+                    group.appendChild(paramLabel);
+                    let input;
+                     switch (param.type) {
+                        case 'file':
+                            input = document.createElement('input'); input.type = 'file'; input.id = `param-${api.id}-${param.name}`; input.name = param.name;
+                            if (param.accept) {
+                                input.accept = param.accept;
+                            }
+                            break;
+                        case 'boolean':
+                             const chkContainer = document.createElement('div'); chkContainer.classList.add('checkbox-group'); const chkLabel = document.createElement('label'); input = document.createElement('input'); input.type = 'checkbox'; input.id = `param-${api.id}-${param.name}`; input.name = param.name; input.checked = param.defaultValue === true || param.example === true;
+                            chkLabel.appendChild(input); chkLabel.append(param.description || param.name); chkContainer.appendChild(chkLabel); group.replaceChild(chkContainer, paramLabel);
+                            break;
+                        default:
+                            input = document.createElement('input');
+                            input.type = param.type === 'integer' || param.type === 'float' || param.type === 'number' ? 'number' : (param.type === 'url' ? 'url' : (param.type === 'date' ? 'date' : (param.type === 'password' ? 'password' : 'text')));
+                            if(param.type === 'float') input.step = 'any';
+                            input.id = `param-${api.id}-${param.name}`; input.name = param.name; input.placeholder = param.description;
+                            if (param.defaultValue !== undefined) input.value = param.defaultValue;
+                            else if (param.example !== undefined) input.value = param.example;
+                            if (param.required) input.required = true;
+                    }
+                    if (input) group.appendChild(input);
+                    requestBodyContainer.appendChild(group);
+                });
+             }
+        }
+        form.insertBefore(requestBodyContainer, form.querySelector('.try-it-out-controls'));
+    }
+
 
     async function makeRequestWithFetchTimeout(method, url, headers, data, responseProcessType, timeoutDuration, signal) {
         const options = { method: method, headers: headers || {}, signal: signal, credentials: 'include' };
@@ -830,7 +911,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return { data: responseData, status: fetchResponse.status, statusText: fetchResponse.statusText, headers: responseHeaders, originalContentType: originalContentType };
     }
-
+    
     async function executeApiCall(api, form, tryItOutContainer, executeButton, cancelButton, clearButton) {
         revokeActiveObjectUrls();
         const liveResponseContainer = tryItOutContainer.querySelector(`#live-response-${api.id}`);
@@ -852,12 +933,31 @@ document.addEventListener('DOMContentLoaded', () => {
         let targetUrl = selectedApiBaseUrl + api.endpointPath;
         let requestPayload = { method: api.method, headers: {}, data: null };
 
+        api.parameters?.forEach(param => {
+            if (param.in === 'path') {
+                const value = formData.get(param.name) || param.defaultValue || param.example || '';
+                targetUrl = targetUrl.replace(`{${param.name}}`, encodeURIComponent(value));
+            } else if (param.in === 'header') {
+                const value = formData.get(param.name);
+                if (value !== undefined && value !== null && String(value).trim() !== '') {
+                    requestPayload.headers[param.name] = value;
+                }
+            }
+        });
+        
+        let consumesContentType = api.consumes?.[0] || 'application/json';
+        const contentTypeSelector = form.querySelector('select[name="requestContentType"]');
+        if (contentTypeSelector) {
+            consumesContentType = contentTypeSelector.value;
+        }
+
+
         if (api.method === 'GET' || api.method === 'DELETE') {
             let queryParts = [];
-            requestPayload.headers['Accept'] = 'application/json, text/plain, */*';
-            api.parameters.forEach(param => {
-                let paramValue = param.type === 'checkbox' ? form.querySelector(`input[name="${param.name}"]`).checked : formData.get(param.name);
-                if (paramValue !== undefined && paramValue !== null && (String(paramValue).length > 0 || param.type === 'checkbox')) {
+            requestPayload.headers['Accept'] = api.produces?.[0] || 'application/json, text/plain, */*';
+            api.parameters?.filter(p => p.in === 'query').forEach(param => {
+                let paramValue = param.type === 'boolean' ? form.querySelector(`input[name="${param.name}"]`).checked : formData.get(param.name);
+                if (paramValue !== undefined && paramValue !== null && (String(paramValue).length > 0 || param.type === 'boolean')) {
                      queryParts.push(`${encodeURIComponent(param.name)}=${encodeURIComponent(String(paramValue))}`);
                 }
             });
@@ -865,42 +965,62 @@ document.addEventListener('DOMContentLoaded', () => {
                 targetUrl += `?${queryParts.join('&')}`;
             }
         } else if (api.method === 'POST' || api.method === 'PUT' || api.method === 'PATCH') {
-            const contentType = (api.requestBodyExample && api.requestBodyExample.contentType) || 'application/json';
-            requestPayload.headers['Content-Type'] = contentType;
-            if (contentType === 'application/json') {
+            requestPayload.headers['Accept'] = api.produces?.[0] || 'application/json';
+            
+            if (consumesContentType === 'application/json') {
+                requestPayload.headers['Content-Type'] = 'application/json';
                 const bodyTextarea = form.querySelector('textarea[name="requestBody"]');
-                let rawBody;
+                let rawBody = '{}';
                 if (bodyTextarea) {
                     rawBody = bodyTextarea.value;
                 } else {
-                    const bodyObject = api.parameters.reduce((obj, p) => {
-                        if (formData.has(p.name) || p.type === 'checkbox') {
-                            obj[p.name] = p.type === 'checkbox' ? form.querySelector(`input[name="${p.name}"]`).checked :
-                                          p.type === 'integer' ? parseInt(formData.get(p.name),10) :
-                                          p.type === 'float' ? parseFloat(formData.get(p.name)) : formData.get(p.name);
-                        }
-                        return obj;
-                    }, {});
-                    rawBody = JSON.stringify(bodyObject);
+                    const bodyObject = api.parameters?.filter(p => p.in === 'body' || p.in === 'formData')
+                        .reduce((obj, p) => {
+                            if (formData.has(p.name) || p.type === 'boolean') {
+                                obj[p.name] = p.type === 'boolean' ? form.querySelector(`input[name="${p.name}"]`).checked :
+                                              p.type === 'integer' ? parseInt(formData.get(p.name),10) :
+                                              p.type === 'float' || p.type === 'number' ? parseFloat(formData.get(p.name)) : formData.get(p.name);
+                            }
+                            return obj;
+                        }, {});
+                     rawBody = JSON.stringify(bodyObject);
                 }
                 try { JSON.parse(rawBody); requestPayload.data = rawBody; }
                 catch (e) {
                     liveResponseContainer.innerHTML = `<p class="response-status status-400">Error: Invalid JSON in request body.</p>`;
                     buttonText.textContent = originalButtonText; executeButton.disabled = false; cancelButton.style.display = 'none'; clearButton.style.display = 'inline-flex'; clearTimeout(timeoutId); return;
                 }
-            } else {
+            } else if (consumesContentType === 'application/x-www-form-urlencoded') {
+                requestPayload.headers['Content-Type'] = 'application/x-www-form-urlencoded';
                 const urlEncodedParams = new URLSearchParams();
-                api.parameters.forEach(param => {
-                     if (formData.has(param.name) || param.type === 'checkbox') {
-                        urlEncodedParams.append(param.name, param.type === 'checkbox' ? form.querySelector(`input[name="${p.name}"]`).checked.toString() : formData.get(param.name));
+                api.parameters?.filter(p => p.in === 'formData' || p.in === 'form').forEach(param => {
+                     if (formData.has(param.name) || param.type === 'boolean') {
+                        urlEncodedParams.append(param.name, param.type === 'boolean' ? form.querySelector(`input[name="${param.name}"]`).checked.toString() : formData.get(param.name));
                     }
                 });
                 requestPayload.data = urlEncodedParams.toString();
+            } else if (consumesContentType === 'multipart/form-data') {
+                const multiPartFormData = new FormData();
+                 api.parameters?.filter(p => p.in === 'formData' || p.in === 'form').forEach(param => {
+                    if (param.type === 'file') {
+                        const fileInput = form.querySelector(`input[name="${param.name}"]`);
+                        if (fileInput && fileInput.files && fileInput.files.length > 0) {
+                            multiPartFormData.append(param.name, fileInput.files[0]);
+                        }
+                    } else if (formData.has(param.name) || param.type === 'boolean') {
+                         multiPartFormData.append(param.name, param.type === 'boolean' ? form.querySelector(`input[name="${param.name}"]`).checked.toString() : formData.get(param.name));
+                    }
+                });
+                requestPayload.data = multiPartFormData;
+            } else {
+                 requestPayload.headers['Content-Type'] = consumesContentType;
+                 const bodyTextarea = form.querySelector('textarea[name="requestBody"]');
+                 requestPayload.data = bodyTextarea ? bodyTextarea.value : '';
             }
         }
 
         let responseWrapper;
-        const apiDeclaredContentType = String(api.response.headers['Content-Type'] || '').toLowerCase();
+        const apiDeclaredContentType = String(api.produces?.[0] || api.successResponseExample?.headers?.['Content-Type'] || '').toLowerCase();
         const isApiMediaRequest = (apiDeclaredContentType.startsWith('image/') || apiDeclaredContentType.startsWith('audio/') || apiDeclaredContentType.startsWith('video/')) && !apiDeclaredContentType.startsWith('image/svg+xml');
         let responseProcessType = isApiMediaRequest ? 'blob' : (apiDeclaredContentType.includes('json') ? 'json' : 'text');
 
@@ -1096,7 +1216,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const errorP = document.createElement('p'); errorP.classList.add('response-status');
                 let statusClass = `status-${error.status || 'error'}`;
                 let errorMsg = error.message || error.statusText || 'Unknown request error';
-                if (error.status === 0) errorMsg = error.message;
+                if (error.status === 0 && !error.message?.includes('Failed to fetch')) errorMsg = `Network error or CORS issue: ${error.message || 'Could not connect to API server.'}`;
+                 else if (error.message?.includes('Failed to fetch')) errorMsg = 'Failed to fetch. This could be a CORS issue, network problem, or the API server is down. Ensure the server is running and has correct CORS headers (e.g., Access-Control-Allow-Origin: *).';
+
 
                 errorP.innerHTML = `<span class="${statusClass}">${errorMsg} (Status: ${error.status !== undefined ? error.status : 'N/A'})</span>`;
                 liveResponseContainer.appendChild(errorP);
@@ -1110,7 +1232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     bPre.appendChild(cBody); liveResponseContainer.appendChild(bPre); }
 
                 if (typeof Prism !== 'undefined') Prism.highlightAllUnder(liveResponseContainer);
-                const addInfo = document.createElement('p'); addInfo.style.marginTop = '10px'; addInfo.innerHTML = `This request was made directly to the API. If the error persists, the target API might be down, the endpoint is incorrect, or there's a network issue. The API server must have correct CORS headers (e.g., <code>Access-Control-Allow-Origin: *</code> or this site's origin) to allow requests from this web page.`;
+                const addInfo = document.createElement('p'); addInfo.style.marginTop = '10px'; addInfo.innerHTML = `This request was made directly to the API. If the error persists, check the browser console for more details. The target API might be down, the endpoint is incorrect, or there's a network issue. The API server must have correct CORS headers (e.g., <code>Access-Control-Allow-Origin: *</code> or this site's origin) to allow requests from this web page.`;
                 liveResponseContainer.appendChild(addInfo);
             }
         } finally {
