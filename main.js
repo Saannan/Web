@@ -1,18 +1,10 @@
 const express = require("express")
 const axios = require("axios")
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = 3000
+
 const cors = require("cors")
-
-const corsOptions = {
-  origin: '*',
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-  allowedHeaders: "Content-Type, Authorization, X-Requested-With, Accept, Access-Control-Allow-Origin",
-  credentials: true,
-  optionsSuccessStatus: 200
-}
-
-app.use(cors(corsOptions))
+app.use(cors())
 
 function Enc(type) {
   return encodeURIComponent(type)
