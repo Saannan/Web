@@ -1,12 +1,12 @@
 const axios = require('axios')
-const express = require('express');
-const cors = require('cors');
+const express = require('express')
+const cors = require('cors')
 
-const app = express();
-const port = process.env.PORT || 3000;
+const app = express()
+const port = process.env.PORT || 3000
 
-app.use(cors());
-app.use(express.json());
+app.use(cors())
+app.use(express.json())
 
 function Enc(type) {
   return encodeURIComponent(type)
@@ -1235,6 +1235,21 @@ app.get("/api/cekipfull", async (req, res) => {
   }
 })
 
+app.get('/api/openai-tts', async (req, res) => {
+  const { q, voice, vibes } = req.query
+  if (!q || !voice || !vibes) {
+    return res.status(400).json({ status: false, error: "Query, voice or vibes is required" })
+  }
+  try {
+    const { openAI } = require('./search/functions')
+    const resu = await openAI(q, {}, voice, vibes)
+    res.setHeader('Content-Type', 'audio/mpeg')
+    res.send(resu)
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
 // ===== CONVERT
 
 app.get("/api/tobase64", async (req, res) => {
@@ -1698,7 +1713,7 @@ app.get("/api/royaltext", async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server berjalan di http://localhost:${port}`);
-  console.log('API siap menerima request dari domain mana saja.');
+  console.log('API siap menerima request');
 });
 
 /*
