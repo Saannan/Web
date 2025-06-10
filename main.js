@@ -1235,23 +1235,6 @@ app.get("/api/cekipfull", async (req, res) => {
   }
 })
 
-app.get('/api/openai-tts', async (req, res) => {
-  const { q, voice, vibe } = req.query
-  if (!q || !voice || !vibe) {
-    return res.status(400).json({ status: false, error: "Query, voice or vibes is required" })
-  }
-  try {
-    const { openAI } = require('./search/functions')
-    const response = await openAI(q, '', voice, vibe)
-    res.status(200).json({
-    status: true,
-    buffer: response,
-    })
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
-})
-
 // ===== CONVERT
 
 app.get("/api/tobase64", async (req, res) => {
