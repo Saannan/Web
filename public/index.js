@@ -75,69 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
       },
       {
-        name: "Tools",
-        icon: "fas fa-tools",
-        apis: [
-          {
-            id: "openai-tts",
-            title: "OpenAI TTS",
-            service: "openai-tts",
-            description: "OpenAI Text to Speech",
-            endpointPath: "/api/openai-tts",
-            method: "GET",
-            parameters: [
-              {
-                name: "q",
-                type: "string",
-                description: "text to speech.",
-                required: true,
-                defaultValue: "Hello, how are you?"
-              },
-              {
-                name: "voice", 
-                type: "select", 
-                description: "Select available voice.", 
-                required: true, 
-                defaultValue: "Alloy",
-                options: [
-                  { value: "Alloy", text: "alloy" },
-                  { value: "Ash", text: "ash" },
-                  { value: "Ballad", text: "ballad" },
-                  { value: "Coral", text: "coral" },
-                  { value: "Echo", text: "echo" },
-                  { value: "Fable", text: "fable" },
-                  { value: "Onyx", text: "onyx" },
-                  { value: "Nova", text: "nova" },
-                  { value: "Sage", text: "sage" },
-                  { value: "Shimmer", text: "shimmer" },
-                  { value: "Verse", text: "verse" }
-                ]
-              },
-              {
-                name: "vibe", 
-                type: "select", 
-                description: "Select available vibe.", 
-                required: true, 
-                defaultValue: "Santa",
-                options: [
-                  { value: "Santa", text: "santa" },
-                  { value: "True Crime Buff", text: "true crime buff" },
-                  { value: "Old-Timey", text: "old timey" },
-                  { value: "Robot", text: "robot" },
-                  { value: "Eternal Optimist", text: "eternal optimist" }
-                ]
-              }
-            ],
-            requestBodyExample: null,
-            response: {
-              statusCode: 200,
-              headers: { "Content-Type": "image/png" },
-              body: "image/png"
-            }
-          }
-        ]
-      },
-      {
         name: "Ephoto Maker",
         icon: "fas fa-image",
         apis: [
