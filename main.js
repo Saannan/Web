@@ -1236,13 +1236,13 @@ app.get("/api/cekipfull", async (req, res) => {
 })
 
 app.get('/api/openai-tts', async (req, res) => {
-  const { q, voice, vibes } = req.query
-  if (!q || !voice || !vibes) {
+  const { q, voice, vibe } = req.query
+  if (!q || !voice || !vibe) {
     return res.status(400).json({ status: false, error: "Query, voice or vibes is required" })
   }
   try {
     const { openAI } = require('./search/functions')
-    const resu = await openAI(q, '', voice, vibes)
+    const resu = await openAI(q, '', voice, vibe)
     res.setHeader('Content-Type', 'audio/mpeg')
     res.send(resu)
   } catch (error) {
