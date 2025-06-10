@@ -1,10 +1,12 @@
-const express = require("express")
-const axios = require("axios")
-const app = express()
-const PORT = 3000
+const axios = require('axios')
+const express = require('express');
+const cors = require('cors');
 
-const cors = require("cors")
-app.use(cors())
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
 
 function Enc(type) {
   return encodeURIComponent(type)
@@ -1694,9 +1696,10 @@ app.get("/api/royaltext", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`)
-})
+app.listen(port, () => {
+  console.log(`Server berjalan di http://localhost:${port}`);
+  console.log('API siap menerima request dari domain mana saja.');
+});
 
 /*
  * © Sanjaya
