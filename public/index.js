@@ -114,9 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 ]
               },
               {
-                name: "vibes", 
+                name: "vibe", 
                 type: "select", 
-                description: "Select available vibes.", 
+                description: "Select available vibe.", 
                 required: true, 
                 defaultValue: "Santa",
                 options: [
