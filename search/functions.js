@@ -1137,4 +1137,46 @@ async function cekip(query) {
   return results;
 }
 
-module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, gemini, blackbox, google, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytsearch, ytdl, ytdlv2, Ytmp4, Ytmp3, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2, cekip }
+async function openAI(input, prompt = {}, voice = 'Echo', vibe = 'Santa') {
+    const voices = ['Alloy', 'Ash', 'Ballad', 'Coral', 'Echo', 'Fable', 'Onyx', 'Nova', 'Sage', 'Shimmer', 'Verse']
+    const vibes = ['Santa', 'True Crime Buff', 'Old-Timey', 'Robot', 'Eternal Optimist']
+
+    if (!input?.trim()) throw Error('Input tidak boleh kosong!')
+    if (!voices.includes(voice)) throw Error('Pilih tipe voice yang ada!')
+    if (vibe && !vibes.includes(vibe)) throw Error('Pilih tipe vibes yang ada!')
+
+    try {
+        const formData = new FormData()
+        formData.append('input', input)
+
+        if (Object.keys(prompt).length) {
+            formData.append('prompt', Object.entries(prompt)
+                .map(([key, value]) => `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}`)
+                .join('\n\n'))
+        }
+
+        formData.append('voice', voice.toLowerCase())
+        formData.append('vibe', vibe)
+
+        const { data } = await axios.post(
+            'https://www.openai.fm/api/generate',
+            formData,
+            {
+                headers: {
+                    ...formData.getHeaders(),
+                    'origin': 'https://www.openai.fm',
+                    'referer': 'https://www.openai.fm/'
+                },
+                responseType: 'arraybuffer',
+                maxBodyLength: Infinity,
+                maxContentLength: Infinity
+            }
+        )
+
+        return data
+    } catch (err) {
+        throw Error(err.message)
+    }
+}
+
+module.exports = { ChatGPT, feloask, meiliai, islamai, veniceai, cbaby, text2img, gemini, blackbox, google, apkpure, spotifys, spotifydl, bingS, bingI, bingV, pinterest, srcLyrics, sfilesrc, ytsearch, ytdl, ytdlv2, Ytmp4, Ytmp3, igfbdl, tiktokdl, terabox, threads, getLyrics, pastebin, sfiledl, remini, reminiv2, dehaze, bratv2, ephoto, transcribe, shortUrlv1, shortUrlv2, cekip, openAI }
