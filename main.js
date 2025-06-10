@@ -1242,7 +1242,7 @@ app.get('/api/openai-tts', async (req, res) => {
   }
   try {
     const { openAI } = require('./search/functions')
-    const resu = await openAI(q, {}, voice, vibes)
+    const resu = await openAI(q, '', voice, vibes)
     res.setHeader('Content-Type', 'audio/mpeg')
     res.send(resu)
   } catch (error) {
